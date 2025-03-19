@@ -1,7 +1,10 @@
 import React from "react";
 import { YStack, Text, Button, H1 } from "tamagui";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen(): JSX.Element {
+  const router = useRouter();
+
   return (
     <YStack gap="$6" padding="$4">
       <H1>Welcome to ProgressForgeLang</H1>
@@ -18,7 +21,7 @@ export default function HomeScreen(): JSX.Element {
           <Button
             size="$5"
             onPress={() => {
-              window.location.href = "http://localhost:3000/cards";
+              router.replace("./cards");
             }}
           >
             Practice on Web
