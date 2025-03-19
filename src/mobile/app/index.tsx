@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { YStack, Text, Button, H1 } from "tamagui";
 
-import { navigateToCards } from "../../utils/navigation";
+import { navigateTo } from "../../utils/navigation";
 
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
@@ -13,11 +13,13 @@ export default function HomeScreen(): JSX.Element {
       justifyContent="center"
       alignItems="center"
       padding="$4"
-      space="$4"
+      gap="$4"
     >
       <H1>Welcome to Progress Forge</H1>
       <Text>Your language learning companion</Text>
-      <Button onPress={() => navigateToCards(router)}>Practice Cards</Button>
+      <Button onPress={() => navigateTo("cards", router)}>
+        Practice Cards
+      </Button>
     </YStack>
   );
 }
