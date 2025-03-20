@@ -1,10 +1,9 @@
+import { WebTabBar } from "@common/components/WebTabBar";
 import { Tabs } from "expo-router";
 import React from "react";
 import { useColorScheme } from "react-native";
 import { isWeb, TamaguiProvider } from "tamagui";
-
-import { config } from "../../../tamagui.config";
-import { WebTabBar } from "../components/WebTabBar";
+import { config } from "tamagui.config";
 
 export default function RootLayout(): JSX.Element {
   const colorScheme = useColorScheme();

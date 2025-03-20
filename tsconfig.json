@@ -4,14 +4,13 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@common/*": ["src/common/*"],
       "@auth/*": ["src/auth/*"],
       "@user/*": ["src/user/*"],
       "@card/*": ["src/card/*"],
       "@mobile/*": ["src/mobile/*"],
       "@web/*": ["src/web/*"],
-      "@components/*": ["src/components/*"],
-      "@utils/*": ["src/utils/*"]
+      "@levels/*": ["src/levels/*"],
+      "@common/*": ["src/common/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

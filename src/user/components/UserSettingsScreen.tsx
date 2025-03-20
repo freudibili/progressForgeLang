@@ -3,7 +3,7 @@ import { YStack, Text } from "tamagui";
 
 import { useUserStore } from "../store/userStore";
 
-export const UserSettings: React.FC = () => {
+export const UserSettingsScreen: React.FC = () => {
   const { user, isLoading, error, fetchUser } = useUserStore();
 
   useEffect(() => {

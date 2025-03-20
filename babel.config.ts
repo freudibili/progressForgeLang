@@ -30,6 +30,7 @@ export default function (api: ConfigAPI): BabelConfig {
         {
           root: ["./src"],
           alias: {
+            "@levels": "./src/levels",
             "@common": "./src/common",
             "@auth": "./src/auth",
             "@user": "./src/user",
