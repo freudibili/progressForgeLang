@@ -11,7 +11,7 @@ export function getWebUrl(path: string): string {
 
 export function navigateTo(path: string, router: Router): void {
   if (Platform.OS === "web") {
-    window.location.href = getWebUrl(path);
+    window.location.href = getWebUrl(`/${path}`);
   } else {
     router.replace(`./${path}`);
   }
