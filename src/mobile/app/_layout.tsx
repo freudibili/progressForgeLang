@@ -1,9 +1,11 @@
 import { Tabs } from "expo-router";
 import React from "react";
 import { useColorScheme } from "react-native";
-import { TamaguiProvider } from "tamagui";
+import { isWeb, TamaguiProvider } from "tamagui";
 
 import { config } from "../../../tamagui.config";
+import { WebTabBar } from "../components/WebTabBar";
+
 export default function RootLayout(): JSX.Element {
   const colorScheme = useColorScheme();
 
@@ -12,10 +14,13 @@ export default function RootLayout(): JSX.Element {
       config={config}
       defaultTheme={colorScheme === "dark" ? "dark" : "light"}
     >
+      {isWeb && <WebTabBar />}
       <Tabs
         screenOptions={{
           headerShown: true,
           tabBarActiveTintColor: colorScheme === "dark" ? "#fff" : "#000",
+          tabBarPosition: isWeb ? "top" : "bottom",
+          tabBarStyle: isWeb ? { display: "none" } : undefined,
         }}
       >
         <Tabs.Screen

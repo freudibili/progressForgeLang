@@ -1,6 +1,6 @@
+import Link from "next/link";
 import React from "react";
 import { YStack, Text, Button, H1, Card } from "tamagui";
-import Link from "next/link";
 
 export default function HomePage(): JSX.Element {
   return (

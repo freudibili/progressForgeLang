@@ -1,5 +1,5 @@
 import { Router } from "expo-router";
-import { Platform } from "react-native";
+import { isWeb } from "tamagui";
 
 export function getWebUrl(path: string): string {
   const isDev = process.env.NODE_ENV === "development";
@@ -10,7 +10,7 @@ export function getWebUrl(path: string): string {
 }
 
 export function navigateTo(path: string, router: Router): void {
-  if (Platform.OS === "web") {
+  if (isWeb) {
     window.location.href = getWebUrl(`/${path}`);
   } else {
     router.replace(`./${path}`);
