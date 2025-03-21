@@ -1,4 +1,3 @@
-import { navigateTo } from "@common/utils/navigation";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { YStack, Text, XStack } from "tamagui";
@@ -19,7 +18,7 @@ export function LevelSelectionScreen() {
 
   const handleLevelSelect = (level: Level) => {
     selectLevel(level);
-    navigateTo("vocabularyCards", router);
+    router.replace(`./vocabularyCards`);
   };
 
   return (

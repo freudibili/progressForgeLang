@@ -12,7 +12,7 @@ export interface VocabularyCard {
     plusquamperfekt: string;
     futurI: string;
   };
-  level: string;
+  level: VocabLevel;
   type: "regular" | "irregular";
   example: {
     de: string;
@@ -38,4 +38,4 @@ export interface CardFilters {
   searchTerm?: string;
 }
 
-export type Level = "A1" | "A2" | "B1" | "B2";
+export type VocabLevel = "A1" | "A2" | "B1" | "B2";

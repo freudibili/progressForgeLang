@@ -1,73 +1,52 @@
 import React from "react";
-import { Card, Text, YStack, Button, XStack } from "tamagui";
-
+import { Card, Text, YStack } from "tamagui";
 import { VocabularyCard as VocabularyCardType } from "../types";
 
-interface Props {
+interface VocabularyCardProps {
   card: VocabularyCardType;
-  onCorrect: () => void;
-  onIncorrect: () => void;
-  isLoading?: boolean;
-  error?: string | null;
+  isRevealed: boolean;
+  onPress: () => void;
 }
 
-export const VocabularyCard: React.FC<Props> = ({
+export const VocabularyCard: React.FC<VocabularyCardProps> = ({
   card,
-  onCorrect,
-  onIncorrect,
-  isLoading = false,
-  error = null,
+  isRevealed,
+  onPress,
 }) => {
-  if (isLoading) {
-    return (
-      <Card elevate size="$4" bordered>
-        <Card.Header padded>
-          <Text>Loading...</Text>
-        </Card.Header>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card elevate size="$4" bordered>
-        <Card.Header padded>
-          <Text color="$red10">{error}</Text>
-        </Card.Header>
-      </Card>
-    );
-  }
-
   return (
     <Card
       elevate
       size="$4"
       bordered
-      scale={0.9}
-      hoverStyle={{ scale: 0.925 }}
-      pressStyle={{ scale: 0.875 }}
+      animation="quick"
+      scale={0.95}
+      pressStyle={{ scale: 0.925 }}
+      onPress={onPress}
     >
       <Card.Header padded>
-        <YStack gap="$4">
-          <Text fontSize="$8" fontWeight="bold" textAlign="center">
-            {card.infinitiv.de}
-          </Text>
-          <Text fontSize="$6" textAlign="center" color="$gray11">
-            {card.infinitiv.fr}
-          </Text>
-          <Text fontSize="$4" textAlign="center" color="$gray10">
-            {card.example}
-          </Text>
-          <XStack gap="$4" justifyContent="center" marginTop="$4">
-            <Button size="$4" onPress={onIncorrect} disabled={isLoading}>
-              Incorrect
-            </Button>
-            <Button size="$4" onPress={onCorrect} disabled={isLoading}>
-              Correct
-            </Button>
-          </XStack>
-        </YStack>
+        <Text fontSize="$8" textAlign="center" fontWeight="bold">
+          {card.infinitiv.de}
+        </Text>
       </Card.Header>
+
+      {isRevealed && (
+        <Card.Footer padded>
+          <YStack gap="$4" width="100%">
+            <Text fontSize="$6" textAlign="center" fontWeight="bold">
+              {card.infinitiv.fr}
+            </Text>
+
+            <YStack gap="$2">
+              <Text fontSize="$4" textAlign="center">
+                {card.example.de}
+              </Text>
+              <Text fontSize="$4" textAlign="center" color="$gray10">
+                {card.example.fr}
+              </Text>
+            </YStack>
+          </YStack>
+        </Card.Footer>
+      )}
     </Card>
   );
 };

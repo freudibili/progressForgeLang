@@ -1,26 +1,26 @@
-import { createGenericStore } from "../../common/store/createGenericStore";
-import { VocabularyCard } from "../types";
+import { create } from "zustand";
 
-type Level = "A1" | "A2" | "B1" | "B2";
+import { vocabularyCardService } from "../services/vocabularyCardsService";
+import { VocabLevel, VocabularyCard } from "../types";
 
 interface VocabularyCardState {
-  cards: VocabularyCard[];
-  currentLevel: Level;
+  vocabularyCards: VocabularyCard[];
+
+  isLoading: boolean;
+  error: string | null;
+  loadCards: (level: VocabLevel) => Promise<void>;
 }
 
-const initialState: VocabularyCardState = {
-  cards: [],
-  currentLevel: "A1",
-};
+export const useVocabularyCardStore = create<VocabularyCardState>((set) => ({
+  vocabularyCards: [],
 
-export const useVocabularyCardStore =
-  createGenericStore<VocabularyCardState>(initialState);
+  isLoading: false,
+  error: null,
+  loadCards: async (level: VocabLevel) => {
+    set({ isLoading: true, error: null });
 
-// Add vocabulary card-specific actions
-useVocabularyCardStore.setState((state) => ({
-  ...state,
-  setCards: (cards: VocabularyCard[]) =>
-    useVocabularyCardStore.setState({ cards }),
-  setCurrentLevel: (level: Level) =>
-    useVocabularyCardStore.setState({ currentLevel: level }),
+    const { data, error } =
+      await vocabularyCardService.fetchCardsByLevel(level);
+    set({ vocabularyCards: data, isLoading: false, error });
+  },
 }));

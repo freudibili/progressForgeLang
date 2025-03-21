@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { Level, LevelState } from "../types/level";
+
 import { levelService } from "../services/levelService";
+import { Level, LevelState } from "../types/level";
 
 export const useLevelStore = create<LevelState>((set) => ({
   levels: [],
