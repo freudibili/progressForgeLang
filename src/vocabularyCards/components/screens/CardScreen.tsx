@@ -1,15 +1,14 @@
-import { VocabularyCard } from "@card/components/VocabularyCard";
-import { useCardStore } from "@card/store/cardStore";
-
+import { useCardStore } from "@vocabularyCards/store/vocabularyCardsStore";
 import React, { useEffect } from "react";
+import { VocabularyCard } from "src/vocabularyCards/components/VocabularyCard";
 import { YStack, Text, Button } from "tamagui";
 
 export const CardScreen: React.FC = () => {
-  const { cards, isLoading, error, fetchCards, updateCardProgress } =
-    useCardStore();
+  const { cards, isLoading, error, fetchCards } = useCardStore();
+  useCardStore();
 
   useEffect(() => {
-    void fetchCards();
+    fetchCards("A1"); // TODO: make this dynamic
   }, [fetchCards]);
 
   if (isLoading) {
@@ -39,8 +38,8 @@ export const CardScreen: React.FC = () => {
         <VocabularyCard
           key={card.id}
           card={card}
-          onCorrect={() => updateCardProgress(card.id, true)}
-          onIncorrect={() => updateCardProgress(card.id, false)}
+          onCorrect={() => {}}
+          onIncorrect={() => {}}
         />
       ))}
     </YStack>

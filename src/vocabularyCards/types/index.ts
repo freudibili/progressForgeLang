@@ -1,5 +1,5 @@
 export interface VocabularyCard {
-  id: number;
+  id: string;
   infinitiv: {
     de: string;
     fr: string;
@@ -37,3 +37,5 @@ export interface CardFilters {
   mastered?: boolean;
   searchTerm?: string;
 }
+
+export type Level = "A1" | "A2" | "B1" | "B2";

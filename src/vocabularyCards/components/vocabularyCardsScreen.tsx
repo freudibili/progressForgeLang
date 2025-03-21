@@ -11,7 +11,7 @@ const exampleCards = [
   { question: "Au revoir", answer: "Goodbye" },
 ];
 
-export function CardsScreen() {
+export function VocabularyCardsScreen() {
   const router = useRouter();
   const { selectedLevel } = useLevelStore();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);

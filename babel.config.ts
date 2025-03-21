@@ -34,7 +34,7 @@ export default function (api: ConfigAPI): BabelConfig {
             "@common": "./src/common",
             "@auth": "./src/auth",
             "@user": "./src/user",
-            "@card": "./src/card",
+            "@vocabularyCard": "./src/vocabularyCard",
             "@mobile": "./src/mobile",
             "@web": "./src/web",
           },

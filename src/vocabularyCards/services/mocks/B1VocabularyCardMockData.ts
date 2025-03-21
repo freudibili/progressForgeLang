@@ -1,8 +1,8 @@
-import { VocabularyCard } from "../types";
+import { VocabularyCard } from "../../types";
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: 1,
+    id: "1",
     infinitiv: {
       de: "erklären",
       fr: "expliquer",
@@ -26,7 +26,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 2,
+    id: "2",
     infinitiv: {
       de: "empfehlen",
       fr: "recommander",

@@ -5,8 +5,8 @@ import { VocabularyCard as VocabularyCardType } from "../types";
 
 interface Props {
   card: VocabularyCardType;
-  onCorrect: () => Promise<void>;
-  onIncorrect: () => Promise<void>;
+  onCorrect: () => void;
+  onIncorrect: () => void;
   isLoading?: boolean;
   error?: string | null;
 }
@@ -50,10 +50,10 @@ export const VocabularyCard: React.FC<Props> = ({
       <Card.Header padded>
         <YStack gap="$4">
           <Text fontSize="$8" fontWeight="bold" textAlign="center">
-            {card.french}
+            {card.infinitiv.de}
           </Text>
           <Text fontSize="$6" textAlign="center" color="$gray11">
-            {card.german}
+            {card.infinitiv.fr}
           </Text>
           <Text fontSize="$4" textAlign="center" color="$gray10">
             {card.example}

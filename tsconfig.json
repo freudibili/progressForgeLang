@@ -6,7 +6,7 @@
     "paths": {
       "@auth/*": ["src/auth/*"],
       "@user/*": ["src/user/*"],
-      "@card/*": ["src/card/*"],
+      "@vocabularyCards/*": ["src/vocabularyCards/*"],
       "@mobile/*": ["src/mobile/*"],
       "@web/*": ["src/web/*"],
       "@levels/*": ["src/levels/*"],

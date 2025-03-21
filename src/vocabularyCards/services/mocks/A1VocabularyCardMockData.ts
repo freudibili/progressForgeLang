@@ -1,8 +1,8 @@
-import { VocabularyCard } from "../types";
+import { VocabularyCard } from "../../types";
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: 1,
+    id: "1",
     infinitiv: {
       de: "sein",
       fr: "être",
@@ -26,7 +26,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 2,
+    id: "2",
     infinitiv: {
       de: "haben",
       fr: "avoir",
@@ -50,7 +50,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 3,
+    id: "3",
     infinitiv: {
       de: "gehen",
       fr: "aller",
@@ -74,7 +74,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 4,
+    id: "4",
     infinitiv: {
       de: "kommen",
       fr: "venir",
@@ -98,7 +98,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 5,
+    id: "5",
     infinitiv: {
       de: "machen",
       fr: "faire",
@@ -122,7 +122,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 6,
+    id: "6",
     infinitiv: {
       de: "sehen",
       fr: "voir",
@@ -146,7 +146,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 7,
+    id: "7",
     infinitiv: {
       de: "hören",
       fr: "écouter",
@@ -170,7 +170,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 8,
+    id: "8",
     infinitiv: {
       de: "sprechen",
       fr: "parler",
@@ -194,7 +194,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 9,
+    id: "9",
     infinitiv: {
       de: "lernen",
       fr: "apprendre",
@@ -218,7 +218,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: 10,
+    id: "10",
     infinitiv: {
       de: "schreiben",
       fr: "écrire",

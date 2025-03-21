@@ -30,10 +30,10 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
-          name="cards"
+          name="vocabularyCards"
           options={{
             title: "Vocabulary",
-            tabBarLabel: "Cards",
+            tabBarLabel: "Vocabulary",
           }}
         />
         <Tabs.Screen
