@@ -16,7 +16,7 @@ export default function HomePage() {
             </Text>
 
             <YStack gap="$4">
-              <Link href="/cards">
+              <Link href="/vocabularyCards">
                 <Button size="$5">Practice Cards</Button>
               </Link>
 

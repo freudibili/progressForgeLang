@@ -19,7 +19,7 @@ export function LevelSelectionScreen() {
 
   const handleLevelSelect = (level: Level) => {
     selectLevel(level);
-    navigateTo("cards", router);
+    navigateTo("vocabularyCards", router);
   };
 
   return (

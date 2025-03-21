@@ -11,7 +11,7 @@ import { isWeb } from "tamagui";
 
 const tabs = [
   { name: "Home", href: "/" },
-  { name: "Vocabulary", href: "/cards" },
+  { name: "Vocabulary", href: "/vocabularyCards" },
   { name: "Profile", href: "/profile" },
   { name: "Settings", href: "/settings" },
 ];
