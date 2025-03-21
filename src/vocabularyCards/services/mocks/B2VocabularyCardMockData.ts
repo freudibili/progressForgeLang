@@ -2,7 +2,7 @@ import { VocabularyCard } from "../../types";
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: "1",
+    id: "18",
     infinitiv: {
       de: "widersprechen",
       fr: "contredire",

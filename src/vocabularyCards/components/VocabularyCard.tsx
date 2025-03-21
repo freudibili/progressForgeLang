@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Text, YStack } from "tamagui";
+
 import { VocabularyCard as VocabularyCardType } from "../types";
 
 interface VocabularyCardProps {

@@ -1,6 +1,6 @@
-import { ProfileScreen } from "@user/components/ProfileScreen";
+import { UserProfileScreen } from "@user/components/UserProfileScreen";
 import React from "react";
 
-export default function ProfileRoute() {
-  return <ProfileScreen />;
+export default function UserProfileRoute() {
+  return <UserProfileScreen />;
 }

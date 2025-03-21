@@ -5,7 +5,6 @@ import { VocabLevel, VocabularyCard } from "../types";
 
 interface VocabularyCardState {
   vocabularyCards: VocabularyCard[];
-
   isLoading: boolean;
   error: string | null;
   loadCards: (level: VocabLevel) => Promise<void>;
@@ -13,7 +12,6 @@ interface VocabularyCardState {
 
 export const useVocabularyCardStore = create<VocabularyCardState>((set) => ({
   vocabularyCards: [],
-
   isLoading: false,
   error: null,
   loadCards: async (level: VocabLevel) => {

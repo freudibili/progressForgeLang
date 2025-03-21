@@ -27,7 +27,7 @@ export function MyScreen({
       style={{ flex: 1 }}
       behavior={currentPlatform === "ios" ? "padding" : "height"}
     >
-      <Container style={{ flex: 1, backgroundColor: "lightgreen" }}>
+      <Container style={{ flex: 1 }}>
         {title && (
           <YStack padding="$4" gap="$4">
             <H2>{title}</H2>

@@ -1,20 +1,22 @@
 import { MyScreen } from "@common/components/MyScreen";
+import { useLevelStore } from "@levels/store/levelStore";
+import { useUserStore } from "@user/store/userStore";
 import React, { useEffect, useState } from "react";
 import { Button, Text, YStack } from "tamagui";
 
 import { VocabularyCard } from "./VocabularyCard";
 import { useVocabularyCardStore } from "../store/vocabularyCardsStore";
-import { useLevelStore } from "@levels/store/levelStore";
 
 export const VocabularyCardsScreen = () => {
   const { vocabularyCards, isLoading, error, loadCards } =
     useVocabularyCardStore();
   const { selectedLevel } = useLevelStore();
+  const { markVocabCorrect } = useUserStore();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
 
-  console.log(vocabularyCards, selectedLevel);
   const currentCard = vocabularyCards[currentCardIndex];
+
   useEffect(() => {
     if (selectedLevel) {
       const vocabLevel = selectedLevel.name;
@@ -28,6 +30,10 @@ export const VocabularyCardsScreen = () => {
   }, [vocabularyCards]);
 
   const handleNextCard = () => {
+    if (currentCard) {
+      markVocabCorrect(currentCard);
+    }
+
     if (currentCardIndex < vocabularyCards.length - 1) {
       setCurrentCardIndex((prev) => prev + 1);
       setIsRevealed(false);

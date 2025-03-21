@@ -24,3 +24,10 @@ export interface UserStatistics {
   successRate: number;
   studyTime: number;
 }
+
+export interface UserVocabProgress {
+  cardId: string;
+  originalWord: string;
+  correctCount: number;
+  lastReviewedAt: Date;
+}

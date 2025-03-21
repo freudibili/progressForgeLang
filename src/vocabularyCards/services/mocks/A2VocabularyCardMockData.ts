@@ -2,7 +2,7 @@ import { VocabularyCard } from "../../types";
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: "1",
+    id: "11",
     infinitiv: {
       de: "anfangen",
       fr: "commencer",
@@ -26,7 +26,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: "2",
+    id: "12",
     infinitiv: {
       de: "bekommen",
       fr: "recevoir",
@@ -50,7 +50,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: "3",
+    id: "13",
     infinitiv: {
       de: "besuchen",
       fr: "visiter",
@@ -74,7 +74,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: "4",
+    id: "14",
     infinitiv: {
       de: "einladen",
       fr: "inviter",
@@ -98,7 +98,7 @@ export const mockLevels: VocabularyCard[] = [
     mastered: false,
   },
   {
-    id: "5",
+    id: "15",
     infinitiv: {
       de: "mitbringen",
       fr: "apporter",
