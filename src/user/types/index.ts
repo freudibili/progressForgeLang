@@ -1,11 +1,7 @@
 export interface User {
   id: string;
-  username: string;
+  name: string;
   email: string;
-  createdAt: string;
-  lastLoginAt: string;
-  preferences: UserPreferences;
-  statistics: UserStatistics;
 }
 
 export interface UserPreferences {

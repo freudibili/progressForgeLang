@@ -1,48 +1,40 @@
-import { VocabularyCard } from "@vocabularyCards/types";
 import { create } from "zustand";
-
-import { User, UserVocabProgress } from "../types";
-import { userStoreActions } from "./userStoreActions";
-import { userStoreSelector } from "./userStoreSelector";
+import {
+  User,
+  UserPreferences,
+  UserStatistics,
+  UserVocabProgress,
+} from "../types";
 
 interface UserState {
   user: User | null;
   userVocab: UserVocabProgress[];
+  preferences: UserPreferences;
+  statistics: UserStatistics;
   isLoading: boolean;
   error: string | null;
-  setUser: (user: User | null) => void;
-  markVocabCorrect: (card: VocabularyCard) => void;
-  getUserVocabProgress: (cardId: string) => UserVocabProgress | undefined;
-  getMasteredWordsCount: () => number;
-  getMasteredWords: () => UserVocabProgress[];
 }
 
-export const useUserStore = create<UserState>((set, get) => ({
+const initialState: UserState = {
   user: null,
   userVocab: [],
+  preferences: {
+    notifications: true,
+    dailyReminder: true,
+    reminderTime: "09:00",
+    language: "french",
+    theme: "system",
+  },
+  statistics: {
+    totalCards: 0,
+    masteredCards: 0,
+    dailyStreak: 0,
+    lastStudyDate: new Date().toISOString(),
+    successRate: 0,
+    studyTime: 0,
+  },
   isLoading: false,
   error: null,
+};
 
-  setUser: (user: User | null) => set({ user }),
-
-  markVocabCorrect: (card: VocabularyCard) => {
-    const { userVocab } = get();
-    const updatedVocab = userStoreActions.updateVocabProgress(userVocab, card);
-    set({ userVocab: updatedVocab });
-  },
-
-  getUserVocabProgress: (cardId: string) => {
-    const { userVocab } = get();
-    return userStoreSelector.getVocabProgress(userVocab, cardId);
-  },
-
-  getMasteredWordsCount: () => {
-    const { userVocab } = get();
-    return userStoreSelector.getMasteredWordsCount(userVocab);
-  },
-
-  getMasteredWords: () => {
-    const { userVocab } = get();
-    return userStoreSelector.getMasteredWords(userVocab);
-  },
-}));
+export const useUserStore = create<UserState>(() => initialState);
