@@ -1,8 +1,24 @@
 export interface VocabularyCard {
-  id: string;
-  french: string;
-  german: string;
-  example: string;
+  id: number;
+  infinitiv: {
+    de: string;
+    fr: string;
+    en: string;
+  };
+  conjugation: {
+    präsens: string;
+    präteritum: string;
+    perfekt: string;
+    plusquamperfekt: string;
+    futurI: string;
+  };
+  level: string;
+  type: "regular" | "irregular";
+  example: {
+    de: string;
+    fr: string;
+    en: string;
+  };
   difficulty: "beginner" | "intermediate" | "advanced";
   lastReviewed?: Date;
   mastered: boolean;
