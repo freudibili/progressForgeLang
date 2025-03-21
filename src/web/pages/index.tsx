@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { YStack, Text, Button, H1, Card } from "tamagui";
 
-export default function HomePage(): JSX.Element {
+export default function HomePage() {
   return (
     <YStack gap="$6" padding="$4">
       <H1>Welcome to ProgressForgeLang</H1>

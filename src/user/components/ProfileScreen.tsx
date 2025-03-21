@@ -1,27 +1,23 @@
+import { MyScreen } from "@common/components/MyScreen";
 import { useLevelStore } from "@levels/store/levelStore";
 import React from "react";
-import { YStack, Text, H1, Button, XStack } from "tamagui";
+import { YStack, Text, Button, XStack, H3 } from "tamagui";
 
-export function ProfileScreen(): JSX.Element {
+export function ProfileScreen() {
   const { selectedLevel } = useLevelStore();
 
   return (
-    <YStack flex={1} padding="$4" space="$4">
-      <H1>Profile</H1>
+    <MyScreen title="Profile">
+      <YStack flex={1} gap="$4">
+        <YStack gap="$2">
+          <H3>Current Level</H3>
 
-      <YStack space="$4" flex={1}>
-        <YStack space="$2">
-          <Text fontSize="$6" fontWeight="bold">
-            Current Level
-          </Text>
-          <Text>{selectedLevel?.name || "No level selected"}</Text>
+          <Text>{selectedLevel?.name ?? "No level selected"}</Text>
         </YStack>
 
-        <YStack space="$2">
-          <Text fontSize="$6" fontWeight="bold">
-            Statistics
-          </Text>
-          <XStack space="$4">
+        <YStack gap="$2">
+          <H3>Statistics</H3>
+          <XStack gap="$4">
             <YStack>
               <Text>Cards Completed</Text>
               <Text fontSize="$8">0</Text>
@@ -33,15 +29,13 @@ export function ProfileScreen(): JSX.Element {
           </XStack>
         </YStack>
 
-        <YStack space="$2">
-          <Text fontSize="$6" fontWeight="bold">
-            Settings
-          </Text>
+        <YStack gap="$2">
+          <H3>Settings</H3>
           <Button>Change Language</Button>
           <Button>Notification Preferences</Button>
           <Button>Privacy Settings</Button>
         </YStack>
       </YStack>
-    </YStack>
+    </MyScreen>
   );
 }

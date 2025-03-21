@@ -5,7 +5,7 @@ import { useColorScheme } from "react-native";
 import { isWeb, TamaguiProvider } from "tamagui";
 import { config } from "tamagui.config";
 
-export default function RootLayout(): JSX.Element {
+export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (

@@ -1,8 +1,9 @@
+import { MyScreen } from "@common/components/MyScreen";
 import { navigateTo } from "@common/utils/navigation";
 import { useLevelStore } from "@levels/store/levelStore";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { YStack, Text, Button, H1, Input } from "tamagui";
+import { YStack, Text, Button, Input } from "tamagui";
 
 const exampleCards = [
   { question: "Bonjour", answer: "Hello" },
@@ -10,7 +11,7 @@ const exampleCards = [
   { question: "Au revoir", answer: "Goodbye" },
 ];
 
-export function CardsScreen(): JSX.Element {
+export function CardsScreen() {
   const router = useRouter();
   const { selectedLevel } = useLevelStore();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -37,11 +38,10 @@ export function CardsScreen(): JSX.Element {
   };
 
   return (
-    <YStack flex={1} padding="$4" space="$4">
-      <H1>Practice Cards</H1>
+    <MyScreen title="Practice Card">
       <Text>Level: {selectedLevel?.name}</Text>
 
-      <YStack space="$4" flex={1}>
+      <YStack gap="$4" flex={1}>
         <Text fontSize="$8" textAlign="center">
           {currentCard.question}
         </Text>
@@ -74,6 +74,6 @@ export function CardsScreen(): JSX.Element {
           Card {currentCardIndex + 1} of {exampleCards.length}
         </Text>
       </YStack>
-    </YStack>
+    </MyScreen>
   );
 }

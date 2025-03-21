@@ -8,14 +8,21 @@ interface LevelCardProps {
   onSelect: (level: Level) => void;
 }
 
-export function LevelCard({ level, onSelect }: LevelCardProps): JSX.Element {
+export function LevelCard({ level, onSelect }: LevelCardProps) {
   return (
-    <Button size="$5" theme="active" onPress={() => onSelect(level)}>
-      <YStack space="$1" alignItems="flex-start">
-        <Text fontSize="$6" fontWeight="bold">
+    <Button
+      size="$5"
+      theme="active"
+      onPress={() => onSelect(level)}
+      minWidth="47%"
+      flex={1}
+      minHeight="160"
+    >
+      <YStack>
+        <Text fontSize="$4" fontWeight="bold">
           {level.name}
         </Text>
-        <Text fontSize="$4" opacity={0.7}>
+        <Text fontSize="$3" opacity={0.7}>
           {level.description}
         </Text>
       </YStack>

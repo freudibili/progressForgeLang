@@ -1,13 +1,14 @@
 import { navigateTo } from "@common/utils/navigation";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { ScrollView, YStack, Text, H1, Spinner } from "tamagui";
+import { YStack, Text, XStack } from "tamagui";
 
 import { LevelCard } from "./LevelCard";
+import { MyScreen } from "../../common/components/MyScreen";
 import { useLevelStore } from "../store/levelStore";
 import { Level } from "../types/level";
 
-export function LevelSelectionScreen(): JSX.Element {
+export function LevelSelectionScreen() {
   const router = useRouter();
   const { levels, isLoading, error, fetchLevels, selectLevel } =
     useLevelStore();
@@ -21,29 +22,12 @@ export function LevelSelectionScreen(): JSX.Element {
     navigateTo("cards", router);
   };
 
-  if (isLoading) {
-    return (
-      <YStack flex={1} justifyContent="center" alignItems="center">
-        <Spinner size="large" />
-      </YStack>
-    );
-  }
-
-  if (error) {
-    return (
-      <YStack flex={1} justifyContent="center" alignItems="center">
-        <Text color="$red10">{error}</Text>
-      </YStack>
-    );
-  }
-
   return (
-    <ScrollView>
-      <YStack padding="$4" space="$4">
-        <H1>Choose Your Level</H1>
+    <MyScreen title="Choose Your Level" error={error} loading={isLoading}>
+      <YStack gap="$4">
         <Text>Select a level to start practicing your vocabulary</Text>
 
-        <YStack space="$3">
+        <XStack flexWrap="wrap" justifyContent="space-between" gap="$4">
           {levels.map((level: Level) => (
             <LevelCard
               key={level.id}
@@ -51,8 +35,8 @@ export function LevelSelectionScreen(): JSX.Element {
               onSelect={handleLevelSelect}
             />
           ))}
-        </YStack>
+        </XStack>
       </YStack>
-    </ScrollView>
+    </MyScreen>
   );
 }
