@@ -7,10 +7,8 @@ import { YStack, Text, XStack, H3 } from "tamagui";
 export function UserProfileScreen() {
   const { selectedLevel } = useLevelStore();
   const masteredCount = userSelectors.useMasteredWordsCount();
-  const dailyStreak = userSelectors.useDailyStreak();
+  const masteredWords = userSelectors.useMasteredWords();
   const successRate = userSelectors.useSuccessRate();
-  const studyTime = userSelectors.useStudyTime();
-  const preferences = userSelectors.usePreferences();
 
   return (
     <MyScreen title="Profile">
@@ -28,28 +26,17 @@ export function UserProfileScreen() {
               <Text fontSize="$8">{masteredCount}</Text>
             </YStack>
             <YStack flex={1} minWidth={120}>
-              <Text>Daily Streak</Text>
-              <Text fontSize="$8">{dailyStreak} days</Text>
-            </YStack>
-            <YStack flex={1} minWidth={120}>
               <Text>Success Rate</Text>
               <Text fontSize="$8">{successRate.toFixed(1)}%</Text>
-            </YStack>
-            <YStack flex={1} minWidth={120}>
-              <Text>Study Time</Text>
-              <Text fontSize="$8">{Math.round(studyTime / 60)} hours</Text>
             </YStack>
           </XStack>
         </YStack>
 
         <YStack gap="$2">
           <H3>Settings</H3>
-          <Text>Language: {preferences.language}</Text>
-          <Text>Theme: {preferences.theme}</Text>
-          <Text>
-            Daily Reminder: {preferences.dailyReminder ? "On" : "Off"}
-          </Text>
-          <Text>Reminder Time: {preferences.reminderTime}</Text>
+          {masteredWords.map((word) => (
+            <Text key={word.cardId}>{word.originalWord}</Text>
+          ))}
         </YStack>
       </YStack>
     </MyScreen>

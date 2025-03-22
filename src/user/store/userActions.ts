@@ -1,9 +1,10 @@
+import { VocabularyCard } from "@vocabularyCards/types";
 import { User, UserPreferences, UserStatistics } from "../types";
 import { useUserStore } from "./userStore";
 
 type UserActions = {
   setUser: (user: User | null) => void;
-  markVocabCorrect: (cardId: string, originalWord: string) => void;
+  markVocabCorrect: (vocabCard: VocabularyCard) => void;
   updateStatistics: (statistics: Partial<UserStatistics>) => void;
   resetProgress: () => void;
   setLanguage: (language: UserPreferences["language"]) => void;
@@ -14,15 +15,15 @@ export const userActions: UserActions = {
     useUserStore.setState({ user });
   },
 
-  markVocabCorrect: (cardId: string, originalWord: string) => {
+  markVocabCorrect: (vocabCard) => {
     const { userVocab, statistics } = useUserStore.getState();
     const existingProgress = userVocab.find(
-      (progress) => progress.cardId === cardId
+      (progress) => progress.cardId === vocabCard.id
     );
 
     if (existingProgress) {
       const updatedVocab = userVocab.map((progress) =>
-        progress.cardId === cardId
+        progress.cardId === vocabCard.id
           ? {
               ...progress,
               correctCount: progress.correctCount + 1,
@@ -44,8 +45,8 @@ export const userActions: UserActions = {
         userVocab: [
           ...userVocab,
           {
-            cardId,
-            originalWord,
+            cardId: vocabCard.id,
+            originalWord: vocabCard.infinitiv.de,
             correctCount: 1,
             lastReviewedAt: new Date(),
           },

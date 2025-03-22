@@ -21,11 +21,5 @@ export const userSelectors = {
 
   usePreferences: () => useUserStore((state) => state.preferences),
 
-  useStatistics: () => useUserStore((state) => state.statistics),
-
-  useDailyStreak: () => useUserStore((state) => state.statistics.dailyStreak),
-
   useSuccessRate: () => useUserStore((state) => state.statistics.successRate),
-
-  useStudyTime: () => useUserStore((state) => state.statistics.studyTime),
 };

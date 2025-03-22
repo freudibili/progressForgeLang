@@ -1,20 +1,57 @@
 import { MyScreen } from "@common/components/MyScreen";
 import { useLevelStore } from "@levels/store/levelStore";
 import { userActions } from "@user/store/userActions";
+import { userSelectors } from "@user/store/userSelectors";
+import { Href, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Button, Text, YStack } from "tamagui";
 
-import { VocabularyCard } from "./VocabularyCard";
+import { CardDisplay } from "./CardDisplay";
+import { CardFooter } from "./CardFooter";
+import { CompletionScreen } from "./CompletionScreen";
+import { MasteryModal } from "./MasteryModal";
+import { VocabularyStats } from "./VocabularyStats";
 import { useVocabularyCardStore } from "../store/vocabularyCardsStore";
+import {
+  areAllCardsMastered,
+  getCardProgress,
+  getMasteredCount,
+  MASTERY_THRESHOLD,
+} from "../utils/progressUtils";
+import { selectWeightedRandomCard } from "../utils/weightedSelection";
+
+const MASTERY_MILESTONE = 5;
 
 export const VocabularyCardsScreen = () => {
   const { vocabularyCards, isLoading, error, loadCards } =
     useVocabularyCardStore();
   const { selectedLevel } = useLevelStore();
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
+  const router = useRouter();
+  const userProgress = userSelectors.useMasteredWords();
 
-  const currentCard = vocabularyCards[currentCardIndex];
+  const [currentCard, setCurrentCard] = useState<
+    (typeof vocabularyCards)[0] | null
+  >(null);
+  const [previousCardId, setPreviousCardId] = useState<string | null>(null);
+  const [showMasteryModal, setShowMasteryModal] = useState(false);
+  const [lastMasteryMilestone, setLastMasteryMilestone] = useState(0);
+
+  const selectNextCard = () => {
+    const nextCard = selectWeightedRandomCard(
+      vocabularyCards,
+      userProgress,
+      previousCardId
+    );
+    setCurrentCard(nextCard);
+    setPreviousCardId(nextCard?.id ?? null);
+    setIsRevealed(false);
+  };
+
+  useEffect(() => {
+    if (vocabularyCards.length > 0) {
+      selectNextCard();
+    }
+  }, [vocabularyCards]);
 
   useEffect(() => {
     if (selectedLevel) {
@@ -23,54 +60,72 @@ export const VocabularyCardsScreen = () => {
     }
   }, [selectedLevel]);
 
+  // Check for mastery milestones
   useEffect(() => {
-    setCurrentCardIndex(0);
-    setIsRevealed(false);
-  }, [vocabularyCards]);
+    const masteredCount = getMasteredCount(vocabularyCards, userProgress);
+    const currentMilestone =
+      Math.floor(masteredCount / MASTERY_MILESTONE) * MASTERY_MILESTONE;
 
-  const handleNextCard = () => {
-    if (currentCard) {
-      userActions.markVocabCorrect(currentCard.id, currentCard.infinitiv.en);
+    if (currentMilestone > lastMasteryMilestone) {
+      setShowMasteryModal(true);
+      setLastMasteryMilestone(currentMilestone);
     }
+  }, [userProgress, vocabularyCards]);
 
-    if (currentCardIndex < vocabularyCards.length - 1) {
-      setCurrentCardIndex((prev) => prev + 1);
-      setIsRevealed(false);
+  const handleNextCard = (correct: boolean) => {
+    if (currentCard && correct) {
+      userActions.markVocabCorrect(currentCard);
     }
+    selectNextCard();
   };
 
   const handleCardClick = () => {
     setIsRevealed(true);
   };
 
+  const handleGoHome = () => {
+    router.replace("/" as Href);
+  };
+
+  if (areAllCardsMastered(vocabularyCards, userProgress)) {
+    return <CompletionScreen onGoHome={handleGoHome} />;
+  }
+
+  const currentCardProgress = currentCard
+    ? getCardProgress(currentCard, userProgress)
+    : 0;
+
+  const masteredCount = getMasteredCount(vocabularyCards, userProgress);
+  const seenCount = userProgress.length;
+
   return (
     <MyScreen
       title={`Level ${selectedLevel?.name}`}
       loading={isLoading}
       error={error}
+      footer={
+        <CardFooter
+          isRevealed={isRevealed}
+          onCorrect={() => handleNextCard(true)}
+          onIncorrect={() => handleNextCard(false)}
+        />
+      }
     >
-      <YStack padding="$4" gap="$4" flex={1}>
-        {currentCard && (
-          <VocabularyCard
-            card={currentCard}
-            isRevealed={isRevealed}
-            onPress={handleCardClick}
-          />
-        )}
-
-        <Button
-          size="$4"
-          theme="active"
-          onPress={handleNextCard}
-          disabled={currentCardIndex === vocabularyCards.length - 1}
-        >
-          I Know This Word
-        </Button>
-
-        <Text textAlign="center" color="$gray10">
-          Card {currentCardIndex + 1} of {vocabularyCards.length}
-        </Text>
-      </YStack>
+      <VocabularyStats seenCount={seenCount} masteredCount={masteredCount} />
+      {currentCard && (
+        <CardDisplay
+          currentCard={currentCard}
+          currentIndex={currentCardProgress}
+          totalCards={MASTERY_THRESHOLD}
+          isRevealed={isRevealed}
+          onCardPress={handleCardClick}
+        />
+      )}
+      <MasteryModal
+        open={showMasteryModal}
+        onClose={() => setShowMasteryModal(false)}
+        masteredCount={lastMasteryMilestone}
+      />
     </MyScreen>
   );
 };
