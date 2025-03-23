@@ -5,12 +5,14 @@ import { VocabularyCard as VocabularyCardType } from '../types';
 
 interface VocabularyCardProps {
   card: VocabularyCardType;
+  iconHeader?: React.ReactNode;
   isRevealed: boolean;
   onPress: () => void;
 }
 
 export const VocabularyCard: React.FC<VocabularyCardProps> = ({
   card,
+  iconHeader,
   isRevealed,
   onPress
 }) => {
@@ -25,6 +27,7 @@ export const VocabularyCard: React.FC<VocabularyCardProps> = ({
       onPress={onPress}
     >
       <Card.Header padded>
+        {iconHeader}
         <Text fontSize="$8" textAlign="center" fontWeight="bold">
           {card.infinitiv.de}
         </Text>

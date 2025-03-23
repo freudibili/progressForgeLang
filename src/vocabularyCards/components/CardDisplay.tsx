@@ -32,13 +32,15 @@ export const CardDisplay = ({
 
   return (
     <YStack padding="$4" gap="$4" flex={1}>
-      <XStack justifyContent="flex-end" paddingRight="$2">
-        {masteryIcons}
-      </XStack>
       <VocabularyCard
         card={currentCard}
         isRevealed={isRevealed}
         onPress={onCardPress}
+        iconHeader={
+          <XStack justifyContent="flex-end" paddingRight="$2">
+            {masteryIcons}
+          </XStack>
+        }
       />
     </YStack>
   );

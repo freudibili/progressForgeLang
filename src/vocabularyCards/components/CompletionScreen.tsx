@@ -1,10 +1,13 @@
 import { MyScreen } from '@common/components/MyScreen';
 import { userSelectors } from '@user/store/userSelectors';
+import { useVocabularyCardStore } from '@vocabularyCards/store/vocabularyCardsStore';
 import { Href, useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import { Button, Text, YStack } from 'tamagui';
 
 export const CompletionScreen = () => {
+  const { isLoading, error } = useVocabularyCardStore();
+
   const masteredCount = userSelectors.useMasteredWordsCount();
   const router = useRouter();
 
@@ -13,7 +16,7 @@ export const CompletionScreen = () => {
   }, [router]);
 
   return (
-    <MyScreen title="Level Complete">
+    <MyScreen loading={isLoading} error={error}>
       <YStack
         flex={1}
         padding="$4"
