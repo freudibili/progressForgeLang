@@ -17,23 +17,21 @@ const getWeight = (correctAnswers: number): number => {
 
 export const selectWeightedRandomCard = (
   cards: VocabularyCard[],
-  userProgress: UserVocabProgress[],
+  userWordsSeen: UserVocabProgress[],
   previousCardId: string | null = null
 ): VocabularyCard | null => {
   if (cards.length === 0) return null;
 
-  // Filter out the previous card if specified
   const availableCards = previousCardId
     ? cards.filter((card) => card.id !== previousCardId)
     : cards;
 
-  // If we only had one card and it was the previous one, allow it to be reused
   if (availableCards.length === 0) {
     return cards[0];
   }
 
   const weights = availableCards.map((card) => {
-    const correctAnswers = getCardProgress(card, userProgress);
+    const correctAnswers = getCardProgress(card, userWordsSeen);
     return getWeight(correctAnswers);
   });
 
