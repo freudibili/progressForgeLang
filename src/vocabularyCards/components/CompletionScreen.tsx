@@ -1,7 +1,8 @@
 import { MyScreen } from '@common/components/MyScreen';
+import { AppRoutes } from '@common/utils/routes';
 import { userSelectors } from '@user/store/userSelectors';
 import { useVocabularyCardStore } from '@vocabularyCards/store/vocabularyCardsStore';
-import { Href, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import { Button, Text, YStack } from 'tamagui';
 
@@ -12,7 +13,7 @@ export const CompletionScreen = () => {
   const router = useRouter();
 
   const handleGoHome = useCallback(() => {
-    router.replace('/' as Href);
+    router.replace({ pathname: AppRoutes.index });
   }, [router]);
 
   return (

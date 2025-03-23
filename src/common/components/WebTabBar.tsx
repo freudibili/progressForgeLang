@@ -1,19 +1,19 @@
-import { useRouter, usePathname, Href } from 'expo-router';
+import { useRouter, usePathname } from 'expo-router';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Platform,
   useColorScheme
 } from 'react-native';
 import { isWeb } from 'tamagui';
+import { AppRoutes } from '@common/utils/routes';
 
 const tabs = [
-  { name: 'Home', href: '/' },
-  { name: 'Vocabulary', href: '/vocabularyCards' },
-  { name: 'Profile', href: '/profile' },
-  { name: 'Settings', href: '/settings' }
+  { name: 'Home', href: AppRoutes.index },
+  { name: 'Vocabulary', href: AppRoutes.vocabularyCards },
+  { name: 'Profile', href: AppRoutes.profile },
+  { name: 'Settings', href: AppRoutes.settings }
 ];
 
 export function WebTabBar() {
@@ -31,7 +31,7 @@ export function WebTabBar() {
           return (
             <TouchableOpacity
               key={tab.name}
-              onPress={() => router.push(tab.href as Href)}
+              onPress={() => router.push(tab.href)}
               style={[
                 styles.tab,
                 isActive && styles.activeTab,
@@ -69,35 +69,32 @@ export function WebTabBar() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Platform.select({
-      web: '#ffffff',
-      default: 'transparent'
-    }),
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb'
+    borderBottomColor: '#e5e7eb',
+    backgroundColor: '#ffffff'
   },
   tabBar: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 48,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    height: 48
   },
   tab: {
-    paddingVertical: 8,
     paddingHorizontal: 16,
-    borderRadius: 8,
+    paddingVertical: 8,
+    borderRadius: 6,
     marginHorizontal: 4
   },
   activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#3b82f6'
+    backgroundColor: '#f3f4f6'
   },
   tabText: {
     fontSize: 14,
-    fontWeight: '500'
+    fontWeight: '500',
+    color: '#6b7280'
   },
   activeTabText: {
-    color: '#3b82f6'
+    color: '#000000'
   }
 });

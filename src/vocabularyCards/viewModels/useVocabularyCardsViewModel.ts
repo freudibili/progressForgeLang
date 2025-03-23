@@ -1,7 +1,6 @@
 import { useLevelStore } from '@levels/store/levelStore';
 import { userActions } from '@user/store/userActions';
 import { userSelectors } from '@user/store/userSelectors';
-import { VocabLevel } from '@levels/types/level';
 import { UserVocabProgress } from '@user/types';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useUserStore } from '@user/store/userStore';
@@ -39,7 +38,7 @@ export const useVocabularyCardsViewModel = () => {
   const [lastAchievedMilestone, setLastAchievedMilestone] = useState(0);
 
   // User Progress Selectors
-  const currentLevel = selectedLevel?.name as VocabLevel;
+  const currentLevel = selectedLevel?.name;
   const practiceHistory = userSelectors.useWordsSeen(currentLevel);
   const { masteredCount: masteredCardsCount, seenCount: totalCardsAttempted } =
     userSelectors.useCardStats(currentLevel ?? 'A1');
