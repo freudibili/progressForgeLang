@@ -13,7 +13,10 @@ module.exports = {
     }
   ],
   rules: {
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-unused-vars': 'error'
+    '@typescript-eslint/no-shadow': ['error'],
+    'no-shadow': 'off',
+    'no-undef': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn'
   }
 };

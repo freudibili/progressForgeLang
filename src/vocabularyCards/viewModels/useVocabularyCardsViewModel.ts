@@ -56,12 +56,19 @@ export const useVocabularyCardsViewModel = () => {
     [availableCards, practiceHistory]
   );
 
+  const resetCardState = useCallback(() => {
+    setActiveCard(null);
+    setLastShownCardId(null);
+    setIsCardRevealed(false);
+  }, []);
+
   // Load Cards Effect
   useEffect(() => {
     if (selectedLevel?.name) {
+      resetCardState();
       loadCards(selectedLevel.name);
     }
-  }, [selectedLevel?.name, loadCards]);
+  }, [selectedLevel?.name, loadCards, resetCardState]);
 
   // Initial Card Selection Effect
   useEffect(() => {
