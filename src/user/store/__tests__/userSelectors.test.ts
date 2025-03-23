@@ -1,12 +1,11 @@
-import {
-  UserVocabProgress,
-  UserPreferences,
-  UserStatistics
-} from '@user/types';
+import { VocabLevel } from '@levels/types/level';
+
 import { userSelectors } from '../userSelectors';
 import { useUserStore } from '../userStore';
-import { mockUserStoreCards } from './__mocks__/mockUserStoreCards';
-import { mockUserVocab } from './__mocks__/mockUserVocab';
+import {
+  mockUserProgress,
+  mockVocabularyCards
+} from './__mocks__/mockUserVocab';
 
 // Mock the Zustand store
 const mockUseUserStore = useUserStore as unknown as jest.Mock;
@@ -15,6 +14,20 @@ jest.mock('../userStore', () => ({
 }));
 
 describe('userSelectors', () => {
+  const mockState = {
+    progress: mockUserProgress,
+    vocabularyCards: mockVocabularyCards,
+    statistics: {
+      successRate: 0,
+      totalAttempts: 0,
+      correctAttempts: 0
+    },
+    preferences: {
+      language: 'en'
+    },
+    user: null
+  };
+
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();
@@ -22,157 +35,170 @@ describe('userSelectors', () => {
 
   describe('useCardProgress', () => {
     it('returns correct count for a card', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
-      const result = userSelectors.useCardProgress('1');
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useCardProgress('1', 'A1' as VocabLevel);
       expect(result).toBe(5);
     });
 
     it('returns 0 for unseen card', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
-      const result = userSelectors.useCardProgress('4');
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useCardProgress('4', 'A1' as VocabLevel);
       expect(result).toBe(0);
     });
   });
 
   describe('useIsCardMastered', () => {
     it('returns true when card is mastered', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
-      const result = userSelectors.useIsCardMastered('1');
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useIsCardMastered('1', 'A1' as VocabLevel);
       expect(result).toBe(true);
     });
 
     it('returns false when card is not mastered', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
-      const result = userSelectors.useIsCardMastered('3');
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useIsCardMastered('3', 'A2' as VocabLevel);
       expect(result).toBe(false);
     });
   });
 
   describe('useMasteredWordsCount', () => {
-    it('returns correct count of mastered words', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
+    it('returns correct count of mastered words for a level', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useMasteredWordsCount('A1' as VocabLevel);
+      expect(result).toBe(1);
+    });
+
+    it('returns correct total count of mastered words', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.useMasteredWordsCount();
       expect(result).toBe(1);
     });
   });
 
   describe('useWordsSeen', () => {
-    it('returns array of seen words', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
+    it('returns array of seen words for a level', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useWordsSeen('A1' as VocabLevel);
+      expect(result).toEqual([
+        mockVocabularyCards[0].vocab[0],
+        mockVocabularyCards[0].vocab[1]
+      ]);
+    });
+
+    it('returns array of all seen words', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.useWordsSeen();
-      // Only return words that have been seen (correctCount > 0)
-      const expectedWords = mockUserVocab.filter(
-        (word) => word.correctCount > 0
-      );
-      expect(result).toEqual(expectedWords);
+      expect(result).toEqual([
+        mockVocabularyCards[0].vocab[0],
+        mockVocabularyCards[0].vocab[1],
+        mockVocabularyCards[1].vocab[0]
+      ]);
     });
   });
 
   describe('useMasteredWords', () => {
-    it('returns array of mastered words', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
+    it('returns array of mastered words for a level', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useMasteredWords('A1' as VocabLevel);
+      expect(result).toEqual([mockVocabularyCards[0].vocab[0]]);
+    });
+
+    it('returns array of all mastered words', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.useMasteredWords();
-      expect(result).toEqual([mockUserVocab[0]]);
+      expect(result).toEqual([mockVocabularyCards[0].vocab[0]]);
     });
   });
 
   describe('usePreferences', () => {
     it('returns user preferences', () => {
-      const mockPreferences: UserPreferences = {
-        notifications: true,
-        dailyReminder: true,
-        reminderTime: '09:00',
-        language: 'german',
-        theme: 'light'
-      };
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ preferences: mockPreferences })
-      );
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.usePreferences();
-      expect(result).toEqual(mockPreferences);
+      expect(result).toEqual({ language: 'en' });
     });
   });
 
   describe('useSuccessRate', () => {
-    it('returns user success rate', () => {
-      const mockStatistics: UserStatistics = {
-        totalCards: 10,
-        masteredCards: 5,
-        dailyStreak: 3,
-        lastStudyDate: '2024-03-23',
-        successRate: 0.75,
-        studyTime: 3600
-      };
+    it('returns correct success rate for a level', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useSuccessRate('A1' as VocabLevel);
+      expect(result).toBe(87.5); // (7/8) * 100
+    });
+
+    it('returns 0 for level with no attempts', () => {
       mockUseUserStore.mockImplementation((selector) =>
-        selector({ statistics: mockStatistics })
+        selector({
+          ...mockState,
+          progress: []
+        })
       );
+      const result = userSelectors.useSuccessRate('A1' as VocabLevel);
+      expect(result).toBe(0);
+    });
+
+    it('returns overall success rate', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.useSuccessRate();
-      expect(result).toBe(0.75);
+      expect(result).toBe(0);
     });
   });
 
   describe('useCardStats', () => {
-    it('returns correct stats', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
+    it('returns correct stats for a level', () => {
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const { masteredCount, seenCount } = userSelectors.useCardStats(
+        'A1' as VocabLevel
       );
+      expect(masteredCount).toBe(1);
+      expect(seenCount).toBe(2);
+    });
 
-      const stats = userSelectors.useCardStats(mockUserStoreCards);
-
-      expect(stats).toEqual({
-        masteredCount: 1, // card 1 has correctCount >= MASTERY_THRESHOLD
-        totalAttempted: 2, // cards 1 and 2 have correctCount > 0
-        totalCount: 3 // total number of cards
-      });
+    it('returns zero stats for empty level', () => {
+      mockUseUserStore.mockImplementation((selector) =>
+        selector({
+          ...mockState,
+          progress: []
+        })
+      );
+      const { masteredCount, seenCount } = userSelectors.useCardStats(
+        'A1' as VocabLevel
+      );
+      expect(masteredCount).toBe(0);
+      expect(seenCount).toBe(0);
     });
   });
 
   describe('useAreLevelCardsMastered', () => {
     it('returns false when not all cards are mastered', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
-      const result = userSelectors.useAreLevelCardsMastered(mockUserStoreCards);
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useAreLevelCardsMastered('A1' as VocabLevel);
       expect(result).toBe(false);
     });
 
     it('returns true when all cards are mastered', () => {
-      const allMasteredVocab: UserVocabProgress[] = mockUserStoreCards.map(
-        (card) => ({
-          cardId: card.id,
-          originalWord: card.infinitiv.de,
-          correctCount: 5,
-          lastReviewedAt: new Date('2024-03-23')
+      const allMasteredProgress = mockUserProgress.map((level) => ({
+        ...level,
+        vocabProgress: level.vocabProgress.map((word) => ({
+          ...word,
+          correctAttempts: 5
+        }))
+      }));
+
+      mockUseUserStore.mockImplementation((selector) =>
+        selector({
+          ...mockState,
+          progress: allMasteredProgress
         })
       );
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: allMasteredVocab })
-      );
-      const result = userSelectors.useAreLevelCardsMastered(mockUserStoreCards);
+      const result = userSelectors.useAreLevelCardsMastered('A1' as VocabLevel);
       expect(result).toBe(true);
     });
   });
 
   describe('useMasteryMilestone', () => {
     it('returns correct milestone based on mastered count', () => {
-      mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: mockUserVocab })
-      );
-      const result = userSelectors.useMasteryMilestone(mockUserStoreCards);
+      mockUseUserStore.mockImplementation((selector) => selector(mockState));
+      const result = userSelectors.useMasteryMilestone('A1' as VocabLevel);
       expect(result).toEqual({
         currentMilestone: 0,
         masteredCount: 1
@@ -181,9 +207,12 @@ describe('userSelectors', () => {
 
     it('returns zero milestone for no mastered cards', () => {
       mockUseUserStore.mockImplementation((selector) =>
-        selector({ userVocab: [] })
+        selector({
+          ...mockState,
+          progress: []
+        })
       );
-      const result = userSelectors.useMasteryMilestone(mockUserStoreCards);
+      const result = userSelectors.useMasteryMilestone('A1' as VocabLevel);
       expect(result).toEqual({
         currentMilestone: 0,
         masteredCount: 0
