@@ -7,7 +7,7 @@ export const getCardProgress = (
 ): number => {
   return (
     practiceHistory.find((progress) => progress.cardId === card.id)
-      ?.correctCount ?? 0
+      ?.correctAttempts ?? 0
   );
 };
 

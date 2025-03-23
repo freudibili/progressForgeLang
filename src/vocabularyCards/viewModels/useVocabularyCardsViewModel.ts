@@ -1,7 +1,10 @@
 import { useLevelStore } from '@levels/store/levelStore';
 import { userActions } from '@user/store/userActions';
 import { userSelectors } from '@user/store/userSelectors';
-import { useCallback, useEffect, useState } from 'react';
+import { VocabLevel } from '@levels/types/level';
+import { UserVocabProgress } from '@user/types';
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useUserStore } from '@user/store/userStore';
 
 import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
 import { VocabularyCard } from '../types';
@@ -9,12 +12,21 @@ import { selectWeightedRandomCard } from '../utils/weightedSelection';
 
 export const useVocabularyCardsViewModel = () => {
   const {
-    vocabularyCards: availableCards = [],
+    vocabularyCards,
     isLoading: isCardsLoading,
     error,
     loadCards
   } = useVocabularyCardStore();
   const { selectedLevel } = useLevelStore();
+
+  // Get current level's cards
+  const availableCards = useMemo(() => {
+    if (!selectedLevel?.name) return [];
+    const levelData = vocabularyCards.find(
+      (vc) => vc.level === selectedLevel.name
+    );
+    return levelData?.vocab ?? [];
+  }, [vocabularyCards, selectedLevel?.name]);
 
   // Card Display State
   const [isLoading, setIsLoading] = useState(false);
@@ -27,23 +39,39 @@ export const useVocabularyCardsViewModel = () => {
   const [lastAchievedMilestone, setLastAchievedMilestone] = useState(0);
 
   // User Progress Selectors
-  const practiceHistory = userSelectors.useWordsSeen();
+  const currentLevel = selectedLevel?.name as VocabLevel;
+  const practiceHistory = userSelectors.useWordsSeen(currentLevel);
   const { masteredCount: masteredCardsCount, seenCount: totalCardsAttempted } =
-    userSelectors.useCardStats(availableCards);
-  const hasCompletedLevel =
-    userSelectors.useAreLevelCardsMastered(availableCards);
-  const { currentMilestone } =
-    userSelectors.useMasteryMilestone(availableCards);
+    userSelectors.useCardStats(currentLevel ?? 'A1');
+  const hasCompletedLevel = userSelectors.useAreLevelCardsMastered(
+    currentLevel ?? 'A1'
+  );
+  const { currentMilestone } = userSelectors.useMasteryMilestone(
+    currentLevel ?? 'A1'
+  );
   const activeCardCorrectAttempts = userSelectors.useCardProgress(
-    activeCard?.id ?? ''
+    activeCard?.id ?? '',
+    currentLevel ?? 'A1'
   );
 
   // Card Selection Logic
   const showNextCard = useCallback(
     (excludeCardId?: string | null) => {
+      if (!availableCards.length) return;
+
+      // Convert practice history to UserVocabProgress format
+      const seenCards: UserVocabProgress[] = (practiceHistory ?? []).map(
+        (card) => ({
+          cardId: card.id,
+          correctAttempts: 0,
+          incorrectAttempts: 0,
+          lastReviewDate: new Date()
+        })
+      );
+
       const nextCard = selectWeightedRandomCard(
         availableCards,
-        practiceHistory ?? [],
+        seenCards,
         excludeCardId
       );
 
@@ -70,6 +98,13 @@ export const useVocabularyCardsViewModel = () => {
     }
   }, [selectedLevel?.name, loadCards, resetCardState]);
 
+  // Sync cards to user store
+  useEffect(() => {
+    if (vocabularyCards.length > 0) {
+      useUserStore.setState({ vocabularyCards });
+    }
+  }, [vocabularyCards]);
+
   // Initial Card Selection Effect
   useEffect(() => {
     if (availableCards.length > 0 && !activeCard) {
@@ -90,12 +125,16 @@ export const useVocabularyCardsViewModel = () => {
   // Card Interaction Handlers
   const handleCardResponse = useCallback(
     (wasCorrect: boolean) => {
-      if (activeCard && wasCorrect) {
-        userActions.markVocabCorrect(activeCard);
+      if (activeCard && currentLevel) {
+        if (wasCorrect) {
+          userActions.markVocabCorrect(activeCard);
+        } else {
+          userActions.markVocabIncorrect(activeCard);
+        }
       }
       showNextCard(activeCard?.id);
     },
-    [activeCard, showNextCard]
+    [activeCard, currentLevel, showNextCard]
   );
 
   const handleCardFlip = useCallback(() => {

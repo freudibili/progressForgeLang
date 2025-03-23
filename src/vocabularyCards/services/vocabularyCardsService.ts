@@ -1,4 +1,5 @@
-import { VocabLevel, VocabularyCard } from '../types';
+import { VocabLevel } from '@levels/types/level';
+import { VocabularyCard } from '../types';
 import { mockLevels as A1MockLevels } from './mocks/A1VocabularyCardMockData';
 import { mockLevels as A2MockLevels } from './mocks/A2VocabularyCardMockData';
 import { mockLevels as B1MockLevels } from './mocks/B1VocabularyCardMockData';
@@ -20,7 +21,10 @@ export const vocabularyCardService = {
 
   fetchCardsByLevel: async (
     level: VocabLevel
-  ): Promise<{ data: VocabularyCard[]; error?: string | null }> => {
+  ): Promise<{
+    data: VocabularyCard[];
+    error?: string | null;
+  }> => {
     try {
       const cards = await vocabularyCardService.fetchCards(level);
       return { data: cards };

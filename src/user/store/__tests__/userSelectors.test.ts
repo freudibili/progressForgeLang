@@ -135,7 +135,7 @@ describe('userSelectors', () => {
 
       expect(stats).toEqual({
         masteredCount: 1, // card 1 has correctCount >= MASTERY_THRESHOLD
-        seenCount: 2, // cards 1 and 2 have correctCount > 0
+        totalAttempted: 2, // cards 1 and 2 have correctCount > 0
         totalCount: 3 // total number of cards
       });
     });

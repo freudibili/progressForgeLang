@@ -3,12 +3,12 @@ import React from 'react';
 import { Text, XStack, YStack } from 'tamagui';
 
 type VocabularyStatsProps = {
-  seenCount: number;
+  totalAttempted: number;
   masteredCount: number;
 };
 
 export const VocabularyStats = ({
-  seenCount,
+  totalAttempted,
   masteredCount
 }: VocabularyStatsProps) => {
   return (
@@ -19,7 +19,7 @@ export const VocabularyStats = ({
           <Text color="$gray11">Seen</Text>
         </XStack>
         <Text fontSize="$6" fontWeight="bold">
-          {seenCount}
+          {totalAttempted}
         </Text>
       </YStack>
       <YStack alignItems="center" gap="$1">

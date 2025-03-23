@@ -1,6 +1,8 @@
+export type VocabLevel = 'A1' | 'A2' | 'B1' | 'B2';
+
 export interface Level {
   id: string;
-  name: 'A1' | 'A2' | 'B1' | 'B2';
+  name: VocabLevel;
   description: string;
 }
 

@@ -1,3 +1,5 @@
+import { VocabLevel } from '@levels/types/level';
+
 export interface VocabularyCard {
   id: string;
   infinitiv: {
@@ -24,6 +26,8 @@ export interface VocabularyCard {
   mastered: boolean;
 }
 
+export type VocabularyCards = { level: VocabLevel; vocab: VocabularyCard[] }[];
+
 export interface CardProgress {
   cardId: string;
   correctAttempts: number;
@@ -37,5 +41,3 @@ export interface CardFilters {
   mastered?: boolean;
   searchTerm?: string;
 }
-
-export type VocabLevel = 'A1' | 'A2' | 'B1' | 'B2';

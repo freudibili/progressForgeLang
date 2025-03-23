@@ -1,4 +1,5 @@
-import { VocabularyCard, VocabLevel } from '../../../../vocabularyCards/types';
+import { VocabLevel } from '@levels/types/level';
+import { VocabularyCard } from '../../../../vocabularyCards/types';
 
 export const mockUserStoreCards: VocabularyCard[] = [
   {

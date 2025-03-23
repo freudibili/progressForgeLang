@@ -1,40 +1,17 @@
 import { create } from 'zustand';
-import {
-  User,
-  UserPreferences,
-  UserStatistics,
-  UserVocabProgress
-} from '../types';
 
-interface UserState {
-  user: User | null;
-  userVocab: UserVocabProgress[];
-  preferences: UserPreferences;
-  statistics: UserStatistics;
-  isLoading: boolean;
-  error: string | null;
-}
+import { UserState } from '@user/types';
 
-const initialState: UserState = {
+export const useUserStore = create<UserState>((set) => ({
   user: null,
-  userVocab: [],
+  progress: [],
   preferences: {
-    notifications: true,
-    dailyReminder: true,
-    reminderTime: '09:00',
-    language: 'french',
-    theme: 'system'
+    language: 'en'
   },
   statistics: {
-    totalCards: 0,
-    masteredCards: 0,
-    dailyStreak: 0,
-    lastStudyDate: new Date().toISOString(),
     successRate: 0,
-    studyTime: 0
+    totalAttempts: 0,
+    correctAttempts: 0
   },
-  isLoading: false,
-  error: null
-};
-
-export const useUserStore = create<UserState>(() => initialState);
+  vocabularyCards: []
+}));

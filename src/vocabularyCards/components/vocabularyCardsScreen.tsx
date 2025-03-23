@@ -1,5 +1,6 @@
 import { MyScreen } from '@common/components/MyScreen';
 import React from 'react';
+import { Text, YStack } from 'tamagui';
 
 import { CardDisplay } from './CardDisplay';
 import { CardFooter } from './CardFooter';
@@ -31,25 +32,37 @@ export const VocabularyCardsScreen = () => {
     handleMasteryModalClose
   } = useVocabularyCardsViewModel();
 
+  if (!selectedLevel) {
+    return (
+      <MyScreen title="Vocabulary Cards">
+        <YStack flex={1} justifyContent="center" alignItems="center">
+          <Text>Please select a level to start practicing</Text>
+        </YStack>
+      </MyScreen>
+    );
+  }
+
   if (hasCompletedLevel) {
     return <CompletionScreen />;
   }
 
   return (
     <MyScreen
-      title={`Level ${selectedLevel?.name}`}
+      title={`Level ${selectedLevel.name}`}
       loading={isLoading}
       error={error}
       footer={
-        <CardFooter
-          isRevealed={isCardRevealed}
-          onCorrect={() => handleCardResponse(true)}
-          onIncorrect={() => handleCardResponse(false)}
-        />
+        activeCard && (
+          <CardFooter
+            isRevealed={isCardRevealed}
+            onCorrect={() => handleCardResponse(true)}
+            onIncorrect={() => handleCardResponse(false)}
+          />
+        )
       }
     >
       <VocabularyStats
-        seenCount={totalCardsAttempted}
+        totalAttempted={totalCardsAttempted}
         masteredCount={masteredCardsCount}
       />
       {activeCard && (
