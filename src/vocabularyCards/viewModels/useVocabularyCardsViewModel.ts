@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
 import { useLevelStore } from "@levels/store/levelStore";
 import { userActions } from "@user/store/userActions";
 import { userSelectors } from "@user/store/userSelectors";
+import { useCallback, useEffect, useState } from "react";
+
 import { useVocabularyCardStore } from "../store/vocabularyCardsStore";
 import { VocabularyCard } from "../types";
 import { selectWeightedRandomCard } from "../utils/weightedSelection";
@@ -9,13 +10,14 @@ import { selectWeightedRandomCard } from "../utils/weightedSelection";
 export const useVocabularyCardsViewModel = () => {
   const {
     vocabularyCards: availableCards = [],
-    isLoading,
+    isLoading: isCardsLoading,
     error,
     loadCards,
   } = useVocabularyCardStore();
   const { selectedLevel } = useLevelStore();
 
   // Card Display State
+  const [isLoading, setIsLoading] = useState(false);
   const [isCardRevealed, setIsCardRevealed] = useState(false);
   const [activeCard, setActiveCard] = useState<VocabularyCard | null>(null);
   const [lastShownCardId, setLastShownCardId] = useState<string | null>(null);
@@ -64,7 +66,9 @@ export const useVocabularyCardsViewModel = () => {
   // Initial Card Selection Effect
   useEffect(() => {
     if (availableCards.length > 0 && !activeCard) {
+      setIsLoading(true);
       showNextCard(lastShownCardId);
+      setIsLoading(false);
     }
   }, [availableCards, activeCard, showNextCard, lastShownCardId]);
 
@@ -97,7 +101,7 @@ export const useVocabularyCardsViewModel = () => {
 
   return {
     // State
-    isLoading,
+    isLoading: isLoading || isCardsLoading,
     error,
     selectedLevel,
     activeCard,

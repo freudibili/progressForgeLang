@@ -1,4 +1,5 @@
 import { WebTabBar } from "@common/components/WebTabBar";
+import { Home, Book, User, Settings } from "@tamagui/lucide-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 import { useColorScheme } from "react-native";
@@ -27,6 +28,7 @@ export default function RootLayout() {
           options={{
             title: "Home",
             tabBarLabel: "Home",
+            tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
           }}
         />
         <Tabs.Screen
@@ -34,6 +36,7 @@ export default function RootLayout() {
           options={{
             title: "Vocabulary",
             tabBarLabel: "Vocabulary",
+            tabBarIcon: ({ color, size }) => <Book color={color} size={size} />,
           }}
         />
         <Tabs.Screen
@@ -41,6 +44,7 @@ export default function RootLayout() {
           options={{
             title: "Profile",
             tabBarLabel: "Profile",
+            tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
           }}
         />
         <Tabs.Screen
@@ -48,6 +52,9 @@ export default function RootLayout() {
           options={{
             title: "Settings",
             tabBarLabel: "Settings",
+            tabBarIcon: ({ color, size }) => (
+              <Settings color={color} size={size} />
+            ),
           }}
         />
       </Tabs>
