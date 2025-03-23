@@ -1,7 +1,7 @@
-import { currentPlatform } from "@tamagui/core";
-import React from "react";
-import { KeyboardAvoidingView } from "react-native";
-import { YStack, Text, Spinner, ScrollView, View, H2 } from "tamagui";
+import { currentPlatform } from '@tamagui/core';
+import React from 'react';
+import { KeyboardAvoidingView } from 'react-native';
+import { YStack, Text, Spinner, ScrollView, View, H2 } from 'tamagui';
 
 interface MyScreenProps {
   title?: string;
@@ -18,14 +18,14 @@ export function MyScreen({
   loading,
   footer,
   scrollable,
-  children,
+  children
 }: MyScreenProps) {
   const Container = scrollable ? ScrollView : YStack;
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={currentPlatform === "ios" ? "padding" : "height"}
+      behavior={currentPlatform === 'ios' ? 'padding' : 'height'}
     >
       <Container style={{ flex: 1 }}>
         {title && (

@@ -1,19 +1,19 @@
-import { useRouter, usePathname, Href } from "expo-router";
+import { useRouter, usePathname, Href } from 'expo-router';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Platform,
-  useColorScheme,
-} from "react-native";
-import { isWeb } from "tamagui";
+  useColorScheme
+} from 'react-native';
+import { isWeb } from 'tamagui';
 
 const tabs = [
-  { name: "Home", href: "/" },
-  { name: "Vocabulary", href: "/vocabularyCards" },
-  { name: "Profile", href: "/profile" },
-  { name: "Settings", href: "/settings" },
+  { name: 'Home', href: '/' },
+  { name: 'Vocabulary', href: '/vocabularyCards' },
+  { name: 'Profile', href: '/profile' },
+  { name: 'Settings', href: '/settings' }
 ];
 
 export function WebTabBar() {
@@ -37,11 +37,11 @@ export function WebTabBar() {
                 isActive && styles.activeTab,
                 {
                   backgroundColor: isActive
-                    ? colorScheme === "dark"
-                      ? "#333333"
-                      : "#f3f4f6"
-                    : "transparent",
-                },
+                    ? colorScheme === 'dark'
+                      ? '#333333'
+                      : '#f3f4f6'
+                    : 'transparent'
+                }
               ]}
             >
               <Text
@@ -50,11 +50,11 @@ export function WebTabBar() {
                   isActive && styles.activeTabText,
                   {
                     color: isActive
-                      ? colorScheme === "dark"
-                        ? "#ffffff"
-                        : "#000000"
-                      : "#6b7280",
-                  },
+                      ? colorScheme === 'dark'
+                        ? '#ffffff'
+                        : '#000000'
+                      : '#6b7280'
+                  }
                 ]}
               >
                 {tab.name}
@@ -70,34 +70,34 @@ export function WebTabBar() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Platform.select({
-      web: "#ffffff",
-      default: "transparent",
+      web: '#ffffff',
+      default: 'transparent'
     }),
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
+    borderBottomColor: '#e5e7eb'
   },
   tabBar: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 48,
-    paddingHorizontal: 16,
+    paddingHorizontal: 16
   },
   tab: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
-    marginHorizontal: 4,
+    marginHorizontal: 4
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: "#3b82f6",
+    borderBottomColor: '#3b82f6'
   },
   tabText: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500'
   },
   activeTabText: {
-    color: "#3b82f6",
-  },
+    color: '#3b82f6'
+  }
 });

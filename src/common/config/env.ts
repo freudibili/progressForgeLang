@@ -1,4 +1,4 @@
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 export const WEB_URL = isDevelopment
   ? process.env.EXPO_PUBLIC_WEB_URL_DEV

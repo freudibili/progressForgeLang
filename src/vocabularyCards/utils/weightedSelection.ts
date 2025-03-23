@@ -1,5 +1,5 @@
-import { UserVocabProgress } from "@user/types";
-import type { VocabularyCard } from "../types";
+import { UserVocabProgress } from '@user/types';
+import type { VocabularyCard } from '../types';
 
 export const getCardProgress = (
   card: VocabularyCard,

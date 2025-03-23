@@ -1,6 +1,6 @@
-import { Book, CheckCircle } from "@tamagui/lucide-icons";
-import React from "react";
-import { Text, XStack, YStack } from "tamagui";
+import { Book, CheckCircle } from '@tamagui/lucide-icons';
+import React from 'react';
+import { Text, XStack, YStack } from 'tamagui';
 
 type VocabularyStatsProps = {
   seenCount: number;
@@ -9,7 +9,7 @@ type VocabularyStatsProps = {
 
 export const VocabularyStats = ({
   seenCount,
-  masteredCount,
+  masteredCount
 }: VocabularyStatsProps) => {
   return (
     <XStack gap="$4" justifyContent="center" padding="$2">

@@ -1,8 +1,8 @@
-import { MyScreen } from "@common/components/MyScreen";
-import { useLevelStore } from "@levels/store/levelStore";
-import { userSelectors } from "../store/userSelectors";
-import React from "react";
-import { YStack, Text, XStack, H3 } from "tamagui";
+import { MyScreen } from '@common/components/MyScreen';
+import { useLevelStore } from '@levels/store/levelStore';
+import { userSelectors } from '../store/userSelectors';
+import React from 'react';
+import { YStack, Text, XStack, H3 } from 'tamagui';
 
 export function UserProfileScreen() {
   const { selectedLevel } = useLevelStore();
@@ -15,7 +15,7 @@ export function UserProfileScreen() {
       <YStack flex={1} gap="$4">
         <YStack gap="$2">
           <H3>Current Level</H3>
-          <Text>{selectedLevel?.name ?? "No level selected"}</Text>
+          <Text>{selectedLevel?.name ?? 'No level selected'}</Text>
         </YStack>
 
         <YStack gap="$2">

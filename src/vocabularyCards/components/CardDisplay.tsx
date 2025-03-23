@@ -1,9 +1,9 @@
-import { Check } from "@tamagui/lucide-icons";
-import React from "react";
-import { XStack, YStack } from "tamagui";
+import { Check } from '@tamagui/lucide-icons';
+import React from 'react';
+import { XStack, YStack } from 'tamagui';
 
-import { VocabularyCard } from "./VocabularyCard";
-import type { VocabularyCard as VocabularyCardType } from "../types";
+import { VocabularyCard } from './VocabularyCard';
+import type { VocabularyCard as VocabularyCardType } from '../types';
 
 type CardDisplayProps = {
   currentCard: VocabularyCardType;
@@ -18,7 +18,7 @@ export const CardDisplay = ({
   currentIndex,
   totalCards,
   isRevealed,
-  onCardPress,
+  onCardPress
 }: CardDisplayProps) => {
   const masteryIcons = Array(totalCards)
     .fill(0)
@@ -26,7 +26,7 @@ export const CardDisplay = ({
       <Check
         key={index}
         size={16}
-        color={index < currentIndex ? "$green10" : "$gray5"}
+        color={index < currentIndex ? '$green10' : '$gray5'}
       />
     ));
 

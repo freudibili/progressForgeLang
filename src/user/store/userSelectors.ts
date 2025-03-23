@@ -1,5 +1,5 @@
-import { VocabularyCard } from "@vocabularyCards/types";
-import { useUserStore } from "./userStore";
+import { VocabularyCard } from '@vocabularyCards/types';
+import { useUserStore } from './userStore';
 
 const MASTERY_THRESHOLD = 3;
 const MASTERY_MILESTONE = 5;
@@ -60,6 +60,7 @@ export const userSelectors = {
           masteredWords.some((progress) => progress.cardId === card.id)
         ).length,
         seenCount: seenWords.length,
+        totalCount: cards.length
       };
     }),
 
@@ -84,7 +85,7 @@ export const userSelectors = {
         Math.floor(masteredCount / MASTERY_MILESTONE) * MASTERY_MILESTONE;
       return {
         currentMilestone,
-        masteredCount,
+        masteredCount
       };
-    }),
+    })
 };

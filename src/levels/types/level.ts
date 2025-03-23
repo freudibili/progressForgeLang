@@ -1,6 +1,6 @@
 export interface Level {
   id: string;
-  name: "A1" | "A2" | "B1" | "B2";
+  name: 'A1' | 'A2' | 'B1' | 'B2';
   description: string;
 }
 

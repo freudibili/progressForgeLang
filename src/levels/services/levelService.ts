@@ -1,5 +1,5 @@
-import { mockLevels } from "./levelMockData";
-import { Level } from "../types/level";
+import { mockLevels } from './levelMockData';
+import { Level } from '../types/level';
 
 export const levelService = {
   getLevels: async (): Promise<Level[]> => {
@@ -12,5 +12,5 @@ export const levelService = {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 300));
     return mockLevels.find((level) => level.id === id) || null;
-  },
+  }
 };

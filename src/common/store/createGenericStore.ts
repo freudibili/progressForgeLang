@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface GenericState {
   isLoading: boolean;
@@ -24,6 +24,6 @@ export const createGenericStore = <T extends object>(initialState: T) => {
     setLoading: (loading: boolean) =>
       set((state) => ({ ...state, isLoading: loading })),
     setError: (error: string | null) => set((state) => ({ ...state, error })),
-    clearError: () => set((state) => ({ ...state, error: null })),
+    clearError: () => set((state) => ({ ...state, error: null }))
   }));
 };

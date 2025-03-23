@@ -1,18 +1,18 @@
-import { useLevelStore } from "@levels/store/levelStore";
-import { userActions } from "@user/store/userActions";
-import { userSelectors } from "@user/store/userSelectors";
-import { useCallback, useEffect, useState } from "react";
+import { useLevelStore } from '@levels/store/levelStore';
+import { userActions } from '@user/store/userActions';
+import { userSelectors } from '@user/store/userSelectors';
+import { useCallback, useEffect, useState } from 'react';
 
-import { useVocabularyCardStore } from "../store/vocabularyCardsStore";
-import { VocabularyCard } from "../types";
-import { selectWeightedRandomCard } from "../utils/weightedSelection";
+import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
+import { VocabularyCard } from '../types';
+import { selectWeightedRandomCard } from '../utils/weightedSelection';
 
 export const useVocabularyCardsViewModel = () => {
   const {
     vocabularyCards: availableCards = [],
     isLoading: isCardsLoading,
     error,
-    loadCards,
+    loadCards
   } = useVocabularyCardStore();
   const { selectedLevel } = useLevelStore();
 
@@ -35,7 +35,7 @@ export const useVocabularyCardsViewModel = () => {
   const { currentMilestone } =
     userSelectors.useMasteryMilestone(availableCards);
   const activeCardCorrectAttempts = userSelectors.useCardProgress(
-    activeCard?.id ?? ""
+    activeCard?.id ?? ''
   );
 
   // Card Selection Logic
@@ -118,6 +118,6 @@ export const useVocabularyCardsViewModel = () => {
     // Handlers
     handleCardResponse,
     handleCardFlip,
-    handleMasteryModalClose,
+    handleMasteryModalClose
   };
 };

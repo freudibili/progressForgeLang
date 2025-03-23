@@ -13,13 +13,13 @@ export interface VocabularyCard {
     futurI: string;
   };
   level: VocabLevel;
-  type: "regular" | "irregular";
+  type: 'regular' | 'irregular';
   example: {
     de: string;
     fr: string;
     en: string;
   };
-  difficulty: "beginner" | "intermediate" | "advanced";
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
   lastReviewed?: Date;
   mastered: boolean;
 }
@@ -33,9 +33,9 @@ export interface CardProgress {
 }
 
 export interface CardFilters {
-  difficulty?: VocabularyCard["difficulty"];
+  difficulty?: VocabularyCard['difficulty'];
   mastered?: boolean;
   searchTerm?: string;
 }
 
-export type VocabLevel = "A1" | "A2" | "B1" | "B2";
+export type VocabLevel = 'A1' | 'A2' | 'B1' | 'B2';

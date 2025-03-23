@@ -1,7 +1,7 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
-import { vocabularyCardService } from "../services/vocabularyCardsService";
-import { VocabLevel, VocabularyCard } from "../types";
+import { vocabularyCardService } from '../services/vocabularyCardsService';
+import { VocabLevel, VocabularyCard } from '../types';
 
 interface VocabularyCardState {
   vocabularyCards: VocabularyCard[];
@@ -20,5 +20,5 @@ export const useVocabularyCardStore = create<VocabularyCardState>((set) => ({
     const { data, error } =
       await vocabularyCardService.fetchCardsByLevel(level);
     set({ vocabularyCards: data, isLoading: false, error });
-  },
+  }
 }));

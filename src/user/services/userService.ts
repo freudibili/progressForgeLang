@@ -1,12 +1,12 @@
-import { User, UserPreferences, UserStatistics } from "../types";
+import { User, UserPreferences, UserStatistics } from '../types';
 
 class UserService {
-  private baseUrl = "http://localhost:3000/api";
+  private baseUrl = 'http://localhost:3000/api';
 
   async fetchUser(): Promise<User> {
     const response = await fetch(`${this.baseUrl}/user`);
     if (!response.ok) {
-      throw new Error("Failed to fetch user");
+      throw new Error('Failed to fetch user');
     }
     return response.json();
   }
@@ -15,28 +15,28 @@ class UserService {
     preferences: Partial<UserPreferences>
   ): Promise<User> {
     const response = await fetch(`${this.baseUrl}/user/preferences`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(preferences),
+      body: JSON.stringify(preferences)
     });
     if (!response.ok) {
-      throw new Error("Failed to update preferences");
+      throw new Error('Failed to update preferences');
     }
     return response.json();
   }
 
   async updateStatistics(statistics: Partial<UserStatistics>): Promise<User> {
     const response = await fetch(`${this.baseUrl}/user/statistics`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(statistics),
+      body: JSON.stringify(statistics)
     });
     if (!response.ok) {
-      throw new Error("Failed to update statistics");
+      throw new Error('Failed to update statistics');
     }
     return response.json();
   }

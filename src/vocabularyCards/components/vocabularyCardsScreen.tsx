@@ -1,12 +1,12 @@
-import { MyScreen } from "@common/components/MyScreen";
-import React from "react";
+import { MyScreen } from '@common/components/MyScreen';
+import React from 'react';
 
-import { CardDisplay } from "./CardDisplay";
-import { CardFooter } from "./CardFooter";
-import { CompletionScreen } from "./CompletionScreen";
-import { MasteryModal } from "./MasteryModal";
-import { VocabularyStats } from "./VocabularyStats";
-import { useVocabularyCardsViewModel } from "../viewModels/useVocabularyCardsViewModel";
+import { CardDisplay } from './CardDisplay';
+import { CardFooter } from './CardFooter';
+import { CompletionScreen } from './CompletionScreen';
+import { MasteryModal } from './MasteryModal';
+import { VocabularyStats } from './VocabularyStats';
+import { useVocabularyCardsViewModel } from '../viewModels/useVocabularyCardsViewModel';
 
 export const VocabularyCardsScreen = () => {
   const {
@@ -28,7 +28,7 @@ export const VocabularyCardsScreen = () => {
     // Handlers
     handleCardResponse,
     handleCardFlip,
-    handleMasteryModalClose,
+    handleMasteryModalClose
   } = useVocabularyCardsViewModel();
 
   if (hasCompletedLevel) {

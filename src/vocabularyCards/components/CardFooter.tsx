@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, XStack } from "tamagui";
+import React from 'react';
+import { Button, XStack } from 'tamagui';
 
 type CardFooterProps = {
   isRevealed: boolean;
@@ -10,7 +10,7 @@ type CardFooterProps = {
 export const CardFooter = ({
   isRevealed,
   onCorrect,
-  onIncorrect,
+  onIncorrect
 }: CardFooterProps) => {
   if (!isRevealed) {
     return null;

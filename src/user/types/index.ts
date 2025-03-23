@@ -8,8 +8,8 @@ export interface UserPreferences {
   notifications: boolean;
   dailyReminder: boolean;
   reminderTime: string;
-  language: "french" | "german";
-  theme: "light" | "dark" | "system";
+  language: 'french' | 'german';
+  theme: 'light' | 'dark' | 'system';
 }
 
 export interface UserStatistics {

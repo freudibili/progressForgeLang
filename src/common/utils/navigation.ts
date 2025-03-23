@@ -1,8 +1,8 @@
-import { Router } from "expo-router";
-import { isWeb } from "tamagui";
+import { Router } from 'expo-router';
+import { isWeb } from 'tamagui';
 
 export function getWebUrl(path: string): string {
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev = process.env.NODE_ENV === 'development';
   const baseUrl = isDev
     ? process.env.EXPO_PUBLIC_WEB_URL_DEV
     : process.env.EXPO_PUBLIC_WEB_URL_PROD;

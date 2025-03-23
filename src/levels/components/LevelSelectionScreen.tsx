@@ -1,11 +1,11 @@
-import { useRouter } from "expo-router";
-import React, { useEffect } from "react";
-import { YStack, Text, XStack } from "tamagui";
+import { useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
+import { YStack, Text, XStack } from 'tamagui';
 
-import { LevelCard } from "./LevelCard";
-import { MyScreen } from "../../common/components/MyScreen";
-import { useLevelStore } from "../store/levelStore";
-import { Level } from "../types/level";
+import { LevelCard } from './LevelCard';
+import { MyScreen } from '../../common/components/MyScreen';
+import { useLevelStore } from '../store/levelStore';
+import { Level } from '../types/level';
 
 export function LevelSelectionScreen() {
   const router = useRouter();

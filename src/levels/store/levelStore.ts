@@ -1,7 +1,7 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
-import { levelService } from "../services/levelService";
-import { Level, LevelState } from "../types/level";
+import { levelService } from '../services/levelService';
+import { Level, LevelState } from '../types/level';
 
 export const useLevelStore = create<LevelState>((set) => ({
   levels: [],
@@ -17,8 +17,8 @@ export const useLevelStore = create<LevelState>((set) => ({
     } catch (error) {
       set({
         error:
-          error instanceof Error ? error.message : "Failed to fetch levels",
-        isLoading: false,
+          error instanceof Error ? error.message : 'Failed to fetch levels',
+        isLoading: false
       });
     }
   },
@@ -29,5 +29,5 @@ export const useLevelStore = create<LevelState>((set) => ({
 
   clearSelectedLevel: () => {
     set({ selectedLevel: null });
-  },
+  }
 }));

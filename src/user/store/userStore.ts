@@ -1,10 +1,10 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 import {
   User,
   UserPreferences,
   UserStatistics,
-  UserVocabProgress,
-} from "../types";
+  UserVocabProgress
+} from '../types';
 
 interface UserState {
   user: User | null;
@@ -21,9 +21,9 @@ const initialState: UserState = {
   preferences: {
     notifications: true,
     dailyReminder: true,
-    reminderTime: "09:00",
-    language: "french",
-    theme: "system",
+    reminderTime: '09:00',
+    language: 'french',
+    theme: 'system'
   },
   statistics: {
     totalCards: 0,
@@ -31,10 +31,10 @@ const initialState: UserState = {
     dailyStreak: 0,
     lastStudyDate: new Date().toISOString(),
     successRate: 0,
-    studyTime: 0,
+    studyTime: 0
   },
   isLoading: false,
-  error: null,
+  error: null
 };
 
 export const useUserStore = create<UserState>(() => initialState);

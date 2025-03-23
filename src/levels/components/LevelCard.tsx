@@ -1,7 +1,7 @@
-import React from "react";
-import { Button, Text, YStack } from "tamagui";
+import React from 'react';
+import { Button, Text, YStack } from 'tamagui';
 
-import { Level } from "../types/level";
+import { Level } from '../types/level';
 
 interface LevelCardProps {
   level: Level;

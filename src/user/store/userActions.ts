@@ -1,13 +1,13 @@
-import { VocabularyCard } from "@vocabularyCards/types";
-import { User, UserPreferences, UserStatistics } from "../types";
-import { useUserStore } from "./userStore";
+import { VocabularyCard } from '@vocabularyCards/types';
+import { User, UserPreferences, UserStatistics } from '../types';
+import { useUserStore } from './userStore';
 
 type UserActions = {
   setUser: (user: User | null) => void;
   markVocabCorrect: (vocabCard: VocabularyCard) => void;
   updateStatistics: (statistics: Partial<UserStatistics>) => void;
   resetProgress: () => void;
-  setLanguage: (language: UserPreferences["language"]) => void;
+  setLanguage: (language: UserPreferences['language']) => void;
 };
 
 export const userActions: UserActions = {
@@ -27,7 +27,7 @@ export const userActions: UserActions = {
           ? {
               ...progress,
               correctCount: progress.correctCount + 1,
-              lastReviewedAt: new Date(),
+              lastReviewedAt: new Date()
             }
           : progress
       );
@@ -37,8 +37,8 @@ export const userActions: UserActions = {
           ...statistics,
           totalCards: statistics.totalCards + 1,
           masteredCards: updatedVocab.filter((p) => p.correctCount >= 3).length,
-          successRate: (statistics.masteredCards / statistics.totalCards) * 100,
-        },
+          successRate: (statistics.masteredCards / statistics.totalCards) * 100
+        }
       });
     } else {
       useUserStore.setState({
@@ -48,9 +48,9 @@ export const userActions: UserActions = {
             cardId: vocabCard.id,
             originalWord: vocabCard.infinitiv.de,
             correctCount: 1,
-            lastReviewedAt: new Date(),
-          },
-        ],
+            lastReviewedAt: new Date()
+          }
+        ]
       });
     }
   },
@@ -58,7 +58,7 @@ export const userActions: UserActions = {
   updateStatistics: (statistics: Partial<UserStatistics>) => {
     const currentStats = useUserStore.getState().statistics;
     useUserStore.setState({
-      statistics: { ...currentStats, ...statistics },
+      statistics: { ...currentStats, ...statistics }
     });
   },
 
@@ -71,15 +71,15 @@ export const userActions: UserActions = {
         dailyStreak: 0,
         lastStudyDate: new Date().toISOString(),
         successRate: 0,
-        studyTime: 0,
-      },
+        studyTime: 0
+      }
     });
   },
 
-  setLanguage: (language: UserPreferences["language"]) => {
+  setLanguage: (language: UserPreferences['language']) => {
     const { preferences } = useUserStore.getState();
     useUserStore.setState({
-      preferences: { ...preferences, language },
+      preferences: { ...preferences, language }
     });
-  },
+  }
 };

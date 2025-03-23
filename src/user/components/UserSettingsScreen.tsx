@@ -1,7 +1,7 @@
-import { MyScreen } from "@common/components/MyScreen";
-import React from "react";
+import { MyScreen } from '@common/components/MyScreen';
+import React from 'react';
 
-import { useUserStore } from "../store/userStore";
+import { useUserStore } from '../store/userStore';
 
 export const UserSettingsScreen: React.FC = () => {
   const { isLoading, error } = useUserStore();

@@ -1,15 +1,15 @@
-import { MyScreen } from "@common/components/MyScreen";
-import { userSelectors } from "@user/store/userSelectors";
-import { Href, useRouter } from "expo-router";
-import React, { useCallback } from "react";
-import { Button, Text, YStack } from "tamagui";
+import { MyScreen } from '@common/components/MyScreen';
+import { userSelectors } from '@user/store/userSelectors';
+import { Href, useRouter } from 'expo-router';
+import React, { useCallback } from 'react';
+import { Button, Text, YStack } from 'tamagui';
 
 export const CompletionScreen = () => {
   const masteredCount = userSelectors.useMasteredWordsCount();
   const router = useRouter();
 
   const handleGoHome = useCallback(() => {
-    router.replace("/" as Href);
+    router.replace('/' as Href);
   }, [router]);
 
   return (

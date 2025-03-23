@@ -1,6 +1,6 @@
-import Link from "next/link";
-import React from "react";
-import { YStack, Text, Button, H1, Card } from "tamagui";
+import Link from 'next/link';
+import React from 'react';
+import { YStack, Text, Button, H1, Card } from 'tamagui';
 
 export default function HomePage() {
   return (
@@ -23,7 +23,7 @@ export default function HomePage() {
               <Button
                 size="$5"
                 onPress={() => {
-                  window.location.href = "progressforgelang://";
+                  window.location.href = 'progressforgelang://';
                 }}
               >
                 Open Mobile App

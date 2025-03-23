@@ -1,52 +1,52 @@
-import { VocabularyCard } from "../../types";
+import { VocabularyCard } from '../../types';
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: "16",
+    id: '16',
     infinitiv: {
-      de: "erklären",
-      fr: "expliquer",
-      en: "to explain",
+      de: 'erklären',
+      fr: 'expliquer',
+      en: 'to explain'
     },
     conjugation: {
-      präsens: "erklärt",
-      präteritum: "erklärte",
-      perfekt: "hat erklärt",
-      plusquamperfekt: "hatte erklärt",
-      futurI: "wird erklären",
+      präsens: 'erklärt',
+      präteritum: 'erklärte',
+      perfekt: 'hat erklärt',
+      plusquamperfekt: 'hatte erklärt',
+      futurI: 'wird erklären'
     },
-    level: "B1",
-    type: "regular",
+    level: 'B1',
+    type: 'regular',
     example: {
-      de: "Er erklärt die Aufgabe.",
-      fr: "Il explique la tâche.",
-      en: "He explains the task.",
+      de: 'Er erklärt die Aufgabe.',
+      fr: 'Il explique la tâche.',
+      en: 'He explains the task.'
     },
-    difficulty: "intermediate",
-    mastered: false,
+    difficulty: 'intermediate',
+    mastered: false
   },
   {
-    id: "17",
+    id: '17',
     infinitiv: {
-      de: "empfehlen",
-      fr: "recommander",
-      en: "to recommend",
+      de: 'empfehlen',
+      fr: 'recommander',
+      en: 'to recommend'
     },
     conjugation: {
-      präsens: "empfiehlt",
-      präteritum: "empfahl",
-      perfekt: "hat empfohlen",
-      plusquamperfekt: "hatte empfohlen",
-      futurI: "wird empfehlen",
+      präsens: 'empfiehlt',
+      präteritum: 'empfahl',
+      perfekt: 'hat empfohlen',
+      plusquamperfekt: 'hatte empfohlen',
+      futurI: 'wird empfehlen'
     },
-    level: "B1",
-    type: "irregular",
+    level: 'B1',
+    type: 'irregular',
     example: {
-      de: "Ich empfehle dieses Buch.",
-      fr: "Je recommande ce livre.",
-      en: "I recommend this book.",
+      de: 'Ich empfehle dieses Buch.',
+      fr: 'Je recommande ce livre.',
+      en: 'I recommend this book.'
     },
-    difficulty: "intermediate",
-    mastered: false,
-  },
+    difficulty: 'intermediate',
+    mastered: false
+  }
 ];

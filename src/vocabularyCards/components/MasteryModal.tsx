@@ -1,5 +1,5 @@
-import { Button, Dialog, Text, XStack, YStack } from "tamagui";
-import React from "react";
+import { Button, Dialog, Text, XStack, YStack } from 'tamagui';
+import React from 'react';
 
 type MasteryModalProps = {
   open: boolean;
@@ -10,7 +10,7 @@ type MasteryModalProps = {
 export const MasteryModal = ({
   open,
   onClose,
-  masteredCount,
+  masteredCount
 }: MasteryModalProps) => {
   return (
     <Dialog modal open={open}>
@@ -27,12 +27,12 @@ export const MasteryModal = ({
           elevate
           key="content"
           animation={[
-            "quick",
+            'quick',
             {
               opacity: {
-                overshootClamping: true,
-              },
-            },
+                overshootClamping: true
+              }
+            }
           ]}
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
