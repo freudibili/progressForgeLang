@@ -2,13 +2,15 @@ import { MyScreen } from '@common/components/MyScreen';
 import React from 'react';
 
 import { useUserStore } from '../store/userStore';
+import { H3, Text } from 'tamagui';
 
 export const UserSettingsScreen: React.FC = () => {
-  const { isLoading, error } = useUserStore();
+  const { user, preferences } = useUserStore();
 
   return (
-    <MyScreen title="Settings" error={error} loading={isLoading}>
-      User settings content goes here
+    <MyScreen title="Settings">
+      <H3>Languages</H3>
+      <Text>{preferences.language}</Text>
     </MyScreen>
   );
 };
