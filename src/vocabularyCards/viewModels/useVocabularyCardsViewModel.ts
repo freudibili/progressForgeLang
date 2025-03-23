@@ -8,7 +8,7 @@ import { selectWeightedRandomCard } from "../utils/weightedSelection";
 
 export const useVocabularyCardsViewModel = () => {
   const {
-    vocabularyCards = [],
+    vocabularyCards: availableCards = [],
     isLoading,
     error,
     loadCards,
@@ -27,11 +27,11 @@ export const useVocabularyCardsViewModel = () => {
   // User Progress Selectors
   const practiceHistory = userSelectors.useWordsSeen();
   const { masteredCount: masteredCardsCount, seenCount: totalCardsAttempted } =
-    userSelectors.useCardStats(vocabularyCards);
+    userSelectors.useCardStats(availableCards);
   const hasCompletedLevel =
-    userSelectors.useAreLevelCardsMastered(vocabularyCards);
+    userSelectors.useAreLevelCardsMastered(availableCards);
   const { currentMilestone } =
-    userSelectors.useMasteryMilestone(vocabularyCards);
+    userSelectors.useMasteryMilestone(availableCards);
   const activeCardCorrectAttempts = userSelectors.useCardProgress(
     activeCard?.id ?? ""
   );
@@ -40,7 +40,7 @@ export const useVocabularyCardsViewModel = () => {
   const showNextCard = useCallback(
     (excludeCardId?: string | null) => {
       const nextCard = selectWeightedRandomCard(
-        vocabularyCards,
+        availableCards,
         practiceHistory ?? [],
         excludeCardId
       );
@@ -51,7 +51,7 @@ export const useVocabularyCardsViewModel = () => {
         setIsCardRevealed(false);
       }
     },
-    [vocabularyCards, practiceHistory]
+    [availableCards, practiceHistory]
   );
 
   // Load Cards Effect
@@ -63,10 +63,10 @@ export const useVocabularyCardsViewModel = () => {
 
   // Initial Card Selection Effect
   useEffect(() => {
-    if (vocabularyCards.length > 0 && !activeCard) {
+    if (availableCards.length > 0 && !activeCard) {
       showNextCard(lastShownCardId);
     }
-  }, [vocabularyCards, activeCard, showNextCard, lastShownCardId]);
+  }, [availableCards, activeCard, showNextCard, lastShownCardId]);
 
   // Milestone Tracking Effect
   useEffect(() => {
