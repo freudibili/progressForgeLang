@@ -1,6 +1,5 @@
+import { UserState } from '@user/types/userTypes';
 import { create } from 'zustand';
-
-import { UserState } from '@user/types';
 
 export const useUserStore = create<UserState>((set) => ({
   user: null,

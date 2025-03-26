@@ -1,4 +1,4 @@
-import { VocabularyCard } from '../../types';
+import { VocabularyCard } from '../../types/vocabTypes';
 
 export const mockLevels: VocabularyCard[] = [
   {
@@ -21,9 +21,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Er erklärt die Aufgabe.',
       fr: 'Il explique la tâche.',
       en: 'He explains the task.'
-    },
-    difficulty: 'intermediate',
-    mastered: false
+    }
   },
   {
     id: '17',
@@ -45,8 +43,6 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Ich empfehle dieses Buch.',
       fr: 'Je recommande ce livre.',
       en: 'I recommend this book.'
-    },
-    difficulty: 'intermediate',
-    mastered: false
+    }
   }
 ];

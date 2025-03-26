@@ -1,4 +1,4 @@
-import { VocabularyCard } from '../../types';
+import { VocabularyCard } from '../../types/vocabTypes';
 
 export const mockLevels: VocabularyCard[] = [
   {
@@ -21,8 +21,6 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Er widerspricht seinem Chef.',
       fr: 'Il contredit son chef.',
       en: 'He contradicts his boss.'
-    },
-    difficulty: 'advanced',
-    mastered: false
+    }
   }
 ];

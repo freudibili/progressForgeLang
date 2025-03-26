@@ -1,4 +1,4 @@
-import { User, UserPreferences, UserStatistics } from '../types';
+import { User, UserPreferences, UserStatistics } from '../types/userTypes';
 
 class UserService {
   private baseUrl = 'http://localhost:3000/api';

@@ -1,5 +1,5 @@
 import { VocabLevel } from '@levels/types/level';
-import { UserState } from '@user/types';
+import { UserState } from '@user/types/userTypes';
 import {
   MASTERY_MILESTONE,
   calculateSuccessRate,
@@ -11,6 +11,7 @@ import {
   getCardAttempts,
   isCardMastered
 } from '@user/utils/progressUtils';
+
 import { useUserStore } from './userStore';
 
 export const userSelectors = {

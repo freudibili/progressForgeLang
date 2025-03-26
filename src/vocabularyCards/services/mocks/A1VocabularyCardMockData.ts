@@ -1,4 +1,4 @@
-import { VocabularyCard } from '../../types';
+import { VocabularyCard } from '../../types/vocabTypes';
 
 export const mockLevels: VocabularyCard[] = [
   {
@@ -21,9 +21,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Er ist müde.',
       fr: 'Il est fatigué.',
       en: 'He is tired.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '2',
@@ -45,9 +43,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Sie hat ein Buch.',
       fr: 'Elle a un livre.',
       en: 'She has a book.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '3',
@@ -69,9 +65,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Wir gehen ins Kino.',
       fr: 'Nous allons au cinéma.',
       en: 'We are going to the cinema.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '4',
@@ -93,9 +87,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Er kommt nach Hause.',
       fr: 'Il vient à la maison.',
       en: 'He comes home.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '5',
@@ -117,9 +109,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Ich mache meine Hausaufgaben.',
       fr: 'Je fais mes devoirs.',
       en: 'I do my homework.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '6',
@@ -141,9 +131,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Sie sieht den Film.',
       fr: 'Elle voit le film.',
       en: 'She sees the movie.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '7',
@@ -165,9 +153,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Wir hören Musik.',
       fr: 'Nous écoutons de la musique.',
       en: 'We listen to music.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '8',
@@ -189,9 +175,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Er spricht Deutsch.',
       fr: 'Il parle allemand.',
       en: 'He speaks German.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '9',
@@ -213,9 +197,7 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Wir lernen Deutsch.',
       fr: "Nous apprenons l'allemand.",
       en: 'We learn German.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   },
   {
     id: '10',
@@ -237,8 +219,6 @@ export const mockLevels: VocabularyCard[] = [
       de: 'Sie schreibt einen Brief.',
       fr: 'Elle écrit une lettre.',
       en: 'She writes a letter.'
-    },
-    difficulty: 'beginner',
-    mastered: false
+    }
   }
 ];

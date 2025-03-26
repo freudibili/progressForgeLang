@@ -1,5 +1,5 @@
 import { VocabLevel } from '@levels/types/level';
-import { VocabularyCard } from '../types';
+import { VocabularyCard } from '../types/vocabTypes';
 import { mockLevels as A1MockLevels } from './mocks/A1VocabularyCardMockData';
 import { mockLevels as A2MockLevels } from './mocks/A2VocabularyCardMockData';
 import { mockLevels as B1MockLevels } from './mocks/B1VocabularyCardMockData';

@@ -50,3 +50,12 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+
+# Gradle & signing configs
+*.keystore
+android/app/*.jks
+android/app/*.properties
+
+# iOS build stuff
+ios/build/
+android/.gradle/

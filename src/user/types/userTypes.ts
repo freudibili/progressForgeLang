@@ -1,5 +1,5 @@
 import { VocabLevel } from '@levels/types/level';
-import { VocabularyCard } from '@vocabularyCards/types';
+import { VocabularyCard } from '@vocabularyCards/types/vocabTypes';
 
 export interface UserVocabProgress {
   cardId: string;

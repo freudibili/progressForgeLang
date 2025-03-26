@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { vocabularyCardService } from '../services/vocabularyCardsService';
-import { VocabularyCards } from '../types';
+import { VocabularyCards } from '../types/vocabTypes';
 import { VocabLevel } from '@levels/types/level';
 
 interface VocabularyCardState {

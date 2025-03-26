@@ -1,5 +1,9 @@
 import { VocabLevel } from '@levels/types/level';
-import { UserVocabProgress, VocabularyCards, LevelProgress } from '@user/types';
+import {
+  UserVocabProgress,
+  VocabularyCards,
+  LevelProgress
+} from '@user/types/userTypes';
 
 export const MASTERY_THRESHOLD = 3;
 export const MASTERY_MILESTONE = 5;

@@ -1,4 +1,4 @@
-import { UserVocabProgress } from '@user/types';
+import { UserVocabProgress } from '@user/types/userTypes';
 
 export const mockProgress: UserVocabProgress[] = [
   {

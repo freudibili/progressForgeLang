@@ -1,5 +1,5 @@
 import { VocabLevel } from '@levels/types/level';
-import { VocabularyCard } from '../../../../vocabularyCards/types';
+import { VocabularyCard } from '../../../../vocabularyCards/types/vocabTypes';
 
 export const mockUserStoreCards: VocabularyCard[] = [
   {
@@ -18,9 +18,7 @@ export const mockUserStoreCards: VocabularyCard[] = [
       de: 'Ich gehe zur Schule',
       fr: "Je vais à l'école",
       en: 'I go to school'
-    },
-    difficulty: 'beginner' as const,
-    mastered: false
+    }
   },
   {
     id: '2',
@@ -38,9 +36,7 @@ export const mockUserStoreCards: VocabularyCard[] = [
       de: 'Die Kinder spielen im Garten',
       fr: 'Les enfants jouent dans le jardin',
       en: 'The children play in the garden'
-    },
-    difficulty: 'beginner' as const,
-    mastered: false
+    }
   },
   {
     id: '3',
@@ -58,8 +54,6 @@ export const mockUserStoreCards: VocabularyCard[] = [
       de: 'Ich lerne Deutsch',
       fr: "J'apprends l'allemand",
       en: 'I learn German'
-    },
-    difficulty: 'beginner' as const,
-    mastered: false
+    }
   }
 ];

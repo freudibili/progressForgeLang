@@ -11,7 +11,9 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json}\"",
     "type-check": "tsc --noEmit",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@tamagui/config": "^1.90.2",

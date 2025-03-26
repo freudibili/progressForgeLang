@@ -1,5 +1,5 @@
-import { VocabularyCard } from '@vocabularyCards/types';
-import { User, UserPreferences, UserStatistics } from '../types';
+import { VocabularyCard } from '@vocabularyCards/types/vocabTypes';
+import { User, UserPreferences, UserStatistics } from '../types/userTypes';
 import { useUserStore } from './userStore';
 import { findLevelProgress, findCardProgress } from '../utils/progressUtils';
 

@@ -21,9 +21,6 @@ export interface VocabularyCard {
     fr: string;
     en: string;
   };
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  lastReviewed?: Date;
-  mastered: boolean;
 }
 
 export type VocabularyCards = { level: VocabLevel; vocab: VocabularyCard[] }[];
@@ -37,7 +34,6 @@ export interface CardProgress {
 }
 
 export interface CardFilters {
-  difficulty?: VocabularyCard['difficulty'];
   mastered?: boolean;
   searchTerm?: string;
 }

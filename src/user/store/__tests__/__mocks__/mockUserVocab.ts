@@ -1,4 +1,8 @@
-import { LevelProgress, UserVocabProgress, VocabularyCards } from '@user/types';
+import {
+  LevelProgress,
+  UserVocabProgress,
+  VocabularyCards
+} from '@user/types/userTypes';
 import { VocabLevel } from '@levels/types/level';
 
 const a1Progress: UserVocabProgress[] = [
@@ -56,9 +60,7 @@ export const mockVocabularyCards: VocabularyCards[] = [
           de: 'Ich bin müde',
           fr: 'Je suis fatigué',
           en: 'I am tired'
-        },
-        difficulty: 'beginner',
-        mastered: false
+        }
       },
       {
         id: '2',
@@ -76,9 +78,7 @@ export const mockVocabularyCards: VocabularyCards[] = [
           de: 'Ich habe ein Buch',
           fr: "J'ai un livre",
           en: 'I have a book'
-        },
-        difficulty: 'beginner',
-        mastered: false
+        }
       }
     ]
   },
@@ -101,9 +101,7 @@ export const mockVocabularyCards: VocabularyCards[] = [
           de: 'Ich gehe zur Schule',
           fr: "Je vais à l'école",
           en: 'I go to school'
-        },
-        difficulty: 'beginner',
-        mastered: false
+        }
       }
     ]
   }

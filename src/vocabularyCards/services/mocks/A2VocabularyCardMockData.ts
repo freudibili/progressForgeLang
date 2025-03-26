@@ -1,4 +1,4 @@
-import { VocabularyCard } from '../../types';
+import { VocabularyCard } from '../../types/vocabTypes';
 
 export const mockLevels: VocabularyCard[] = [
   {

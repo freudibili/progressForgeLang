@@ -5,7 +5,7 @@ import { useUserStore } from '../store/userStore';
 import { H3, Text } from 'tamagui';
 
 export const UserSettingsScreen: React.FC = () => {
-  const { user, preferences } = useUserStore();
+  const { preferences } = useUserStore();
 
   return (
     <MyScreen title="Settings">

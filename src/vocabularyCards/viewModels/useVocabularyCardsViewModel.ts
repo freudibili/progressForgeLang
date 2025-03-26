@@ -1,12 +1,12 @@
 import { useLevelStore } from '@levels/store/levelStore';
 import { userActions } from '@user/store/userActions';
 import { userSelectors } from '@user/store/userSelectors';
-import { UserVocabProgress } from '@user/types';
+import { UserVocabProgress } from '@user/types/userTypes';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useUserStore } from '@user/store/userStore';
 
 import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
-import { VocabularyCard } from '../types';
+import { VocabularyCard } from '../types/vocabTypes';
 import { selectWeightedRandomCard } from '../utils/weightedSelection';
 
 export const useVocabularyCardsViewModel = () => {

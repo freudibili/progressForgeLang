@@ -3,7 +3,7 @@ import React from 'react';
 import { XStack, YStack } from 'tamagui';
 
 import { VocabularyCard } from './VocabularyCard';
-import type { VocabularyCard as VocabularyCardType } from '../types';
+import type { VocabularyCard as VocabularyCardType } from '../types/vocabTypes';
 
 type CardDisplayProps = {
   currentCard: VocabularyCardType;
