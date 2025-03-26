@@ -1,33 +1,23 @@
 import { MyScreen } from '@common/components/MyScreen';
-import { userSelectors } from '../store/userSelectors';
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { YStack, Text, XStack, H3, Tabs, Separator } from 'tamagui';
-import { VocabLevel } from '@levels/types/level';
-import { useVocabularyCardStore } from '@vocabularyCards/store/vocabularyCardsStore';
+import { useUserProfileViewModel } from '../viewModels/useUserProfileViewModel';
 
 export function UserProfileScreen() {
-  const { vocabularyCards } = useVocabularyCardStore();
-  const levels = useMemo(
-    () =>
-      vocabularyCards
-        .map((card) => card.level)
-        .sort((a, b) => a.localeCompare(b)),
-    [vocabularyCards]
-  );
-
-  const [activeTab, setActiveTab] = useState<VocabLevel>(levels[0] ?? 'A1');
-  const { masteredCount, seenCount } = userSelectors.useCardStats(activeTab);
-  const successRate = userSelectors.useSuccessRate(activeTab);
-  const masteredWords = userSelectors.useMasteredWords(activeTab);
+  const {
+    levels,
+    activeTab,
+    masteredCount,
+    seenCount,
+    successRate,
+    masteredWords,
+    handleTabChange
+  } = useUserProfileViewModel();
 
   return (
     <MyScreen title="Profile">
       <H3>Progress Overview</H3>
-      <Tabs
-        value={activeTab}
-        onValueChange={(value) => setActiveTab(value as VocabLevel)}
-        width="100%"
-      >
+      <Tabs value={activeTab} onValueChange={handleTabChange} width="100%">
         <Tabs.List width="100%" justifyContent="space-between">
           {levels.map((level) => (
             <Tabs.Tab key={level} value={level} flex={1}>

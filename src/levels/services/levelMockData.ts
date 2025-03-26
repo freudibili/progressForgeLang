@@ -1,4 +1,4 @@
-import { Level } from '@levels/types/level';
+import { Level } from '@levels/types/levelTypes';
 
 export const mockLevels: Level[] = [
   {

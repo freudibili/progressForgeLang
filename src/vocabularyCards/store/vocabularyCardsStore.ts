@@ -2,13 +2,12 @@ import { create } from 'zustand';
 
 import { vocabularyCardService } from '../services/vocabularyCardsService';
 import { VocabularyCards } from '../types/vocabTypes';
-import { VocabLevel } from '@levels/types/level';
 
 interface VocabularyCardState {
   vocabularyCards: VocabularyCards;
   isLoading: boolean;
   error: string | null;
-  loadCards: (level: VocabLevel) => Promise<void>;
+  loadCards: (level: string) => Promise<void>;
 }
 
 export const useVocabularyCardStore = create<VocabularyCardState>(
@@ -16,7 +15,7 @@ export const useVocabularyCardStore = create<VocabularyCardState>(
     vocabularyCards: [],
     isLoading: false,
     error: null,
-    loadCards: async (level: VocabLevel) => {
+    loadCards: async (level: string) => {
       set({ isLoading: true, error: null });
 
       const { data, error } =
@@ -24,20 +23,12 @@ export const useVocabularyCardStore = create<VocabularyCardState>(
 
       if (data && !error) {
         const currentCards = get().vocabularyCards;
-        const levelIndex = currentCards.findIndex((vc) => vc.level === level);
-
-        if (levelIndex >= 0) {
-          // Update existing level's cards
-          const updatedCards = [...currentCards];
-          updatedCards[levelIndex] = { level, vocab: data };
-          set({ vocabularyCards: updatedCards, isLoading: false });
-        } else {
-          // Add new level's cards
-          set({
-            vocabularyCards: [...currentCards, { level, vocab: data }],
-            isLoading: false
-          });
-        }
+        // Remove existing cards for this level
+        const filteredCards = currentCards.filter(
+          (card) => card.levelId !== level
+        );
+        // Add new cards
+        set({ vocabularyCards: [...filteredCards, ...data], isLoading: false });
       } else {
         set({ error, isLoading: false });
       }

@@ -1,7 +1,7 @@
 import { VocabularyCard } from '../../../types/vocabTypes';
 
 export const mockCard: VocabularyCard = {
-  id: 'card1',
+  id: '550e8400-e29b-41d4-a716-446655440002',
   infinitiv: { de: 'test', fr: 'test', en: 'test' },
   conjugation: {
     präsens: 'test',
@@ -10,7 +10,7 @@ export const mockCard: VocabularyCard = {
     plusquamperfekt: 'test',
     futurI: 'test'
   },
-  level: 'A1',
+  levelId: 'A1',
   type: 'regular',
   example: { de: 'test', fr: 'test', en: 'test' }
 };
@@ -19,6 +19,6 @@ export const mockCards: VocabularyCard[] = [
   mockCard,
   {
     ...mockCard,
-    id: 'card2'
+    id: '550e8400-e29b-41d4-a716-446655440001'
   }
 ];

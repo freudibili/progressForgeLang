@@ -2,7 +2,7 @@ import { VocabularyCard } from '../../types/vocabTypes';
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: '16',
+    id: '550e8400-e29b-41d4-a716-446655440012',
     infinitiv: {
       de: 'erklären',
       fr: 'expliquer',
@@ -15,7 +15,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte erklärt',
       futurI: 'wird erklären'
     },
-    level: 'B1',
+    levelId: 'B1',
     type: 'regular',
     example: {
       de: 'Er erklärt die Aufgabe.',
@@ -24,7 +24,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '17',
+    id: '550e8400-e29b-41d4-a716-446655440013',
     infinitiv: {
       de: 'empfehlen',
       fr: 'recommander',
@@ -37,7 +37,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte empfohlen',
       futurI: 'wird empfehlen'
     },
-    level: 'B1',
+    levelId: 'B1',
     type: 'irregular',
     example: {
       de: 'Ich empfehle dieses Buch.',

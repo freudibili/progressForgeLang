@@ -2,7 +2,7 @@ import { VocabularyCard } from '../../types/vocabTypes';
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: '1',
+    id: '550e8400-e29b-41d4-a716-446655440002',
     infinitiv: {
       de: 'sein',
       fr: 'être',
@@ -15,7 +15,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'war gewesen',
       futurI: 'wird sein'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'irregular',
     example: {
       de: 'Er ist müde.',
@@ -24,7 +24,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '2',
+    id: '550e8400-e29b-41d4-a716-446655440003',
     infinitiv: {
       de: 'haben',
       fr: 'avoir',
@@ -37,7 +37,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte gehabt',
       futurI: 'wird haben'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'irregular',
     example: {
       de: 'Sie hat ein Buch.',
@@ -46,7 +46,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '3',
+    id: '550e8400-e29b-41d4-a716-446655440004',
     infinitiv: {
       de: 'gehen',
       fr: 'aller',
@@ -59,7 +59,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'war gegangen',
       futurI: 'wird gehen'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'irregular',
     example: {
       de: 'Wir gehen ins Kino.',
@@ -68,7 +68,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '4',
+    id: '550e8400-e29b-41d4-a716-446655440005',
     infinitiv: {
       de: 'kommen',
       fr: 'venir',
@@ -81,7 +81,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'war gekommen',
       futurI: 'wird kommen'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'irregular',
     example: {
       de: 'Er kommt nach Hause.',
@@ -90,7 +90,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '5',
+    id: '550e8400-e29b-41d4-a716-446655440006',
     infinitiv: {
       de: 'machen',
       fr: 'faire',
@@ -103,7 +103,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte gemacht',
       futurI: 'wird machen'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'regular',
     example: {
       de: 'Ich mache meine Hausaufgaben.',
@@ -112,7 +112,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '6',
+    id: '550e8400-e29b-41d4-a716-446655440007',
     infinitiv: {
       de: 'sehen',
       fr: 'voir',
@@ -125,7 +125,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte gesehen',
       futurI: 'wird sehen'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'irregular',
     example: {
       de: 'Sie sieht den Film.',
@@ -134,7 +134,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '7',
+    id: '550e8400-e29b-41d4-a716-446655440008',
     infinitiv: {
       de: 'hören',
       fr: 'écouter',
@@ -147,7 +147,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte gehört',
       futurI: 'wird hören'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'regular',
     example: {
       de: 'Wir hören Musik.',
@@ -156,7 +156,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '8',
+    id: '550e8400-e29b-41d4-a716-446655440009',
     infinitiv: {
       de: 'sprechen',
       fr: 'parler',
@@ -169,7 +169,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte gesprochen',
       futurI: 'wird sprechen'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'irregular',
     example: {
       de: 'Er spricht Deutsch.',
@@ -178,7 +178,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '9',
+    id: '550e8400-e29b-41d4-a716-446655440010',
     infinitiv: {
       de: 'lernen',
       fr: 'apprendre',
@@ -191,7 +191,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte gelernt',
       futurI: 'wird lernen'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'regular',
     example: {
       de: 'Wir lernen Deutsch.',
@@ -200,7 +200,7 @@ export const mockLevels: VocabularyCard[] = [
     }
   },
   {
-    id: '10',
+    id: '550e8400-e29b-41d4-a716-446655440011',
     infinitiv: {
       de: 'schreiben',
       fr: 'écrire',
@@ -213,7 +213,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte geschrieben',
       futurI: 'wird schreiben'
     },
-    level: 'A1',
+    levelId: 'A1',
     type: 'irregular',
     example: {
       de: 'Sie schreibt einen Brief.',

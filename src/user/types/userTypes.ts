@@ -1,15 +1,13 @@
-import { VocabLevel } from '@levels/types/level';
-import { VocabularyCard } from '@vocabularyCards/types/vocabTypes';
+import { VocabularyCards } from '@vocabularyCards/types/vocabTypes';
 
 export interface UserVocabProgress {
   cardId: string;
   correctAttempts: number;
   incorrectAttempts: number;
-  lastReviewDate: Date;
 }
 
 export interface LevelProgress {
-  level: VocabLevel;
+  levelId: string;
   vocabProgress: UserVocabProgress[];
 }
 
@@ -29,15 +27,10 @@ export interface User {
   name: string;
 }
 
-export interface VocabularyCards {
-  level: VocabLevel;
-  vocab: VocabularyCard[];
-}
-
 export interface UserState {
   user: User | null;
   progress: LevelProgress[];
   preferences: UserPreferences;
   statistics: UserStatistics;
-  vocabularyCards: VocabularyCards[];
+  vocabularyCards: VocabularyCards;
 }

@@ -1,31 +1,16 @@
-import { VocabLevel } from '@levels/types/level';
-import {
-  UserVocabProgress,
-  VocabularyCards,
-  LevelProgress
-} from '@user/types/userTypes';
+import { UserVocabProgress, LevelProgress } from '@user/types/userTypes';
 
 export const MASTERY_THRESHOLD = 3;
 export const MASTERY_MILESTONE = 5;
-
-/**
- * Finds vocabulary cards data for a specific level
- */
-export const findLevelData = (
-  vocabularyCards: VocabularyCards[],
-  level: VocabLevel
-): VocabularyCards | undefined => {
-  return vocabularyCards.find((data) => data.level === level);
-};
 
 /**
  * Finds progress data for a specific level
  */
 export const findLevelProgress = (
   progress: LevelProgress[],
-  level: VocabLevel
+  levelId: string
 ) => {
-  return progress.find((p) => p.level === level);
+  return progress.find((p) => p.levelId === levelId);
 };
 
 /**
@@ -67,11 +52,11 @@ export const isCardMastered = (attempts: number) => {
  * Filters cards that have been mastered in a level
  */
 export const filterMasteredCards = (
-  vocabCards: VocabularyCards['vocab'],
+  cardIds: string[],
   levelProgress: { vocabProgress: UserVocabProgress[] }
 ) => {
-  return vocabCards.filter((card) => {
-    const progress = findCardProgress(levelProgress, card.id);
+  return cardIds.filter((cardId) => {
+    const progress = findCardProgress(levelProgress, cardId);
     return isCardMastered(getCardAttempts(progress));
   });
 };
@@ -80,11 +65,11 @@ export const filterMasteredCards = (
  * Filters cards that have been seen at least once in a level
  */
 export const filterSeenCards = (
-  vocabCards: VocabularyCards['vocab'],
+  cardIds: string[],
   levelProgress: { vocabProgress: UserVocabProgress[] }
 ) => {
-  return vocabCards.filter((card) => {
-    const progress = findCardProgress(levelProgress, card.id);
+  return cardIds.filter((cardId) => {
+    const progress = findCardProgress(levelProgress, cardId);
     return getTotalAttempts(progress) > 0;
   });
 };
@@ -114,18 +99,17 @@ export const calculateSuccessRate = (levelProgress: {
 export const createWordProgress = (id: string): UserVocabProgress => ({
   cardId: id,
   correctAttempts: 1,
-  incorrectAttempts: 0,
-  lastReviewDate: new Date()
+  incorrectAttempts: 0
 });
 
 /**
  * Creates a new level progress object
  */
 export const createLevelProgress = (
-  level: VocabLevel,
+  levelId: string,
   id: string
 ): LevelProgress => ({
-  level,
+  levelId,
   vocabProgress: [createWordProgress(id)]
 });
 
@@ -138,7 +122,7 @@ export const getUpdatedProgressWithNewWord = (
   id: string
 ): LevelProgress[] => {
   return progress.map((p) =>
-    p.level === level_progress.level
+    p.levelId === level_progress.levelId
       ? { ...p, vocabProgress: [...p.vocabProgress, createWordProgress(id)] }
       : p
   );
@@ -149,19 +133,18 @@ export const getUpdatedProgressWithNewWord = (
  */
 export const getUpdatedProgressWithWord = (
   progress: LevelProgress[],
-  level: VocabLevel,
+  levelId: string,
   word: UserVocabProgress
 ): LevelProgress[] => {
   return progress.map((p) =>
-    p.level === level
+    p.levelId === levelId
       ? {
           ...p,
           vocabProgress: p.vocabProgress.map((vp) =>
             vp.cardId === word.cardId
               ? {
                   ...vp,
-                  correctAttempts: vp.correctAttempts + 1,
-                  lastReviewDate: new Date()
+                  correctAttempts: vp.correctAttempts + 1
                 }
               : vp
           )
@@ -175,19 +158,18 @@ export const getUpdatedProgressWithWord = (
  */
 export const getUpdatedProgressWithIncorrectAttempt = (
   progress: LevelProgress[],
-  level: VocabLevel,
+  levelId: string,
   word: UserVocabProgress
 ): LevelProgress[] => {
   return progress.map((p) =>
-    p.level === level
+    p.levelId === levelId
       ? {
           ...p,
           vocabProgress: p.vocabProgress.map((vp) =>
             vp.cardId === word.cardId
               ? {
                   ...vp,
-                  incorrectAttempts: vp.incorrectAttempts + 1,
-                  lastReviewDate: new Date()
+                  incorrectAttempts: vp.incorrectAttempts + 1
                 }
               : vp
           )

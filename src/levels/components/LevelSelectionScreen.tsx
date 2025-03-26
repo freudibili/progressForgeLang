@@ -5,7 +5,7 @@ import { YStack, Text, XStack } from 'tamagui';
 import { LevelCard } from './LevelCard';
 import { MyScreen } from '../../common/components/MyScreen';
 import { useLevelStore } from '../store/levelStore';
-import { Level } from '../types/level';
+import { Level } from '../types/levelTypes';
 
 export function LevelSelectionScreen() {
   const router = useRouter();

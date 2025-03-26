@@ -2,9 +2,8 @@ import { UserVocabProgress } from '@user/types/userTypes';
 
 export const mockProgress: UserVocabProgress[] = [
   {
-    cardId: 'card1',
+    cardId: '550e8400-e29b-41d4-a716-446655440002',
     correctAttempts: 3,
-    incorrectAttempts: 1,
-    lastReviewedAt: new Date('2024-03-23')
+    incorrectAttempts: 1
   }
 ];

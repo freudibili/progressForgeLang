@@ -2,7 +2,7 @@ import { VocabularyCard } from '../../types/vocabTypes';
 
 export const mockLevels: VocabularyCard[] = [
   {
-    id: '18',
+    id: '550e8400-e29b-41d4-a716-446655440014',
     infinitiv: {
       de: 'widersprechen',
       fr: 'contredire',
@@ -15,7 +15,7 @@ export const mockLevels: VocabularyCard[] = [
       plusquamperfekt: 'hatte widersprochen',
       futurI: 'wird widersprechen'
     },
-    level: 'B2',
+    levelId: 'B2',
     type: 'irregular',
     example: {
       de: 'Er widerspricht seinem Chef.',

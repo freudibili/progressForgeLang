@@ -14,7 +14,14 @@ describe('weightedSelection utils', () => {
     });
 
     it('returns correct count for seen cards', () => {
-      expect(getCardProgress(mockCard, mockProgress)).toBe(3);
+      const progress: UserVocabProgress[] = [
+        {
+          cardId: mockCard.id,
+          correctAttempts: 3,
+          incorrectAttempts: 1
+        }
+      ];
+      expect(getCardProgress(mockCard, progress)).toBe(3);
     });
   });
 
@@ -25,8 +32,8 @@ describe('weightedSelection utils', () => {
     });
 
     it('excludes previous card from selection', () => {
-      const result = selectWeightedRandomCard(mockCards, [], 'card1');
-      expect(result?.id).toBe('card2');
+      const result = selectWeightedRandomCard(mockCards, [], mockCards[0].id);
+      expect(result?.id).toBe(mockCards[1].id);
     });
 
     it('returns first card if all others are excluded', () => {
@@ -42,8 +49,12 @@ describe('weightedSelection utils', () => {
       );
 
       // Card2 should be selected more often as it's unseen
-      const card2Selections = selections.filter((card) => card?.id === 'card2');
-      expect(card2Selections.length).toBeGreaterThan(60); // Should be selected >60% of the time
+      const card2Selections = selections.filter(
+        (card) => card?.id === mockCards[1].id
+      );
+      // With weights of 1.0 for unseen and 0.1 for seen cards,
+      // unseen cards should be selected ~91% of the time
+      expect(card2Selections.length).toBeGreaterThan(80); // Should be selected >80% of the time
     });
   });
 });

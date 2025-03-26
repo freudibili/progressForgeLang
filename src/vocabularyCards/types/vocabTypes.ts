@@ -1,5 +1,3 @@
-import { VocabLevel } from '@levels/types/level';
-
 export interface VocabularyCard {
   id: string;
   infinitiv: {
@@ -14,7 +12,7 @@ export interface VocabularyCard {
     plusquamperfekt: string;
     futurI: string;
   };
-  level: VocabLevel;
+  levelId: string;
   type: 'regular' | 'irregular';
   example: {
     de: string;
@@ -23,13 +21,12 @@ export interface VocabularyCard {
   };
 }
 
-export type VocabularyCards = { level: VocabLevel; vocab: VocabularyCard[] }[];
+export type VocabularyCards = VocabularyCard[];
 
 export interface CardProgress {
   cardId: string;
   correctAttempts: number;
   incorrectAttempts: number;
-  lastReviewDate: Date;
   masteryLevel: number;
 }
 

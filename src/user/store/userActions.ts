@@ -10,6 +10,7 @@ type UserActions = {
   updateStatistics: (statistics: Partial<UserStatistics>) => void;
   resetProgress: () => void;
   setLanguage: (language: UserPreferences['language']) => void;
+  setVocabularyCards: (cards: VocabularyCard[]) => void;
 };
 
 export const userActions: UserActions = {
@@ -17,9 +18,9 @@ export const userActions: UserActions = {
     useUserStore.setState({ user });
   },
 
-  markVocabCorrect: ({ id, level }) => {
+  markVocabCorrect: ({ id, levelId }) => {
     const state = useUserStore.getState();
-    const level_progress = findLevelProgress(state.progress, level);
+    const level_progress = findLevelProgress(state.progress, levelId);
 
     if (!level_progress) {
       // Create new level with first word
@@ -27,13 +28,12 @@ export const userActions: UserActions = {
         progress: [
           ...state.progress,
           {
-            level,
+            levelId,
             vocabProgress: [
               {
                 cardId: id,
                 correctAttempts: 1,
-                incorrectAttempts: 0,
-                lastReviewDate: new Date()
+                incorrectAttempts: 0
               }
             ]
           }
@@ -48,8 +48,7 @@ export const userActions: UserActions = {
       level_progress.vocabProgress.push({
         cardId: id,
         correctAttempts: 1,
-        incorrectAttempts: 0,
-        lastReviewDate: new Date()
+        incorrectAttempts: 0
       });
       useUserStore.setState({ progress: [...state.progress] });
       return;
@@ -57,13 +56,12 @@ export const userActions: UserActions = {
 
     // Update existing word
     word.correctAttempts++;
-    word.lastReviewDate = new Date();
     useUserStore.setState({ progress: [...state.progress] });
   },
 
-  markVocabIncorrect: ({ id, level }) => {
+  markVocabIncorrect: ({ id, levelId }) => {
     const state = useUserStore.getState();
-    const level_progress = findLevelProgress(state.progress, level);
+    const level_progress = findLevelProgress(state.progress, levelId);
 
     if (!level_progress) {
       // Create new level with first word
@@ -71,13 +69,12 @@ export const userActions: UserActions = {
         progress: [
           ...state.progress,
           {
-            level,
+            levelId,
             vocabProgress: [
               {
                 cardId: id,
                 correctAttempts: 0,
-                incorrectAttempts: 1,
-                lastReviewDate: new Date()
+                incorrectAttempts: 1
               }
             ]
           }
@@ -92,8 +89,7 @@ export const userActions: UserActions = {
       level_progress.vocabProgress.push({
         cardId: id,
         correctAttempts: 0,
-        incorrectAttempts: 1,
-        lastReviewDate: new Date()
+        incorrectAttempts: 1
       });
       useUserStore.setState({ progress: [...state.progress] });
       return;
@@ -101,7 +97,6 @@ export const userActions: UserActions = {
 
     // Update existing word
     word.incorrectAttempts++;
-    word.lastReviewDate = new Date();
     useUserStore.setState({ progress: [...state.progress] });
   },
 
@@ -128,5 +123,9 @@ export const userActions: UserActions = {
     useUserStore.setState({
       preferences: { ...preferences, language }
     });
+  },
+
+  setVocabularyCards: (cards: VocabularyCard[]) => {
+    useUserStore.setState({ vocabularyCards: cards });
   }
 };

@@ -2,7 +2,7 @@ export type VocabLevel = 'A1' | 'A2' | 'B1' | 'B2';
 
 export interface Level {
   id: string;
-  name: VocabLevel;
+  name: string;
   description: string;
 }
 

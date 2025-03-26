@@ -3,7 +3,6 @@ import { userActions } from '@user/store/userActions';
 import { userSelectors } from '@user/store/userSelectors';
 import { UserVocabProgress } from '@user/types/userTypes';
 import { useCallback, useEffect, useState, useMemo } from 'react';
-import { useUserStore } from '@user/store/userStore';
 
 import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
 import { VocabularyCard } from '../types/vocabTypes';
@@ -21,10 +20,9 @@ export const useVocabularyCardsViewModel = () => {
   // Get current level's cards
   const availableCards = useMemo(() => {
     if (!selectedLevel?.name) return [];
-    const levelData = vocabularyCards.find(
-      (vc) => vc.level === selectedLevel.name
+    return vocabularyCards.filter(
+      (card) => card.levelId === selectedLevel.name
     );
-    return levelData?.vocab ?? [];
   }, [vocabularyCards, selectedLevel?.name]);
 
   // Card Display State
@@ -38,19 +36,16 @@ export const useVocabularyCardsViewModel = () => {
   const [lastAchievedMilestone, setLastAchievedMilestone] = useState(0);
 
   // User Progress Selectors
-  const currentLevel = selectedLevel?.name;
+  const currentLevel = selectedLevel?.name ?? '';
   const practiceHistory = userSelectors.useWordsSeen(currentLevel);
   const { masteredCount: masteredCardsCount, seenCount: totalCardsAttempted } =
-    userSelectors.useCardStats(currentLevel ?? 'A1');
-  const hasCompletedLevel = userSelectors.useAreLevelCardsMastered(
-    currentLevel ?? 'A1'
-  );
-  const { currentMilestone } = userSelectors.useMasteryMilestone(
-    currentLevel ?? 'A1'
-  );
+    userSelectors.useCardStats(currentLevel);
+  const hasCompletedLevel =
+    userSelectors.useAreLevelCardsMastered(currentLevel);
+  const { currentMilestone } = userSelectors.useMasteryMilestone(currentLevel);
   const activeCardCorrectAttempts = userSelectors.useCardProgress(
     activeCard?.id ?? '',
-    currentLevel ?? 'A1'
+    currentLevel
   );
 
   // Card Selection Logic
@@ -60,8 +55,8 @@ export const useVocabularyCardsViewModel = () => {
 
       // Convert practice history to UserVocabProgress format
       const seenCards: UserVocabProgress[] = (practiceHistory ?? []).map(
-        (card) => ({
-          cardId: card.id,
+        (cardId) => ({
+          cardId,
           correctAttempts: 0,
           incorrectAttempts: 0,
           lastReviewDate: new Date()
@@ -96,13 +91,6 @@ export const useVocabularyCardsViewModel = () => {
       loadCards(selectedLevel.name);
     }
   }, [selectedLevel?.name, loadCards, resetCardState]);
-
-  // Sync cards to user store
-  useEffect(() => {
-    if (vocabularyCards.length > 0) {
-      useUserStore.setState({ vocabularyCards });
-    }
-  }, [vocabularyCards]);
 
   // Initial Card Selection Effect
   useEffect(() => {
