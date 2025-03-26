@@ -19,6 +19,7 @@ export const levelService = {
       }
 
       const data = await response.json();
+
       return { data, error: null };
     } catch (error) {
       return {

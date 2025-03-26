@@ -18,6 +18,7 @@ export const vocabularyCardActions: VocabularyCardActions = {
       const filteredCards = currentCards.filter(
         (card) => card.levelId !== level
       );
+
       // Add new cards
       useVocabularyCardStore.setState({
         vocabularyCards: [...filteredCards, ...data],

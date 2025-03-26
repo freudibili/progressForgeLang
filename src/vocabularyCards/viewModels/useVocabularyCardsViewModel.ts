@@ -21,11 +21,9 @@ export const useVocabularyCardsViewModel = () => {
 
   // Get current level's cards
   const availableCards = useMemo(() => {
-    if (!selectedLevel?.name) return [];
-    return vocabularyCards.filter(
-      (card) => card.levelId === selectedLevel.name
-    );
-  }, [vocabularyCards, selectedLevel?.name]);
+    if (!selectedLevel?.id) return [];
+    return vocabularyCards.filter((card) => card.levelId === selectedLevel.id);
+  }, [vocabularyCards, selectedLevel?.id]);
 
   // Card Display State
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +36,7 @@ export const useVocabularyCardsViewModel = () => {
   const [lastAchievedMilestone, setLastAchievedMilestone] = useState(0);
 
   // User Progress Selectors
-  const currentLevel = selectedLevel?.name ?? '';
+  const currentLevel = selectedLevel?.id ?? '';
   const practiceHistory = userSelectors.useWordsSeen(currentLevel);
   const { masteredCount: masteredCardsCount, seenCount: totalCardsAttempted } =
     userSelectors.useCardStats(currentLevel);

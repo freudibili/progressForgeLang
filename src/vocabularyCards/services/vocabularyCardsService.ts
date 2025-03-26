@@ -19,6 +19,7 @@ export const vocabularyCardService = {
       }
 
       const data = await response.json();
+
       return { data, error: null };
     } catch (error) {
       return {
