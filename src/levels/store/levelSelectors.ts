@@ -1,10 +1,9 @@
-import { LevelState } from '../types/levelTypes';
-import { useLevelStore } from './levelStore';
+import { LevelState, useLevelStore } from './levelStore';
 
 export const levelSelectors = {
   useLevels: () => useLevelStore((state: LevelState) => state.levels),
-  useSelectedLevel: () =>
-    useLevelStore((state: LevelState) => state.selectedLevel),
+  useCurrentLevel: () =>
+    useLevelStore((state: LevelState) => state.currentLevel),
   useIsLoading: () => useLevelStore((state: LevelState) => state.isLoading),
   useError: () => useLevelStore((state: LevelState) => state.error)
 };

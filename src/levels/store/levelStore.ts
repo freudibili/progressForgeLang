@@ -1,9 +1,16 @@
 import { create } from 'zustand';
-import { LevelState } from '../types/levelTypes';
+import { Level } from '../types/levelTypes';
+
+export interface LevelState {
+  levels: Level[];
+  currentLevel: Level | null;
+  isLoading: boolean;
+  error: string | null;
+}
 
 export const useLevelStore = create<LevelState>(() => ({
   levels: [],
-  selectedLevel: null,
+  currentLevel: null,
   isLoading: false,
   error: null
 }));

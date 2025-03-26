@@ -1,16 +1,30 @@
-import { mockLevels } from './levelMockData';
+import { getErrorMessage } from '../../vocabularyCards/utils/errorUtils';
 import { Level } from '../types/levelTypes';
 
-export const levelService = {
-  getLevels: async (): Promise<Level[]> => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockLevels;
-  },
+const LEVELS_API_URL =
+  'https://gist.github.com/freudibili/d79e0e30abe713b8f02668ea8f9363df/raw';
 
-  getLevelById: async (id: string): Promise<Level | null> => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockLevels.find((level) => level.id === id) || null;
+export const levelService = {
+  getLevels: async (): Promise<{
+    data: Level[] | null;
+    error: string | null;
+  }> => {
+    try {
+      const response = await fetch(LEVELS_API_URL);
+      if (!response.ok) {
+        return {
+          data: null,
+          error: getErrorMessage(`HTTP error! status: ${response.status}`)
+        };
+      }
+
+      const data = await response.json();
+      return { data, error: null };
+    } catch (error) {
+      return {
+        data: null,
+        error: getErrorMessage(error, 'Failed to fetch levels')
+      };
+    }
   }
 };

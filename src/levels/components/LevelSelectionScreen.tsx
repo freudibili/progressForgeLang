@@ -15,7 +15,7 @@ export function LevelSelectionScreen() {
   const error = levelSelectors.useError();
 
   useEffect(() => {
-    levelActions.fetchLevels();
+    levelActions.loadLevels();
   }, []);
 
   const handleLevelSelect = (level: Level) => {
