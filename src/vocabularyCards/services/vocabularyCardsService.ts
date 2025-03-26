@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@vocabularyCards/utils/errorUtils';
 import { VocabularyCard } from '../types/vocabTypes';
 import { mockLevels as A1MockLevels } from './mocks/A1VocabularyCardMockData';
 import { mockLevels as A2MockLevels } from './mocks/A2VocabularyCardMockData';
@@ -30,7 +31,7 @@ export const vocabularyCardService = {
     } catch (error) {
       return {
         data: [],
-        error: error instanceof Error ? error.message : 'Failed to fetch cards'
+        error: getErrorMessage(error, 'Failed to fetch cards')
       };
     }
   }

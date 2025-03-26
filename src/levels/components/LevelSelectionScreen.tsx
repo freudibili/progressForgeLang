@@ -4,20 +4,22 @@ import { YStack, Text, XStack } from 'tamagui';
 
 import { LevelCard } from './LevelCard';
 import { MyScreen } from '../../common/components/MyScreen';
-import { useLevelStore } from '../store/levelStore';
+import { levelActions } from '../store/levelActions';
+import { levelSelectors } from '../store/levelSelectors';
 import { Level } from '../types/levelTypes';
 
 export function LevelSelectionScreen() {
   const router = useRouter();
-  const { levels, isLoading, error, fetchLevels, selectLevel } =
-    useLevelStore();
+  const levels = levelSelectors.useLevels();
+  const isLoading = levelSelectors.useIsLoading();
+  const error = levelSelectors.useError();
 
   useEffect(() => {
-    fetchLevels();
-  }, [fetchLevels]);
+    levelActions.fetchLevels();
+  }, []);
 
   const handleLevelSelect = (level: Level) => {
-    selectLevel(level);
+    levelActions.selectLevel(level);
     router.replace(`./vocabularyCards`);
   };
 

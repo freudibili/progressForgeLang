@@ -1,8 +1,9 @@
+import { useVocabularyCardStore } from '@vocabularyCards/store/vocabularyCardsStore';
+
 import { userSelectors } from '../userSelectors';
 import { useUserStore } from '../userStore';
-import { useVocabularyCardStore } from '@vocabularyCards/store/vocabularyCardsStore';
-import { mockUserProgress } from './__mocks__/mockUserVocab';
 import { mockCards } from './__mocks__/mockUserStoreCards';
+import { mockUserProgress } from './__mocks__/mockUserVocab';
 
 // Mock the Zustand stores
 const mockUseUserStore = useUserStore as unknown as jest.Mock;

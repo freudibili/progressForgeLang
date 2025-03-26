@@ -1,7 +1,8 @@
-import { useLevelStore } from '@levels/store/levelStore';
+import { levelSelectors } from '@levels/store/levelSelectors';
 import { userActions } from '@user/store/userActions';
 import { userSelectors } from '@user/store/userSelectors';
 import { UserVocabProgress } from '@user/types/userTypes';
+import { vocabularyCardActions } from '@vocabularyCards/store/vocabularyCardActions';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 
 import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
@@ -12,10 +13,11 @@ export const useVocabularyCardsViewModel = () => {
   const {
     vocabularyCards,
     isLoading: isCardsLoading,
-    error,
-    loadCards
+    error
   } = useVocabularyCardStore();
-  const { selectedLevel } = useLevelStore();
+
+  const { loadCards } = vocabularyCardActions;
+  const selectedLevel = levelSelectors.useSelectedLevel();
 
   // Get current level's cards
   const availableCards = useMemo(() => {
@@ -58,8 +60,7 @@ export const useVocabularyCardsViewModel = () => {
         (cardId) => ({
           cardId,
           correctAttempts: 0,
-          incorrectAttempts: 0,
-          lastReviewDate: new Date()
+          incorrectAttempts: 0
         })
       );
 

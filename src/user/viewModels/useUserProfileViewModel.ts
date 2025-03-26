@@ -1,19 +1,9 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useVocabularyCardStore } from '@vocabularyCards/store/vocabularyCardsStore';
+import { useCallback, useState } from 'react';
 import { userSelectors } from '../store/userSelectors';
 
 export const useUserProfileViewModel = () => {
-  const { vocabularyCards } = useVocabularyCardStore();
-
   // Get unique levels from vocabulary cards
-  const levels = useMemo(
-    () =>
-      vocabularyCards
-        .map((card) => card.levelId)
-        .filter((value, index, self) => self.indexOf(value) === index)
-        .sort((a, b) => a.localeCompare(b)),
-    [vocabularyCards]
-  );
+  const levels = userSelectors.useLevels();
 
   // Active tab state
   const [activeTab, setActiveTab] = useState<string>(levels[0] ?? '');

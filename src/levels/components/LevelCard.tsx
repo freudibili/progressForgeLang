@@ -14,11 +14,11 @@ export function LevelCard({ level, onSelect }: LevelCardProps) {
       size="$5"
       theme="active"
       onPress={() => onSelect(level)}
-      minWidth="47%"
-      flex={1}
-      minHeight="160"
+      width="47%"
+      height={160}
+      padding="$4"
     >
-      <YStack>
+      <YStack flex={1} justifyContent="center">
         <Text fontSize="$4" fontWeight="bold">
           {level.name}
         </Text>
