@@ -17,7 +17,7 @@ export const useVocabularyCardsViewModel = () => {
   } = useVocabularyCardStore();
 
   const { loadCards } = vocabularyCardActions;
-  const selectedLevel = levelSelectors.useSelectedLevel();
+  const selectedLevel = levelSelectors.useCurrentLevel();
 
   // Get current level's cards
   const availableCards = useMemo(() => {
@@ -87,11 +87,11 @@ export const useVocabularyCardsViewModel = () => {
 
   // Load Cards Effect
   useEffect(() => {
-    if (selectedLevel?.name) {
+    if (selectedLevel?.id) {
       resetCardState();
-      loadCards(selectedLevel.name);
+      loadCards(selectedLevel.id);
     }
-  }, [selectedLevel?.name, loadCards, resetCardState]);
+  }, [selectedLevel?.id, loadCards, resetCardState]);
 
   // Initial Card Selection Effect
   useEffect(() => {
