@@ -1,11 +1,11 @@
 import { MyScreen } from '@common/components/MyScreen';
 import React from 'react';
-import { Text, YStack } from 'tamagui';
 
 import { CardDisplay } from './CardDisplay';
 import { CardFooter } from './CardFooter';
 import { CompletionScreen } from './CompletionScreen';
 import { MasteryModal } from './MasteryModal';
+import { NoLevelSelectedScreen } from './NoLevelSelectedScreen';
 import { VocabularyStats } from './VocabularyStats';
 import { useVocabularyCardsViewModel } from '../viewModels/useVocabularyCardsViewModel';
 
@@ -33,13 +33,7 @@ export const VocabularyCardsScreen = () => {
   } = useVocabularyCardsViewModel();
 
   if (!selectedLevel) {
-    return (
-      <MyScreen title="Vocabulary Cards">
-        <YStack flex={1} justifyContent="center" alignItems="center">
-          <Text>Please select a level to start practicing</Text>
-        </YStack>
-      </MyScreen>
-    );
+    return <NoLevelSelectedScreen />;
   }
 
   if (hasCompletedLevel) {

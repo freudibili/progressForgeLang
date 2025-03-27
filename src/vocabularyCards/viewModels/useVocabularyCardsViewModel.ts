@@ -87,9 +87,9 @@ export const useVocabularyCardsViewModel = () => {
   useEffect(() => {
     if (selectedLevel?.id) {
       resetCardState();
-      loadCards(selectedLevel.id);
+      loadCards(selectedLevel);
     }
-  }, [selectedLevel?.id, loadCards, resetCardState]);
+  }, [selectedLevel, loadCards, resetCardState]);
 
   // Initial Card Selection Effect
   useEffect(() => {
