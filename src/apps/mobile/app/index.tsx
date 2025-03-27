@@ -1,6 +1,5 @@
 import { LevelSelectionScreen } from '@levels/components/LevelSelectionScreen';
-import React from 'react';
 
-export default function HomeScreen() {
+export default function Index() {
   return <LevelSelectionScreen />;
 }

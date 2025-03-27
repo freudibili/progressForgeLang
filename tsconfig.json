@@ -4,13 +4,13 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@auth/*": ["src/auth/*"],
-      "@user/*": ["src/user/*"],
-      "@vocabularyCards/*": ["src/vocabularyCards/*"],
-      "@mobile/*": ["src/mobile/*"],
-      "@web/*": ["src/web/*"],
+      "@/*": ["src/*"],
+      "@apps/*": ["src/apps/*"],
+      "@common/*": ["src/common/*"],
       "@levels/*": ["src/levels/*"],
-      "@common/*": ["src/common/*"]
+      "@vocabularyCards/*": ["src/vocabularyCards/*"],
+      "@user/*": ["src/user/*"],
+      "@auth/*": ["src/auth/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

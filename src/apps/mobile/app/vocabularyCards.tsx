@@ -1,6 +1,5 @@
 import { VocabularyCardsScreen } from '@vocabularyCards/components/VocabularyCardsScreen';
-import React from 'react';
 
-export default function CardsRoute() {
+export default function VocabularyCards() {
   return <VocabularyCardsScreen />;
 }

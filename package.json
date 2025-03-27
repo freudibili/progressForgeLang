@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "expo start",
-    "web": "cd src/web && npm run dev",
+    "web": "cd src/apps/web && npm run dev",
     "lint": "eslint . --ext .ts,.tsx --config .eslintrc.json",
     "lint:fix": "eslint . --ext .ts,.tsx --config .eslintrc.json --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\"",

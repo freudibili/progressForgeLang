@@ -7,7 +7,7 @@ const App: FC = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ExpoRoot context={require.context('./src/mobile/app')} />
+        <ExpoRoot context={require.context('./src/apps/mobile/app')} />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

@@ -1,46 +1,35 @@
 import type { ConfigAPI } from '@babel/core';
 
-interface BabelConfig {
-  presets: (string | [string, Record<string, unknown>])[];
-  plugins: (string | [string, Record<string, unknown>] | [string, unknown])[];
-}
-
-export default function (api: ConfigAPI): BabelConfig {
+export default function babelConfig(api: ConfigAPI) {
   api.cache.forever();
   return {
     presets: ['babel-preset-expo'],
     plugins: [
       'expo-router/babel',
+      'react-native-reanimated/plugin',
       [
-        'transform-inline-environment-variables',
+        'module-resolver',
         {
-          include: ['TAMAGUI_TARGET', 'EXPO_ROUTER_APP_ROOT']
+          root: ['./'],
+          alias: {
+            '@': './src',
+            '@apps': './src/apps',
+            '@common': './src/common',
+            '@levels': './src/levels',
+            '@vocabularyCards': './src/vocabularyCards',
+            '@user': './src/user',
+            '@auth': './src/auth'
+          }
         }
       ],
       [
         '@tamagui/babel-plugin',
         {
           components: ['tamagui'],
-          config: './src/mobile/tamagui.config.ts',
+          config: './tamagui.config.ts',
           logTimings: true
         }
-      ],
-      [
-        'module-resolver',
-        {
-          root: ['./src'],
-          alias: {
-            '@levels': './src/levels',
-            '@common': './src/common',
-            '@auth': './src/auth',
-            '@user': './src/user',
-            '@vocabularyCard': './src/vocabularyCard',
-            '@mobile': './src/mobile',
-            '@web': './src/web'
-          }
-        }
-      ],
-      'react-native-reanimated/plugin'
+      ]
     ]
   };
 }

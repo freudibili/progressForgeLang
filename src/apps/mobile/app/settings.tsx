@@ -1,6 +1,5 @@
 import { UserSettingsScreen } from '@user/components/UserSettingsScreen';
-import React from 'react';
 
-export default function SettingsScreen() {
+export default function Settings() {
   return <UserSettingsScreen />;
 }
