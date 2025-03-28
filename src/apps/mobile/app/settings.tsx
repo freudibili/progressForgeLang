@@ -1,5 +1,5 @@
-import { UserSettingsScreen } from '@user/components/UserSettingsScreen';
+import { SettingsScreen } from '@/settings/components/SettingsScreen';
 
 export default function Settings() {
-  return <UserSettingsScreen />;
+  return <SettingsScreen />;
 }

@@ -1,7 +1,5 @@
-import {
-  VocabularyCardState,
-  useVocabularyCardStore
-} from './vocabularyCardsStore';
+import { VocabularyCardState } from './types';
+import { useVocabularyCardStore } from './vocabularyCardsStore';
 
 export const vocabularyCardSelectors = {
   useVocabularyCards: () =>

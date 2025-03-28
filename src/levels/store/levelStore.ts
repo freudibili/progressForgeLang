@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 import { levelActions } from './levelActions';
 import { Level } from '../types/levelTypes';
 
-import { storageUtils } from '@/utils/storage';
+import { storageUtils } from '@/common/utils/storage';
 
 export interface State {
   levels: Level[];

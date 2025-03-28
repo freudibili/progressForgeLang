@@ -11,7 +11,7 @@ import {
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { userActions } from './userActions';
-import { storageUtils } from '@/utils/storage';
+import { storageUtils } from '@/common/utils/storage';
 
 export interface UserState {
   user: User | null;
