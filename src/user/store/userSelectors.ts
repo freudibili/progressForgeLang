@@ -12,19 +12,23 @@ import {
   isCardMastered
 } from '@user/utils/progressUtils';
 import { useMemo } from 'react';
+import { levelSelectors } from '../../levels/store/levelSelectors';
 
 export const userSelectors = {
   useUser: () => useUserStore((state: UserState) => state.user),
 
   useLevels: () => {
     const { vocabularyCards } = useVocabularyCardStore();
+    const availableLevels = levelSelectors.useLevels();
+
     return useMemo(
       () =>
-        vocabularyCards
-          .map((card) => card.levelId)
-          .filter((value, index, self) => self.indexOf(value) === index)
-          .sort((a, b) => a.localeCompare(b)),
-      [vocabularyCards]
+        availableLevels
+          .filter((level) =>
+            vocabularyCards.some((card) => card.levelId === level.id)
+          )
+          .sort((a, b) => a.id.localeCompare(b.id)),
+      [vocabularyCards, availableLevels]
     );
   },
 

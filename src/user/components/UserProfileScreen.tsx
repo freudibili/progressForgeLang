@@ -1,6 +1,7 @@
 import { MyScreen } from '@common/components/MyScreen';
 import React from 'react';
 import { YStack, Text, XStack, H3, Tabs, Separator } from 'tamagui';
+
 import { useUserProfileViewModel } from '../viewModels/useUserProfileViewModel';
 
 export function UserProfileScreen() {
@@ -20,8 +21,8 @@ export function UserProfileScreen() {
       <Tabs value={activeTab} onValueChange={handleTabChange} width="100%">
         <Tabs.List width="100%" justifyContent="space-between">
           {levels.map((level) => (
-            <Tabs.Tab key={level} value={level} flex={1}>
-              <Text>{level}</Text>
+            <Tabs.Tab key={level.id} value={level.id} flex={1}>
+              <Text>{level.name}</Text>
             </Tabs.Tab>
           ))}
         </Tabs.List>

@@ -6,7 +6,7 @@ export const useUserProfileViewModel = () => {
   const levels = userSelectors.useLevels();
 
   // Active tab state
-  const [activeTab, setActiveTab] = useState<string>(levels[0] ?? '');
+  const [activeTab, setActiveTab] = useState<string>(levels[0]?.id ?? '');
 
   // Stats for the active level
   const { masteredCount, seenCount } = userSelectors.useCardStats(activeTab);

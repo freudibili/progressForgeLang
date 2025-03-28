@@ -1,27 +1,13 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { YStack, Text, XStack } from 'tamagui';
 
 import { LevelCard } from './LevelCard';
 import { MyScreen } from '../../common/components/MyScreen';
-import { levelActions } from '../store/levelActions';
-import { levelSelectors } from '../store/levelSelectors';
-import { Level } from '../types/levelTypes';
+import { useLevelSelectionViewModel } from '../viewModels/LevelSelectionViewModel';
 
 export function LevelSelectionScreen() {
-  const router = useRouter();
-  const levels = levelSelectors.useLevels();
-  const isLoading = levelSelectors.useIsLoading();
-  const error = levelSelectors.useError();
-
-  useEffect(() => {
-    levelActions.loadLevels();
-  }, []);
-
-  const handleLevelSelect = (level: Level) => {
-    levelActions.selectLevel(level);
-    router.replace(`./vocabularyCards`);
-  };
+  const { levels, isLoading, error, handleLevelSelect } =
+    useLevelSelectionViewModel();
 
   return (
     <MyScreen title="Choose Your Level" error={error} loading={isLoading}>
@@ -29,7 +15,7 @@ export function LevelSelectionScreen() {
         <Text>Select a level to start practicing your vocabulary</Text>
 
         <XStack flexWrap="wrap" justifyContent="space-between" gap="$4">
-          {levels.map((level: Level) => (
+          {levels.map((level) => (
             <LevelCard
               key={level.id}
               level={level}
