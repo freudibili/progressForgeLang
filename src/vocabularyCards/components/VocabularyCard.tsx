@@ -2,6 +2,10 @@ import React from 'react';
 import { Card, Text, YStack } from 'tamagui';
 
 import { VocabularyCard as VocabularyCardType } from '../types/vocabTypes';
+import { getTranslation } from '../utils/translationUtils';
+
+import { selectedLanguage } from '@/settings/store/settingsSelectors';
+import { useSettingsStore } from '@/settings/store/settingsStore';
 
 interface VocabularyCardProps {
   card: VocabularyCardType;
@@ -16,6 +20,11 @@ export const VocabularyCard: React.FC<VocabularyCardProps> = ({
   isRevealed,
   onPress
 }) => {
+  const currentLanguage = useSettingsStore(selectedLanguage);
+
+  const mainTranslation = getTranslation(card, 'de'); // German is always the main language to learn
+  const userTranslation = getTranslation(card, currentLanguage);
+
   return (
     <Card
       elevate
@@ -29,7 +38,7 @@ export const VocabularyCard: React.FC<VocabularyCardProps> = ({
       <Card.Header padded>
         {iconHeader}
         <Text fontSize="$8" textAlign="center" fontWeight="bold">
-          {card.infinitiv.de}
+          {mainTranslation.infinitiv}
         </Text>
       </Card.Header>
 
@@ -37,15 +46,15 @@ export const VocabularyCard: React.FC<VocabularyCardProps> = ({
         <Card.Footer padded>
           <YStack gap="$4" width="100%">
             <Text fontSize="$6" textAlign="center" fontWeight="bold">
-              {card.infinitiv.fr}
+              {userTranslation.infinitiv}
             </Text>
 
             <YStack gap="$2">
               <Text fontSize="$4" textAlign="center">
-                {card.example.de}
+                {mainTranslation.example}
               </Text>
               <Text fontSize="$4" textAlign="center" color="$gray10">
-                {card.example.fr}
+                {userTranslation.example}
               </Text>
             </YStack>
           </YStack>

@@ -1,4 +1,4 @@
-export type Language = 'en' | 'fr' | 'de' | 'uk';
+export type Language = 'en' | 'fr' | 'de' | 'uk' | 'er' | 'af';
 
 export interface SettingsState {
   language: Language;

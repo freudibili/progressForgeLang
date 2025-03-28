@@ -4,6 +4,9 @@ export interface VocabularyCard {
     de: string;
     fr: string;
     en: string;
+    uk: string;
+    er: string;
+    af: string;
   };
   conjugation: {
     präsens: string;
@@ -18,6 +21,9 @@ export interface VocabularyCard {
     de: string;
     fr: string;
     en: string;
+    uk: string;
+    er: string;
+    af: string;
   };
 }
 
