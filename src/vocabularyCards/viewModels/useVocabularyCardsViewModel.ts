@@ -55,7 +55,7 @@ export const useVocabularyCardsViewModel = () => {
 
       // Convert practice history to UserVocabProgress format
       const seenCards: UserVocabProgress[] = (practiceHistory ?? []).map(
-        (cardId) => ({
+        (cardId: string) => ({
           cardId,
           correctAttempts: 0,
           incorrectAttempts: 0

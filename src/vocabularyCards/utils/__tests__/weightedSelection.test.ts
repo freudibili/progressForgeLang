@@ -1,27 +1,22 @@
-import { UserVocabProgress } from '@user/types/userTypes';
 import {
   getCardProgress,
   selectWeightedRandomCard
 } from '../weightedSelection';
 import { mockCard, mockCards } from './__mocks__/mockVocabularyCards';
 import { mockProgress } from './__mocks__/mockUserProgress';
+import mockAsyncStorage from './__mocks__/asyncStorage';
+
+// Mock AsyncStorage
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 describe('weightedSelection utils', () => {
   describe('getCardProgress', () => {
     it('returns 0 for unseen cards', () => {
-      const progress: UserVocabProgress[] = [];
-      expect(getCardProgress(mockCard, progress)).toBe(0);
+      expect(getCardProgress(mockCard, mockProgress)).toBe(0);
     });
 
     it('returns correct count for seen cards', () => {
-      const progress: UserVocabProgress[] = [
-        {
-          cardId: mockCard.id,
-          correctAttempts: 3,
-          incorrectAttempts: 1
-        }
-      ];
-      expect(getCardProgress(mockCard, progress)).toBe(3);
+      expect(getCardProgress(mockCards[0], mockProgress)).toBe(3);
     });
   });
 
@@ -52,9 +47,9 @@ describe('weightedSelection utils', () => {
       const card2Selections = selections.filter(
         (card) => card?.id === mockCards[1].id
       );
-      // With weights of 1.0 for unseen and 0.1 for seen cards,
-      // unseen cards should be selected ~91% of the time
-      expect(card2Selections.length).toBeGreaterThan(80); // Should be selected >80% of the time
+      // With weights of 1.0 for unseen, 20 for one correct, 40 for two correct, and 0.001 for mastered cards,
+      // unseen cards should be selected ~60% of the time
+      expect(card2Selections.length).toBeGreaterThan(50); // Should be selected >50% of the time
     });
   });
 });

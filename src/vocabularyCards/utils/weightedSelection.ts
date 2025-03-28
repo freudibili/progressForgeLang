@@ -14,13 +14,13 @@ export const getCardProgress = (
 const calculateCardWeight = (correctAttempts: number): number => {
   switch (correctAttempts) {
     case 0:
-      return 1.0; // Highest priority for unseen cards
+      return 1;
     case 1:
-      return 0.8; // High priority for cards with one correct answer
+      return 20;
     case 2:
-      return 0.5; // Medium priority for cards with two correct answers
+      return 40;
     default:
-      return 0.1; // Low priority for well-practiced cards
+      return 0.001;
   }
 };
 
