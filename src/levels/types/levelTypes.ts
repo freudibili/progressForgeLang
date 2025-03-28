@@ -6,6 +6,8 @@ export interface Level {
   url: string;
 }
 
+export type GroupedLevels = Record<string, Level[]>;
+
 export interface LevelState {
   levels: Level[];
   selectedLevel: Level | null;

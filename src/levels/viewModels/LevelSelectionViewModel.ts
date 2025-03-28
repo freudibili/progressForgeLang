@@ -7,7 +7,7 @@ import { Level } from '../types/levelTypes';
 
 export function useLevelSelectionViewModel() {
   const router = useRouter();
-  const levels = levelSelectors.useLevels();
+  const levelsByCategory = levelSelectors.useLevelsByCategory();
   const isLoading = levelSelectors.useIsLoading();
   const error = levelSelectors.useError();
 
@@ -15,14 +15,13 @@ export function useLevelSelectionViewModel() {
     levelActions.loadLevels();
   }, []);
 
-  console.log(levels);
   const handleLevelSelect = (level: Level) => {
     levelActions.selectLevel(level);
     router.replace(`./vocabularyCards`);
   };
 
   return {
-    levels,
+    levelsByCategory,
     isLoading,
     error,
     handleLevelSelect

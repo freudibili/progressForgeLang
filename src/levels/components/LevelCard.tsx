@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, YStack } from 'tamagui';
+import { XStack, YStack, Text } from 'tamagui';
 
 import { Level } from '../types/levelTypes';
 
@@ -10,22 +10,21 @@ interface LevelCardProps {
 
 export function LevelCard({ level, onSelect }: LevelCardProps) {
   return (
-    <Button
-      size="$5"
-      theme="active"
-      onPress={() => onSelect(level)}
-      width="47%"
-      height={160}
+    <XStack
       padding="$4"
+      backgroundColor="$gray5"
+      borderRadius="$4"
+      onPress={() => onSelect(level)}
+      pressStyle={{ opacity: 0.7 }}
     >
-      <YStack flex={1} justifyContent="center">
-        <Text fontSize="$4" fontWeight="bold">
+      <YStack flex={1}>
+        <Text fontSize="$5" fontWeight="600">
           {level.name}
         </Text>
-        <Text fontSize="$3" opacity={0.7}>
+        <Text fontSize="$3" color="$gray11">
           {level.description}
         </Text>
       </YStack>
-    </Button>
+    </XStack>
   );
 }
