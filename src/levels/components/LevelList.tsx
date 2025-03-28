@@ -18,7 +18,7 @@ export function LevelList({ levelsByCategory, onLevelSelect }: LevelListProps) {
           <Text fontSize="$6" fontWeight="bold" color="$blue10">
             {capitalizeFirstLetter(category)}
           </Text>
-          <YStack gap="$2">
+          <YStack gap="$2" marginBottom="$4">
             {categoryLevels.map((level, index) => (
               <React.Fragment key={level.id}>
                 <LevelCard level={level} onSelect={onLevelSelect} />

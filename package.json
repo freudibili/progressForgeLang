@@ -38,7 +38,8 @@
     "react-native-svg": "^15.11.2",
     "react-native-web": "~0.19.13",
     "tamagui": "^1.125.26",
-    "zustand": "^4.5.6"
+    "zustand": "^4.5.6",
+    "@react-native-async-storage/async-storage": "1.23.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
