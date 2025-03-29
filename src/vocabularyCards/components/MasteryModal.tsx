@@ -1,5 +1,8 @@
-import { Button, Dialog, Text, XStack, YStack } from 'tamagui';
+import { Dialog, H3, H2, XStack, YStack, Text, Circle, H5 } from 'tamagui';
+import { Trophy } from '@tamagui/lucide-icons';
+
 import React from 'react';
+import { Button } from '@/common/components/MyButton';
 
 type MasteryModalProps = {
   open: boolean;
@@ -38,20 +41,24 @@ export const MasteryModal = ({
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           gap="$4"
         >
-          <YStack gap="$4" padding="$4">
-            <Text fontSize="$8" textAlign="center" fontWeight="bold">
-              🎉 Congratulations! 🎉
-            </Text>
-            <Text fontSize="$6" textAlign="center">
-              You've mastered {masteredCount} verbs!
-            </Text>
-            <Text fontSize="$5" textAlign="center" color="$gray10">
-              Keep up the great work!
-            </Text>
+          <YStack gap="$4" padding="$4" justifyContent="center">
+            <H2 textAlign="center" fontWeight="bold">
+              Congratulations!
+            </H2>
+            <H3 textAlign="center">
+              You've mastered <Text fontWeight="bold">{masteredCount}</Text>{' '}
+              verbs!
+            </H3>
+            <XStack justifyContent="center">
+              <Circle size={80} backgroundColor="$yellow10">
+                <Trophy size={40} color="$yellow5" />
+              </Circle>
+            </XStack>
+            <XStack alignItems="center" justifyContent="center" gap="$2">
+              <H5 textAlign="center">Keep up the great work!</H5>
+            </XStack>
             <XStack justifyContent="center" paddingTop="$2">
-              <Button theme="active" size="$4" onPress={onClose}>
-                Continue Learning
-              </Button>
+              <Button onPress={onClose}>Continue Learning</Button>
             </XStack>
           </YStack>
         </Dialog.Content>

@@ -10,7 +10,7 @@ export function LevelSelectionScreen() {
     useLevelSelectionViewModel();
 
   return (
-    <MyScreen title="Choose Your Level" error={error} loading={isLoading}>
+    <MyScreen title="Welcome" error={error} loading={isLoading}>
       <ScrollView>
         <LevelList
           levelsByCategory={levelsByCategory}

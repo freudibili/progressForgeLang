@@ -1,8 +1,11 @@
+import { Check } from '@tamagui/lucide-icons';
 import React from 'react';
-import { Text, YStack, XStack, H3 } from 'tamagui';
-import { useSettingsStore } from '../store/settingsStore';
-import { selectedLanguage } from '../store/settingsSelectors';
+import { Text, YStack, XStack, H3, Circle } from 'tamagui';
+
 import { LANGUAGES } from '../constants/languages';
+import { selectedLanguage } from '../store/settingsSelectors';
+import { useSettingsStore } from '../store/settingsStore';
+
 import { MyScreen } from '@/common/components/MyScreen';
 
 export const SettingsScreen: React.FC = () => {
@@ -10,37 +13,43 @@ export const SettingsScreen: React.FC = () => {
   const setLanguage = useSettingsStore((state) => state.setLanguage);
 
   return (
-    <MyScreen>
+    <MyScreen title="Settings">
       <YStack gap="$2">
-        <H3>Language Settings</H3>
-        <Text>
-          Choose your preferred language for translations and examples
-        </Text>
+        <H3>Language</H3>
       </YStack>
       {LANGUAGES.map((lang) => (
         <XStack
           key={lang.value}
           onPress={() => setLanguage(lang.value)}
-          padding="$3"
+          padding="$1"
           pressStyle={{ opacity: 0.7 }}
           alignItems="center"
         >
           <YStack flex={1}>
             <Text
-              fontSize="$5"
-              color={language === lang.value ? '$blue11' : '$gray12'}
+              fontSize="$4"
+              color={language === lang.value ? 'black' : '$gray11'}
               fontWeight={language === lang.value ? 'bold' : 'normal'}
             >
               {lang.label}
             </Text>
             <Text
-              fontSize="$4"
-              color={language === lang.value ? '$blue11' : '$gray11'}
+              fontSize="$3"
+              color={language === lang.value ? 'black' : '$gray11'}
             >
               {lang.nativeName}
             </Text>
           </YStack>
-          {language === lang.value && <Text color="$blue11">✓</Text>}
+          {language === lang.value && (
+            <Circle
+              size={20}
+              backgroundColor="black"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Check size={14} color="white" />
+            </Circle>
+          )}
         </XStack>
       ))}
     </MyScreen>

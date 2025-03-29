@@ -6,6 +6,7 @@ import { getTranslation } from '../utils/translationUtils';
 
 import { selectedLanguage } from '@/settings/store/settingsSelectors';
 import { useSettingsStore } from '@/settings/store/settingsStore';
+import { capitalizeFirstLetter } from '@/common/utils/stringUtils';
 
 interface VocabularyCardProps {
   card: VocabularyCardType;
@@ -27,19 +28,22 @@ export const VocabularyCard: React.FC<VocabularyCardProps> = ({
 
   return (
     <Card
-      elevate
+      elevation={2}
       size="$4"
       bordered
-      animation="quick"
+      animation="bouncy"
+      backgroundColor="white"
       scale={0.95}
-      pressStyle={{ scale: 0.925 }}
+      pressStyle={{ scale: 0.975 }}
       onPress={onPress}
     >
       <Card.Header padded>
-        {iconHeader}
-        <Text fontSize="$8" textAlign="center" fontWeight="bold">
-          {mainTranslation.infinitiv}
-        </Text>
+        <YStack justifyContent="space-between">
+          {iconHeader}
+          <Text fontSize="$8" textAlign="center" fontWeight="bold">
+            {capitalizeFirstLetter(mainTranslation.infinitiv)}
+          </Text>
+        </YStack>
       </Card.Header>
 
       {isRevealed && (

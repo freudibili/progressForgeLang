@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, XStack } from 'tamagui';
+import { XStack } from 'tamagui';
+import { X, Check } from '@tamagui/lucide-icons';
+import { Button } from '@/common/components/MyButton';
 
 type CardFooterProps = {
   isRevealed: boolean;
@@ -18,10 +20,10 @@ export const CardFooter = ({
 
   return (
     <XStack gap="$4" justifyContent="center">
-      <Button onPress={onIncorrect} backgroundColor="pink">
+      <Button variant="secondary" onPress={onIncorrect} icon={<X size="$1" />}>
         I Didn't Know
       </Button>
-      <Button onPress={onCorrect} backgroundColor="lightgreen">
+      <Button onPress={onCorrect} icon={<Check size="$1" />}>
         I Was Correct
       </Button>
     </XStack>

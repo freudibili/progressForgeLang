@@ -14,6 +14,8 @@ export const getTranslation = (
   switch (language) {
     case 'fr':
       return { infinitiv: card.infinitiv.fr, example: card.example.fr };
+    case 'en':
+      return { infinitiv: card.infinitiv.en, example: card.example.en };
     case 'uk':
       return { infinitiv: card.infinitiv.uk, example: card.example.uk };
     case 'er':
@@ -21,6 +23,6 @@ export const getTranslation = (
     case 'af':
       return { infinitiv: card.infinitiv.af, example: card.example.af };
     default:
-      return { infinitiv: card.infinitiv.en, example: card.example.en };
+      return { infinitiv: card.infinitiv.de, example: card.example.de };
   }
 };

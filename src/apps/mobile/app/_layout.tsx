@@ -17,7 +17,7 @@ export default function RootLayout() {
       {isWeb && <WebTabBar />}
       <Tabs
         screenOptions={{
-          headerShown: !isWeb,
+          headerShown: false,
           tabBarActiveTintColor: colorScheme === 'dark' ? '#fff' : '#000',
           tabBarPosition: isWeb ? 'top' : 'bottom',
           tabBarStyle: isWeb ? { display: 'none' } : undefined

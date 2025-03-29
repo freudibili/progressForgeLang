@@ -1,5 +1,5 @@
 import React from 'react';
-import { YStack, Text, Separator } from 'tamagui';
+import { YStack, H4 } from 'tamagui';
 
 import { LevelCard } from './LevelCard';
 import { Level } from '../types/levelTypes';
@@ -15,15 +15,16 @@ export function LevelList({ levelsByCategory, onLevelSelect }: LevelListProps) {
     <>
       {Object.entries(levelsByCategory).map(([category, categoryLevels]) => (
         <YStack key={category} gap="$2">
-          <Text fontSize="$6" fontWeight="bold" color="$blue10">
+          <H4 fontSize="$4" fontWeight="bold">
             {capitalizeFirstLetter(category)}
-          </Text>
+          </H4>
           <YStack gap="$2" marginBottom="$4">
             {categoryLevels.map((level, index) => (
-              <React.Fragment key={level.id}>
-                <LevelCard level={level} onSelect={onLevelSelect} />
-                {index < categoryLevels.length - 1 && <Separator />}
-              </React.Fragment>
+              <LevelCard
+                level={level}
+                onSelect={onLevelSelect}
+                key={level.id}
+              />
             ))}
           </YStack>
         </YStack>

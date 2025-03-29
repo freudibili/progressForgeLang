@@ -1,7 +1,8 @@
 import { currentPlatform } from '@tamagui/core';
 import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
-import { YStack, Text, Spinner, ScrollView, View, H2 } from 'tamagui';
+import { YStack, Text, Spinner, ScrollView, View } from 'tamagui';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface MyScreenProps {
   title?: string;
@@ -21,16 +22,23 @@ export function MyScreen({
   children
 }: MyScreenProps) {
   const Container = scrollable ? ScrollView : YStack;
+  const insets = useSafeAreaInsets();
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={currentPlatform === 'ios' ? 'padding' : 'height'}
     >
-      <Container style={{ flex: 1 }}>
+      <Container
+        style={{ flex: 1 }}
+        paddingTop={insets.top}
+        backgroundColor="white"
+      >
         {title && (
           <YStack padding="$4" gap="$4">
-            <H2>{title}</H2>
+            <Text fontSize="$7" fontWeight="bold" numberOfLines={1}>
+              {title}
+            </Text>
           </YStack>
         )}
         <YStack padding="$4" gap="$4" flex={1}>
@@ -43,7 +51,15 @@ export function MyScreen({
             children
           )}
         </YStack>
-        {footer && <View style={{ padding: 16 }}>{footer}</View>}
+        {footer && (
+          <View
+            paddingHorizontal="$4"
+            paddingBottom={insets.bottom || '$4'}
+            paddingTop="$4"
+          >
+            {footer}
+          </View>
+        )}
       </Container>
     </KeyboardAvoidingView>
   );

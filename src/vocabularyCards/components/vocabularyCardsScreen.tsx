@@ -8,6 +8,7 @@ import { MasteryModal } from './MasteryModal';
 import { NoLevelSelectedScreen } from './NoLevelSelectedScreen';
 import { VocabularyStats } from './VocabularyStats';
 import { useVocabularyCardsViewModel } from '../viewModels/useVocabularyCardsViewModel';
+import { Separator } from 'tamagui';
 
 export const VocabularyCardsScreen = () => {
   const {
@@ -42,7 +43,7 @@ export const VocabularyCardsScreen = () => {
 
   return (
     <MyScreen
-      title={`Level ${selectedLevel.name}`}
+      title={selectedLevel.name}
       loading={isLoading}
       error={error}
       footer={
@@ -59,6 +60,7 @@ export const VocabularyCardsScreen = () => {
         totalAttempted={totalCardsAttempted}
         masteredCount={masteredCardsCount}
       />
+      <Separator />
       {activeCard && (
         <CardDisplay
           currentCard={activeCard}

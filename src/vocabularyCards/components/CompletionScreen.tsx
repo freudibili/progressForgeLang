@@ -26,7 +26,7 @@ export const CompletionScreen = () => {
         alignItems="center"
       >
         <Text fontSize="$8" textAlign="center" fontWeight="bold">
-          Congratulations! 🎉
+          Congratulations!
         </Text>
         <Text fontSize="$6" textAlign="center">
           You've completed all cards in this level
