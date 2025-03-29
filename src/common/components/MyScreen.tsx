@@ -41,7 +41,7 @@ export function MyScreen({
             </Text>
           </YStack>
         )}
-        <YStack padding="$4" gap="$4" flex={1}>
+        <YStack paddingHorizontal="$4" paddingTop="$4" gap="$4" flex={1}>
           {error && <Text color="$red10">{error}</Text>}
           {loading ? (
             <YStack flex={1} justifyContent="center" alignItems="center">

@@ -1,7 +1,7 @@
 import { MyScreen } from '@common/components/MyScreen';
 import React from 'react';
 import { YStack, Text, XStack, H3, Tabs, Separator, ScrollView } from 'tamagui';
-
+import { getTranslation } from '@vocabularyCards/utils/translationUtils';
 import { useUserProfileViewModel } from '../viewModels/useUserProfileViewModel';
 
 export function UserProfileScreen() {
@@ -12,7 +12,8 @@ export function UserProfileScreen() {
     seenCount,
     successRate,
     masteredWords,
-    handleTabChange
+    handleTabChange,
+    currentLanguage
   } = useUserProfileViewModel();
 
   return (
@@ -45,17 +46,21 @@ export function UserProfileScreen() {
 
       <Separator />
 
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <YStack gap="$2">
-          <H3>Mastered Verbs</H3>
-          {masteredWords.map((card) => (
-            <XStack key={card.id} justifyContent="space-between" padding="$2">
-              <Text>{card.infinitiv.de}</Text>
-              <Text color="$gray10">{card.infinitiv.fr}</Text>
-            </XStack>
-          ))}
+          <H3>Mastered Words</H3>
+          {masteredWords.map((card) => {
+            const mainTranslation = getTranslation(card, 'de');
+            const userTranslation = getTranslation(card, currentLanguage);
+            return (
+              <XStack key={card.id} justifyContent="space-between" padding="$2">
+                <Text>{mainTranslation.infinitiv}</Text>
+                <Text color="$gray10">{userTranslation.infinitiv}</Text>
+              </XStack>
+            );
+          })}
           {masteredWords.length === 0 && (
-            <Text color="$gray10">No mastered verbs yet</Text>
+            <Text color="$gray10">No mastered words yet</Text>
           )}
         </YStack>
       </ScrollView>
