@@ -7,7 +7,7 @@ import {
   useColorScheme
 } from 'react-native';
 import { isWeb } from 'tamagui';
-import { AppRoutes } from '@common/utils/routes';
+import { AppRoutes } from '../utils/routes';
 
 const tabs = [
   { name: 'Home', href: AppRoutes.index },

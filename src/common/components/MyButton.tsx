@@ -1,9 +1,11 @@
 import { Button as TamaguiButton, styled, GetProps } from 'tamagui';
 
 export const Button = styled(TamaguiButton, {
+  name: 'Button',
   backgroundColor: 'black',
   color: 'white',
   fontWeight: '600',
+  fontSize: '$4',
   height: '$4',
   variants: {
     variant: {
@@ -33,13 +35,22 @@ export const Button = styled(TamaguiButton, {
     },
     size: {
       small: {
-        borderRadius: '$2'
+        borderRadius: '$2',
+        paddingHorizontal: '$2',
+        height: '$3',
+        fontSize: '$3'
       },
       medium: {
-        borderRadius: '$3'
+        borderRadius: '$3',
+        paddingHorizontal: '$3',
+        height: '$4',
+        fontSize: '$4'
       },
       large: {
-        borderRadius: '$4'
+        borderRadius: '$4',
+        paddingHorizontal: '$4',
+        height: '$5',
+        fontSize: '$5'
       }
     }
   } as const,

@@ -45,7 +45,7 @@ export function MyScreen({
           {error && <Text color="$red10">{error}</Text>}
           {loading ? (
             <YStack flex={1} justifyContent="center" alignItems="center">
-              <Spinner size="large" />
+              <Spinner color="black" size="large" />
             </YStack>
           ) : (
             children

@@ -6,11 +6,12 @@
     "paths": {
       "@/*": ["src/*"],
       "@apps/*": ["src/apps/*"],
-      "@common/*": ["src/common/*"],
-      "@levels/*": ["src/levels/*"],
-      "@vocabularyCards/*": ["src/vocabularyCards/*"],
-      "@user/*": ["src/user/*"],
-      "@auth/*": ["src/auth/*"]
+      "@common/*": ["src/features/common/*"],
+      "@levels/*": ["src/features/levels/*"],
+      "@vocabularyCards/*": ["src/features/vocabularyCards/*"],
+      "@user/*": ["src/features/user/*"],
+      "@auth/*": ["src/features/auth/*"],
+      "@settings/*": ["src/features/settings/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
