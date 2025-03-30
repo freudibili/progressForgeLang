@@ -4,7 +4,7 @@ export const Button = styled(TamaguiButton, {
   backgroundColor: 'black',
   color: 'white',
   fontWeight: '600',
-
+  height: '$4',
   variants: {
     variant: {
       primary: {
