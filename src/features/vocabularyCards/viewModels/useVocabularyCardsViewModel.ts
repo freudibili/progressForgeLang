@@ -6,9 +6,9 @@ import { selectWeightedRandomCard } from '../utils/weightedSelection';
 import { levelSelectors } from '@/features/levels/store/levelSelectors';
 import { userActions } from '@/features/user/store/userActions';
 import { userSelectors } from '@/features/user/store/userSelectors';
-import { UserVocabProgress } from '@/features/user/types/userTypes';
 import { vocabularyCardActions } from '@/features/vocabularyCards/store/vocabularyCardActions';
 import { VocabularyCard } from '@/shared/types/sharedTypes';
+import { useUserStore } from '@/features/user/store/userStore';
 
 export const useVocabularyCardsViewModel = () => {
   const {
@@ -38,7 +38,6 @@ export const useVocabularyCardsViewModel = () => {
 
   // User Progress Selectors
   const currentLevel = selectedLevel?.id ?? '';
-  const practiceHistory = userSelectors.useWordsSeen(currentLevel);
   const { masteredCount: masteredCardsCount, seenCount: totalCardsAttempted } =
     userSelectors.useCardStats(currentLevel);
   const hasCompletedLevel =
@@ -54,18 +53,33 @@ export const useVocabularyCardsViewModel = () => {
     (excludeCardId?: string | null) => {
       if (!availableCards.length) return;
 
-      // Convert practice history to UserVocabProgress format
-      const seenCards: UserVocabProgress[] = (practiceHistory ?? []).map(
-        (cardId: string) => ({
-          cardId,
-          correctAttempts: 0,
-          incorrectAttempts: 0
-        })
+      // Get all cards for the current level
+      const levelCards = availableCards.filter(
+        (card) => card.levelId === currentLevel
       );
 
+      // Get the progress for all cards in this level
+      const levelProgress = useUserStore
+        .getState()
+        .progress.find((progress) => progress.levelId === currentLevel);
+
+      // Create progress entries for all cards, including unseen ones
+      const allCardsProgress = levelCards.map((card) => {
+        const progress = levelProgress?.vocabProgress.find(
+          (p) => p.cardId === card.id
+        );
+        return (
+          progress || {
+            cardId: card.id,
+            correctAttempts: 0,
+            incorrectAttempts: 0
+          }
+        );
+      });
+
       const nextCard = selectWeightedRandomCard(
-        availableCards,
-        seenCards,
+        levelCards,
+        allCardsProgress,
         excludeCardId
       );
 
@@ -75,7 +89,7 @@ export const useVocabularyCardsViewModel = () => {
         setIsCardRevealed(false);
       }
     },
-    [availableCards, practiceHistory]
+    [availableCards, currentLevel]
   );
 
   const resetCardState = useCallback(() => {
@@ -113,11 +127,11 @@ export const useVocabularyCardsViewModel = () => {
   const handleCardResponse = useCallback(
     (wasCorrect: boolean) => {
       if (activeCard && currentLevel) {
-        if (wasCorrect) {
-          userActions.markVocabCorrect(activeCard);
-        } else {
-          userActions.markVocabIncorrect(activeCard);
-        }
+        userActions.markVocabAttempt({
+          id: activeCard.id,
+          levelId: currentLevel,
+          isCorrect: wasCorrect
+        });
       }
       showNextCard(activeCard?.id);
     },

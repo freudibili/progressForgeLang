@@ -6,6 +6,11 @@ import { mockCards } from './__mocks__/mockUserStoreCards';
 import { mockUserProgress } from './__mocks__/mockUserVocab';
 import { Language } from '@/shared/types/sharedTypes';
 
+// Mock AsyncStorage
+jest.mock('@react-native-async-storage/async-storage', () =>
+  require('./__mocks__/asyncStorage')
+);
+
 // Mock the Zustand stores
 const mockUseUserStore = useUserStore as unknown as jest.Mock;
 const mockUseVocabularyCardStore =

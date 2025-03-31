@@ -49,7 +49,7 @@ export const VocabularyPlayingCard: React.FC<VocabularyPlayingCardProps> = ({
         <Card.Footer padded>
           <YStack gap="$4" width="100%">
             <Text fontSize="$6" textAlign="center" fontWeight="bold">
-              {userTranslation.infinitiv}
+              {capitalizeFirstLetter(userTranslation.infinitiv)}
             </Text>
 
             <YStack gap="$2">

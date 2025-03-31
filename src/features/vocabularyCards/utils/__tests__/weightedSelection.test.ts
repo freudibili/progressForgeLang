@@ -4,15 +4,12 @@ import {
 } from '../weightedSelection';
 import { mockCard, mockCards } from './__mocks__/mockVocabularyCards';
 import { mockProgress } from './__mocks__/mockUserProgress';
-import mockAsyncStorage from './__mocks__/asyncStorage';
-
-// Mock AsyncStorage
-jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 describe('weightedSelection utils', () => {
   describe('getCardProgress', () => {
     it('returns 0 for unseen cards', () => {
-      expect(getCardProgress(mockCard, mockProgress)).toBe(0);
+      const unseenCard = { ...mockCard, id: 'unseen-card-id' };
+      expect(getCardProgress(unseenCard, mockProgress)).toBe(0);
     });
 
     it('returns correct count for seen cards', () => {
@@ -27,20 +24,40 @@ describe('weightedSelection utils', () => {
     });
 
     it('excludes previous card from selection', () => {
-      const result = selectWeightedRandomCard(mockCards, [], mockCards[0].id);
+      const result = selectWeightedRandomCard(
+        mockCards,
+        mockProgress,
+        mockCards[0].id
+      );
       expect(result?.id).toBe(mockCards[1].id);
     });
 
     it('returns first card if all others are excluded', () => {
       const singleCard = [mockCards[0]];
-      const result = selectWeightedRandomCard(singleCard, [], 'someOtherId');
+      const result = selectWeightedRandomCard(
+        singleCard,
+        mockProgress,
+        'someOtherId'
+      );
       expect(result).toBe(singleCard[0]);
     });
 
     it('prioritizes unseen cards', () => {
+      // Create progress entries for all cards
+      const allCardsProgress = mockCards.map((card) => {
+        const progress = mockProgress.find((p) => p.cardId === card.id);
+        return (
+          progress || {
+            cardId: card.id,
+            correctAttempts: 0,
+            incorrectAttempts: 0
+          }
+        );
+      });
+
       // Run multiple times to ensure statistical significance
       const selections = Array.from({ length: 100 }, () =>
-        selectWeightedRandomCard(mockCards, mockProgress)
+        selectWeightedRandomCard(mockCards, allCardsProgress)
       );
 
       // Card2 should be selected more often as it's unseen

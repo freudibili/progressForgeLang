@@ -39,10 +39,12 @@ export const useUserStore = create<UserState>()(
     (set) => ({
       ...initialState,
       setUser: (user: User | null) => userActions.setUser(user),
-      markVocabCorrect: (vocabCard: VocabularyCard) =>
-        userActions.markVocabCorrect(vocabCard),
-      markVocabIncorrect: (vocabCard: VocabularyCard) =>
-        userActions.markVocabIncorrect(vocabCard),
+      markVocabAttempt: (params: {
+        id: string;
+        levelId: string;
+        isCorrect: boolean;
+      }) => userActions.markVocabAttempt(params),
+
       updateStatistics: (statistics: Partial<UserStatistics>) =>
         userActions.updateStatistics(statistics),
       resetProgress: () => userActions.resetProgress(),
