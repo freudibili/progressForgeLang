@@ -34,7 +34,9 @@ export const useVocabularyCardsViewModel = () => {
 
   // Mastery Tracking State
   const [isMasteryModalVisible, setIsMasteryModalVisible] = useState(false);
-  const [lastAchievedMilestone, setLastAchievedMilestone] = useState(0);
+  const [lastAchievedMilestone, setLastAchievedMilestone] = useState<
+    number | null
+  >(null);
 
   // User Progress Selectors
   const currentLevel = selectedLevel?.id ?? '';
@@ -47,6 +49,7 @@ export const useVocabularyCardsViewModel = () => {
     activeCard?.id ?? '',
     currentLevel
   );
+  const totalWords = userSelectors.useTotalWordsCount(currentLevel);
 
   // Card Selection Logic
   const showNextCard = useCallback(
@@ -117,6 +120,11 @@ export const useVocabularyCardsViewModel = () => {
 
   // Milestone Tracking Effect
   useEffect(() => {
+    if (lastAchievedMilestone === null) {
+      setLastAchievedMilestone(currentMilestone);
+      return;
+    }
+
     if (currentMilestone > lastAchievedMilestone) {
       setIsMasteryModalVisible(true);
       setLastAchievedMilestone(currentMilestone);
@@ -161,6 +169,7 @@ export const useVocabularyCardsViewModel = () => {
     hasCompletedLevel,
     currentMilestone,
     activeCardCorrectAttempts,
+    totalWords,
 
     // Handlers
     handleCardResponse,

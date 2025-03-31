@@ -21,7 +21,7 @@ export const CardDisplay = ({
   onCardPress
 }: CardDisplayProps) => {
   return (
-    <YStack padding="$4" gap="$4" flex={1}>
+    <YStack marginTop="$4" gap="$4" flex={1}>
       <VocabularyPlayingCard
         card={currentCard}
         isRevealed={isRevealed}

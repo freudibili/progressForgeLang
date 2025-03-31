@@ -13,6 +13,7 @@ export function UserProfileScreen() {
     activeTab,
     masteredCount,
     seenCount,
+    totalWords,
     successRate,
     masteredWords,
     handleTabChange,
@@ -34,12 +35,16 @@ export function UserProfileScreen() {
 
       <YStack gap="$2">
         <XStack justifyContent="space-between">
-          <Text fontWeight="500">Mastered Words:</Text>
-          <Text>{masteredCount}</Text>
+          <Text fontWeight="500">Total Words:</Text>
+          <Text>{totalWords}</Text>
         </XStack>
         <XStack justifyContent="space-between">
           <Text fontWeight="500">Words Seen:</Text>
           <Text>{seenCount}</Text>
+        </XStack>
+        <XStack justifyContent="space-between">
+          <Text fontWeight="500">Mastered Words:</Text>
+          <Text>{masteredCount}</Text>
         </XStack>
         <XStack justifyContent="space-between">
           <Text fontWeight="500">Success Rate:</Text>

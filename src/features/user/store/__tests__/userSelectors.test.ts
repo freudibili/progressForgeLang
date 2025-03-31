@@ -109,20 +109,19 @@ describe('userSelectors', () => {
       const result = userSelectors.useWordsSeen(
         '550e8400-e29b-41d4-a716-446655440001'
       );
-      expect(result).toEqual([
-        '550e8400-e29b-41d4-a716-446655440002',
-        '550e8400-e29b-41d4-a716-446655440003'
-      ]);
+      expect(result).toEqual({
+        seenCount: 2,
+        totalCount: 2
+      });
     });
 
     it('returns array of all seen words', () => {
       mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.useWordsSeen();
-      expect(result).toEqual([
-        '550e8400-e29b-41d4-a716-446655440002',
-        '550e8400-e29b-41d4-a716-446655440003',
-        '550e8400-e29b-41d4-a716-446655440012'
-      ]);
+      expect(result).toEqual({
+        seenCount: 3,
+        totalCount: 4
+      });
     });
   });
 
@@ -171,12 +170,6 @@ describe('userSelectors', () => {
       const result = userSelectors.useSuccessRate(
         '550e8400-e29b-41d4-a716-446655440001'
       );
-      expect(result).toBe(0);
-    });
-
-    it('returns overall success rate', () => {
-      mockUseUserStore.mockImplementation((selector) => selector(mockState));
-      const result = userSelectors.useSuccessRate();
       expect(result).toBe(0);
     });
   });

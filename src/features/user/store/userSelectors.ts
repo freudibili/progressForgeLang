@@ -88,6 +88,17 @@ export const userSelectors = {
       );
     }),
 
+  useTotalWordsCount: (levelId?: string) => {
+    const { vocabularyCards } = useVocabularyCardStore();
+    return useUserStore(() => {
+      if (!levelId) {
+        return vocabularyCards.length;
+      }
+
+      return vocabularyCards.filter((card) => card.levelId === levelId).length;
+    });
+  },
+
   useMasteredWords: (levelId?: string) => {
     const { vocabularyCards } = useVocabularyCardStore();
     return useUserStore((state: UserState) => {

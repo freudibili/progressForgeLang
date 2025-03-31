@@ -15,6 +15,7 @@ export const useUserProfileViewModel = () => {
   const { masteredCount, seenCount } = userSelectors.useCardStats(activeTab);
   const successRate = userSelectors.useSuccessRate(activeTab);
   const masteredWords = userSelectors.useMasteredWords(activeTab);
+  const totalWords = userSelectors.useTotalWordsCount(activeTab);
 
   // User language preference
   const currentLanguage = settingsSelectors.useLanguage();
@@ -30,6 +31,7 @@ export const useUserProfileViewModel = () => {
     activeTab,
     masteredCount,
     seenCount,
+    totalWords,
     successRate,
     masteredWords,
     currentLanguage,

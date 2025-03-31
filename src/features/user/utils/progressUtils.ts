@@ -85,7 +85,7 @@ export const calculateSuccessRate = (levelProgress: {
 }) => {
   const totalAttempts = levelProgress.vocabProgress.reduce(
     (sum, progress) =>
-      sum + progress.correctAttempts + progress.incorrectAttempts,
+      sum + (progress.correctAttempts ?? 0) + (progress.incorrectAttempts ?? 0),
     0
   );
   const correctAttempts = levelProgress.vocabProgress.reduce(

@@ -26,6 +26,7 @@ export const VocabularyCardsScreen = () => {
     hasCompletedLevel,
     currentMilestone,
     activeCardCorrectAttempts,
+    totalWords,
 
     // Handlers
     handleCardResponse,
@@ -58,6 +59,7 @@ export const VocabularyCardsScreen = () => {
     >
       <VocabularyStats
         totalAttempted={totalCardsAttempted}
+        totalWords={totalWords}
         masteredCount={masteredCardsCount}
       />
       {activeCard && (
