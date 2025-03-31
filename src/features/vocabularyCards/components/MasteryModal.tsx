@@ -1,8 +1,8 @@
-import { Dialog, H3, H2, XStack, YStack, Text, Circle, H5 } from 'tamagui';
-import { Trophy } from '@tamagui/lucide-icons';
+import { Dialog, H3, H2, XStack, YStack, Text, H5 } from 'tamagui';
 
 import React from 'react';
 import { Button } from '@/common/components/MyButton';
+import { TrophyIcon } from '@/common/components/TrophyIcon';
 
 type MasteryModalProps = {
   open: boolean;
@@ -50,9 +50,7 @@ export const MasteryModal = ({
               verbs!
             </H3>
             <XStack justifyContent="center">
-              <Circle size={80} backgroundColor="$yellow10">
-                <Trophy size={40} color="$yellow5" />
-              </Circle>
+              <TrophyIcon size={60} />
             </XStack>
             <XStack alignItems="center" justifyContent="center" gap="$2">
               <H5 textAlign="center">Keep up the great work!</H5>

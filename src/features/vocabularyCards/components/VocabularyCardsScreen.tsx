@@ -1,5 +1,4 @@
 import React from 'react';
-import { Separator } from 'tamagui';
 
 import { CardDisplay } from './CardDisplay';
 import { CardFooter } from './CardFooter';
@@ -61,7 +60,6 @@ export const VocabularyCardsScreen = () => {
         totalAttempted={totalCardsAttempted}
         masteredCount={masteredCardsCount}
       />
-      <Separator />
       {activeCard && (
         <CardDisplay
           currentCard={activeCard}

@@ -4,6 +4,7 @@ import { userSelectors } from '../userSelectors';
 import { useUserStore } from '../userStore';
 import { mockCards } from './__mocks__/mockUserStoreCards';
 import { mockUserProgress } from './__mocks__/mockUserVocab';
+import { Language } from '@/shared/types/sharedTypes';
 
 // Mock the Zustand stores
 const mockUseUserStore = useUserStore as unknown as jest.Mock;
@@ -140,7 +141,7 @@ describe('userSelectors', () => {
     it('returns user preferences', () => {
       mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.usePreferences();
-      expect(result).toEqual({ language: 'en' });
+      expect(result).toEqual({ language: Language.English });
     });
   });
 

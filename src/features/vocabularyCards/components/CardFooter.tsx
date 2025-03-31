@@ -20,10 +20,19 @@ export const CardFooter = ({
 
   return (
     <XStack gap="$4" justifyContent="center">
-      <Button variant="secondary" onPress={onIncorrect} icon={<X size="$1" />}>
+      <Button
+        variant="secondary"
+        backgroundColor="$gray5"
+        onPress={onIncorrect}
+        icon={<X size="$1" />}
+      >
         I Didn't Know
       </Button>
-      <Button onPress={onCorrect} icon={<Check size="$1" />}>
+      <Button
+        onPress={onCorrect}
+        backgroundColor="$green10"
+        icon={<Check size="$1" />}
+      >
         I Was Correct
       </Button>
     </XStack>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { XStack, Circle } from 'tamagui';
-import { Check, Trophy } from '@tamagui/lucide-icons';
+import { Check } from '@tamagui/lucide-icons';
+import { TrophyIcon } from '@/common/components/TrophyIcon';
 
 interface MasteryIconsProps {
   currentIndex: number;
@@ -15,17 +16,7 @@ export const MasteryIcons = ({
   if (currentIndex >= 3) {
     return (
       <XStack justifyContent="flex-end" height={24} alignItems="center">
-        <Circle
-          size={24}
-          backgroundColor="$yellow10"
-          alignItems="center"
-          justifyContent="center"
-          animation="bouncy"
-          enterStyle={{ scale: 0.5, opacity: 0 }}
-          exitStyle={{ scale: 0.5, opacity: 0 }}
-        >
-          <Trophy size={14} color="white" />
-        </Circle>
+        <TrophyIcon size={24} />
       </XStack>
     );
   }

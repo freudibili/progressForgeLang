@@ -10,7 +10,7 @@ import {
 } from '../types/userTypes';
 
 import { storageUtils } from '@/common/utils/storage';
-import { VocabularyCard } from '@/shared/types/sharedTypes';
+import { Language, VocabularyCard } from '@/shared/types/sharedTypes';
 
 export interface UserState {
   user: User | null;
@@ -24,7 +24,7 @@ const initialState: UserState = {
   user: null,
   progress: [],
   preferences: {
-    language: 'en'
+    language: Language.English
   },
   statistics: {
     successRate: 0,

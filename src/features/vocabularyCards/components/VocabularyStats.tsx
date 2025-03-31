@@ -1,4 +1,6 @@
-import { Book, Trophy } from '@tamagui/lucide-icons';
+import { BookIcon } from '@/common/components/BookIcon';
+import { TrophyIcon } from '@/common/components/TrophyIcon';
+
 import React from 'react';
 import { Text, XStack, YStack } from 'tamagui';
 
@@ -15,7 +17,7 @@ export const VocabularyStats = ({
     <XStack gap="$4" justifyContent="center" padding="$2">
       <YStack alignItems="center" gap="$1">
         <XStack gap="$1" alignItems="center">
-          <Book size={16} color="$gray10" />
+          <BookIcon size={24} />
           <Text fontWeight="400" marginLeft="5">
             Seen
           </Text>
@@ -26,7 +28,7 @@ export const VocabularyStats = ({
       </YStack>
       <YStack alignItems="center" gap="$1">
         <XStack gap="$1" alignItems="center">
-          <Trophy size={16} color="$gray10" />
+          <TrophyIcon size={24} />
           <Text fontWeight="400" marginLeft="5">
             Mastered
           </Text>

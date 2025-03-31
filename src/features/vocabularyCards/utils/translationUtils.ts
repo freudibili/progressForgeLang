@@ -9,15 +9,17 @@ export const getTranslation = (
   language: Language
 ): Translation => {
   switch (language) {
-    case 'fr':
+    case Language.French: // 'fr'
       return { infinitiv: card.infinitiv.fr, example: card.example.fr };
-    case 'en':
+    case Language.German: // 'de'
+      return { infinitiv: card.infinitiv.de, example: card.example.de };
+    case Language.English: // 'en'
       return { infinitiv: card.infinitiv.en, example: card.example.en };
-    case 'uk':
+    case Language.Ukrainian: // 'uk'
       return { infinitiv: card.infinitiv.uk, example: card.example.uk };
-    case 'er':
+    case Language.Tigrinya: // 'er'
       return { infinitiv: card.infinitiv.er, example: card.example.er };
-    case 'af':
+    case Language.Dari: // 'af'
       return { infinitiv: card.infinitiv.af, example: card.example.af };
     default:
       return { infinitiv: card.infinitiv.de, example: card.example.de };
