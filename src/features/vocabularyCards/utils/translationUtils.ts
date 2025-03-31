@@ -21,6 +21,8 @@ export const getTranslation = (
       return { infinitiv: card.infinitiv.er, example: card.example.er };
     case Language.Dari: // 'af'
       return { infinitiv: card.infinitiv.af, example: card.example.af };
+    case Language.Russian: // 'ru'
+      return { infinitiv: card.infinitiv.ru, example: card.example.ru };
     default:
       return { infinitiv: card.infinitiv.de, example: card.example.de };
   }

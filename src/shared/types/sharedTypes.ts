@@ -4,7 +4,8 @@ export enum Language {
   German = 'de',
   Ukrainian = 'uk',
   Tigrinya = 'er',
-  Dari = 'af'
+  Dari = 'af',
+  Russian = 'ru'
 }
 
 export interface Level {
@@ -24,6 +25,7 @@ export interface VocabularyCard {
     uk: string;
     er: string;
     af: string;
+    ru: string;
   };
   conjugation: {
     präsens: string;
@@ -41,5 +43,6 @@ export interface VocabularyCard {
     uk: string;
     er: string;
     af: string;
+    ru: string;
   };
 }

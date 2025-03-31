@@ -11,7 +11,8 @@ export const LANGUAGES: LanguageConfig[] = [
   { label: 'Français', value: Language.French, nativeName: 'Français' },
   { label: 'Українська', value: Language.Ukrainian, nativeName: 'Українська' },
   { label: 'Tigrinya', value: Language.Tigrinya, nativeName: 'ትግርኛ' },
-  { label: 'Dari', value: Language.Dari, nativeName: 'دری' }
+  { label: 'Dari', value: Language.Dari, nativeName: 'دری' },
+  { label: 'Русский', value: Language.Russian, nativeName: 'Русский' }
 ];
 
 export const getLanguageLabel = (value: Language): string => {
