@@ -7,7 +7,6 @@ import {
   MASTERY_MILESTONE,
   calculateSuccessRate,
   filterMasteredCards,
-  filterSeenCards,
   findCardProgress,
   findLevelProgress,
   getCardAttempts,
@@ -16,8 +15,6 @@ import {
 import { useVocabularyCardStore } from '@/features/vocabularyCards/store/vocabularyCardsStore';
 
 export const userSelectors = {
-  useUser: () => useUserStore((state: UserState) => state.user),
-
   useLevels: () => {
     const { vocabularyCards } = useVocabularyCardStore();
     const availableLevels = levelSelectors.useLevels();
@@ -40,17 +37,11 @@ export const userSelectors = {
       return getCardAttempts(progress);
     }),
 
-  useIsCardMastered: (cardId: string, levelId: string) =>
-    useUserStore((state: UserState) => {
-      const levelProgress = findLevelProgress(state.progress, levelId);
-      const progress = findCardProgress(levelProgress, cardId);
-      return isCardMastered(getCardAttempts(progress));
-    }),
-
-  useMasteredWordsCount: (levelId?: string) =>
-    useUserStore((state: UserState) => {
+  useMasteredWordsCount: (levelId?: string) => {
+    const progress = useUserStore((state: UserState) => state.progress);
+    return useMemo(() => {
       if (!levelId) {
-        return state.progress.reduce((total: number, levelProgress) => {
+        return progress.reduce((total: number, levelProgress) => {
           const masteredCards = filterMasteredCards(
             levelProgress.vocabProgress.map((p) => p.cardId),
             levelProgress
@@ -59,52 +50,35 @@ export const userSelectors = {
         }, 0);
       }
 
-      const levelProgress = findLevelProgress(state.progress, levelId);
+      const levelProgress = findLevelProgress(progress, levelId);
       if (!levelProgress) return 0;
 
       return filterMasteredCards(
         levelProgress.vocabProgress.map((p) => p.cardId),
         levelProgress
       ).length;
-    }),
-
-  useWordsSeen: (levelId?: string) =>
-    useUserStore((state: UserState) => {
-      if (!levelId) {
-        return state.progress.flatMap((levelProgress) => {
-          return filterSeenCards(
-            levelProgress.vocabProgress.map((p) => p.cardId),
-            levelProgress
-          );
-        });
-      }
-
-      const levelProgress = findLevelProgress(state.progress, levelId);
-      if (!levelProgress) return [];
-
-      return filterSeenCards(
-        levelProgress.vocabProgress.map((p) => p.cardId),
-        levelProgress
-      );
-    }),
+    }, [progress, levelId]);
+  },
 
   useTotalWordsCount: (levelId?: string) => {
     const { vocabularyCards } = useVocabularyCardStore();
-    return useUserStore(() => {
+    return useMemo(() => {
       if (!levelId) {
         return vocabularyCards.length;
       }
 
       return vocabularyCards.filter((card) => card.levelId === levelId).length;
-    });
+    }, [vocabularyCards, levelId]);
   },
 
   useMasteredWords: (levelId?: string) => {
     const { vocabularyCards } = useVocabularyCardStore();
-    return useUserStore((state: UserState) => {
+    const progress = useUserStore((state: UserState) => state.progress);
+
+    return useMemo(() => {
       const masteredCardIds = (() => {
         if (!levelId) {
-          return state.progress.flatMap((levelProgress) => {
+          return progress.flatMap((levelProgress) => {
             return filterMasteredCards(
               levelProgress.vocabProgress.map((p) => p.cardId),
               levelProgress
@@ -112,7 +86,7 @@ export const userSelectors = {
           });
         }
 
-        const levelProgress = findLevelProgress(state.progress, levelId);
+        const levelProgress = findLevelProgress(progress, levelId);
         if (!levelProgress) return [];
 
         return filterMasteredCards(
@@ -124,26 +98,33 @@ export const userSelectors = {
       return vocabularyCards.filter((card) =>
         masteredCardIds.includes(card.id)
       );
-    });
+    }, [vocabularyCards, progress, levelId]);
   },
 
   usePreferences: () => useUserStore((state: UserState) => state.preferences),
 
-  useSuccessRate: (levelId?: string) =>
-    useUserStore((state: UserState) => {
+  useSuccessRate: (levelId?: string) => {
+    const progress = useUserStore((state: UserState) => state.progress);
+    return useMemo(() => {
       if (!levelId) {
-        return state.statistics.successRate;
+        return (
+          progress.reduce((total, levelProgress) => {
+            return total + calculateSuccessRate(levelProgress);
+          }, 0) / progress.length
+        );
       }
 
-      const levelProgress = findLevelProgress(state.progress, levelId);
+      const levelProgress = findLevelProgress(progress, levelId);
       if (!levelProgress) return 0;
 
       return calculateSuccessRate(levelProgress);
-    }),
+    }, [progress, levelId]);
+  },
 
-  useCardStats: (levelId: string) =>
-    useUserStore((state: UserState) => {
-      const levelProgress = findLevelProgress(state.progress, levelId);
+  useCardStats: (levelId: string) => {
+    const progress = useUserStore((state: UserState) => state.progress);
+    return useMemo(() => {
+      const levelProgress = findLevelProgress(progress, levelId);
       if (!levelProgress) {
         return {
           masteredCount: 0,
@@ -154,28 +135,31 @@ export const userSelectors = {
 
       const cardIds = levelProgress.vocabProgress.map((p) => p.cardId);
       const masteredWords = filterMasteredCards(cardIds, levelProgress);
-      const seenWords = filterSeenCards(cardIds, levelProgress);
 
       return {
         masteredCount: masteredWords.length,
-        seenCount: seenWords.length,
+        seenCount: cardIds.length,
         totalCount: cardIds.length
       };
-    }),
+    }, [progress, levelId]);
+  },
 
-  useAreLevelCardsMastered: (levelId: string) =>
-    useUserStore((state: UserState) => {
-      const levelProgress = findLevelProgress(state.progress, levelId);
+  useAreLevelCardsMastered: (levelId: string) => {
+    const progress = useUserStore((state: UserState) => state.progress);
+    return useMemo(() => {
+      const levelProgress = findLevelProgress(progress, levelId);
       if (!levelProgress) return false;
 
-      return levelProgress.vocabProgress.every((progress) => {
-        return isCardMastered(getCardAttempts(progress));
+      return levelProgress.vocabProgress.every((vocabProgress) => {
+        return isCardMastered(getCardAttempts(vocabProgress));
       });
-    }),
+    }, [progress, levelId]);
+  },
 
-  useMasteryMilestone: (levelId: string) =>
-    useUserStore((state: UserState) => {
-      const levelProgress = findLevelProgress(state.progress, levelId);
+  useMasteryMilestone: (levelId: string) => {
+    const progress = useUserStore((state: UserState) => state.progress);
+    return useMemo(() => {
+      const levelProgress = findLevelProgress(progress, levelId);
       if (!levelProgress) {
         return {
           currentMilestone: 0,
@@ -192,5 +176,6 @@ export const userSelectors = {
         currentMilestone,
         masteredCount
       };
-    })
+    }, [progress, levelId]);
+  }
 };

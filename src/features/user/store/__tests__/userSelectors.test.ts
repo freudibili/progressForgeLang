@@ -67,26 +67,6 @@ describe('userSelectors', () => {
     });
   });
 
-  describe('useIsCardMastered', () => {
-    it('returns true when card is mastered', () => {
-      mockUseUserStore.mockImplementation((selector) => selector(mockState));
-      const result = userSelectors.useIsCardMastered(
-        '550e8400-e29b-41d4-a716-446655440002',
-        '550e8400-e29b-41d4-a716-446655440001'
-      );
-      expect(result).toBe(true);
-    });
-
-    it('returns false when card is not mastered', () => {
-      mockUseUserStore.mockImplementation((selector) => selector(mockState));
-      const result = userSelectors.useIsCardMastered(
-        '550e8400-e29b-41d4-a716-446655440003',
-        '550e8400-e29b-41d4-a716-446655440001'
-      );
-      expect(result).toBe(false);
-    });
-  });
-
   describe('useMasteredWordsCount', () => {
     it('returns correct count of mastered words for a level', () => {
       mockUseUserStore.mockImplementation((selector) => selector(mockState));
@@ -100,28 +80,6 @@ describe('userSelectors', () => {
       mockUseUserStore.mockImplementation((selector) => selector(mockState));
       const result = userSelectors.useMasteredWordsCount();
       expect(result).toBe(1);
-    });
-  });
-
-  describe('useWordsSeen', () => {
-    it('returns array of seen words for a level', () => {
-      mockUseUserStore.mockImplementation((selector) => selector(mockState));
-      const result = userSelectors.useWordsSeen(
-        '550e8400-e29b-41d4-a716-446655440001'
-      );
-      expect(result).toEqual({
-        seenCount: 2,
-        totalCount: 2
-      });
-    });
-
-    it('returns array of all seen words', () => {
-      mockUseUserStore.mockImplementation((selector) => selector(mockState));
-      const result = userSelectors.useWordsSeen();
-      expect(result).toEqual({
-        seenCount: 3,
-        totalCount: 4
-      });
     });
   });
 
