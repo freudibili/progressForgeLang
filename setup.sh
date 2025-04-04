@@ -38,7 +38,7 @@ cat > tsconfig.json << EOL
       "@auth/*": ["src/auth/*"],
       "@user/*": ["src/user/*"],
       "@card/*": ["src/card/*"],
-      "@mobile/*": ["src/mobile/*"],
+      "@expo/*": ["src/expo/*"],
       "@web/*": ["src/web/*"]
     },
     "jsx": "react-native",

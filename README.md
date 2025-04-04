@@ -22,7 +22,7 @@ progressForgeLang/
 │   │   └── utils/      # Helper functions
 │   │       ├── __tests__/  # Tests for utilities
 │   │       └── __mocks__/  # Mock data for tests
-│   ├── mobile/         # Mobile-specific code
+│   ├── expo/         # Mobile-specific code
 │   │   └── screens/    # Expo Router screens
 │   └── web/           # Web-specific code
 │       └── pages/     # Next.js pages
