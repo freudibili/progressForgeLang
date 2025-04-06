@@ -1,7 +1,7 @@
 import React from 'react';
 import { XStack, Circle } from 'tamagui';
 import { Check } from '@tamagui/lucide-icons';
-import { TrophyIcon } from '@/common/components/TrophyIcon';
+import { TrophyIcon } from '@/shared/components/TrophyIcon';
 
 interface MasteryIconsProps {
   currentIndex: number;

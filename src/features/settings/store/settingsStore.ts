@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Language } from '@/shared/types/sharedTypes';
 import { settingsActions } from './settingsActions';
-import { storageUtils } from '@/common/utils/storage';
+import { storageUtils } from '@/shared/utils/storage';
 
 export interface SettingsState {
   language: Language;

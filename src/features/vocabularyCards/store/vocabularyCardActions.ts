@@ -1,35 +1,66 @@
-import { useVocabularyCardStore } from './vocabularyCardsStore';
-import { vocabularyCardService } from '../services/vocabularyCardsService';
 import { Level } from '@/shared/types/sharedTypes';
+import { vocabularyCardService } from '../services/vocabularyCardsService';
+import { useVocabularyCardStore } from './vocabularyCardsStore';
+import { vocabularyCardUtils } from '../utils/vocabularyCardUtils';
 
-type VocabularyCardActions = {
-  loadCards: (level: Level) => Promise<void>;
-};
-
-export const vocabularyCardActions: VocabularyCardActions = {
+export const vocabularyCardActions = {
   loadCards: async (level: Level) => {
-    useVocabularyCardStore.setState({ isLoading: true, error: null });
+    try {
+      const { data, error } =
+        await vocabularyCardService.fetchCardsByLevel(level);
 
-    const { data, error } =
-      await vocabularyCardService.fetchCardsByLevel(level);
+      if (data && !error) {
+        const store = useVocabularyCardStore.getState();
 
-    if (data && !error) {
-      const currentCards = useVocabularyCardStore.getState().vocabularyCards;
-      // Remove existing cards for this level
-      const filteredCards = currentCards.filter(
-        (card) => card.levelId !== level.id
-      );
-
-      // Add new cards
+        useVocabularyCardStore.setState({
+          cards: {
+            ...store.cards,
+            [level.id]: data
+          },
+          isLoading: false,
+          error: null
+        });
+      } else {
+        useVocabularyCardStore.setState({
+          error,
+          isLoading: false
+        });
+      }
+    } catch (error) {
       useVocabularyCardStore.setState({
-        vocabularyCards: [...filteredCards, ...data],
-        isLoading: false
-      });
-    } else {
-      useVocabularyCardStore.setState({
-        error,
+        error:
+          error instanceof Error ? error.message : 'An unknown error occurred',
         isLoading: false
       });
     }
+  },
+
+  markAttempt: (cardId: string, levelId: string, isCorrect: boolean) => {
+    const store = useVocabularyCardStore.getState();
+    const levelProgress = store.progress.find((p) => p.levelId === levelId);
+
+    if (!levelProgress) {
+      // Create new progress for this level
+      useVocabularyCardStore.setState({
+        progress: [
+          ...store.progress,
+          vocabularyCardUtils.createNewLevelProgress(levelId, cardId, isCorrect)
+        ]
+      });
+      return;
+    }
+
+    // Update existing progress
+    const updatedProgress = vocabularyCardUtils.updateCardProgress(
+      levelProgress,
+      cardId,
+      isCorrect
+    );
+
+    useVocabularyCardStore.setState({
+      progress: store.progress.map((p) =>
+        p.levelId === levelId ? updatedProgress : p
+      )
+    });
   }
 };

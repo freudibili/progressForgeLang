@@ -1,7 +1,7 @@
 import React from 'react';
 import { XStack } from 'tamagui';
 import { X, Check } from '@tamagui/lucide-icons';
-import { Button } from '@/common/components/MyButton';
+import { Button } from '@/shared/components/MyButton';
 
 type CardFooterProps = {
   isRevealed: boolean;

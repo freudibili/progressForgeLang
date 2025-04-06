@@ -6,7 +6,7 @@ import { LANGUAGES } from '../constants/languages';
 import { settingsSelectors } from '../store/settingsSelectors';
 import { useSettingsStore } from '../store/settingsStore';
 
-import { MyScreen } from '@/common/components/MyScreen';
+import { MyScreen } from '@/shared/components/MyScreen';
 
 export const SettingsScreen: React.FC = () => {
   const language = settingsSelectors.useLanguage();

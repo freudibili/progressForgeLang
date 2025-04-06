@@ -29,7 +29,7 @@ describe('weightedSelection utils', () => {
         mockProgress,
         mockCards[0].id
       );
-      expect(result?.id).toBe(mockCards[1].id);
+      expect(result?.id).toBe('550e8400-e29b-41d4-a716-446655440002');
     });
 
     it('returns first card if all others are excluded', () => {
@@ -50,7 +50,8 @@ describe('weightedSelection utils', () => {
           progress || {
             cardId: card.id,
             correctAttempts: 0,
-            incorrectAttempts: 0
+            incorrectAttempts: 0,
+            masteryLevel: 0
           }
         );
       });
@@ -62,7 +63,7 @@ describe('weightedSelection utils', () => {
 
       // Card2 should be selected more often as it's unseen
       const card2Selections = selections.filter(
-        (card) => card?.id === mockCards[1].id
+        (card) => card?.id === '550e8400-e29b-41d4-a716-446655440002'
       );
       // With weights of 1.0 for unseen, 20 for one correct, 40 for two correct, and 0.001 for mastered cards,
       // unseen cards should be selected ~60% of the time

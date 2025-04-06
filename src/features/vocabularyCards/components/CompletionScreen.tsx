@@ -1,43 +1,35 @@
-import { userSelectors } from '@/features/user/store/userSelectors';
-import { useVocabularyCardStore } from '@/features/vocabularyCards/store/vocabularyCardsStore';
-import { useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
-import { Button, Text, YStack } from 'tamagui';
-import { MyScreen } from '@/common/components/MyScreen';
-import { AppRoutes } from '@/common/utils/routes';
+import React from 'react';
+import { Button, H2, Text, YStack } from 'tamagui';
 
-export const CompletionScreen = () => {
-  const { isLoading, error } = useVocabularyCardStore();
+import { vocabularyCardSelectors } from '../store/vocabularyCardSelectors';
 
-  const masteredCount = userSelectors.useMasteredWordsCount();
-  const router = useRouter();
+import { Level } from '@/shared/types/sharedTypes';
 
-  const handleGoHome = useCallback(() => {
-    router.replace({ pathname: AppRoutes.index });
-  }, [router]);
+interface CompletionScreenProps {
+  level: Level;
+  onRestart: () => void;
+  onNextLevel: () => void;
+}
+
+export const CompletionScreen: React.FC<CompletionScreenProps> = ({
+  level,
+  onRestart,
+  onNextLevel
+}) => {
+  const totalStats = vocabularyCardSelectors.useTotalStats();
 
   return (
-    <MyScreen loading={isLoading} error={error}>
-      <YStack
-        flex={1}
-        padding="$4"
-        gap="$4"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Text fontSize="$8" textAlign="center" fontWeight="bold">
-          Congratulations!
-        </Text>
-        <Text fontSize="$6" textAlign="center">
-          You've completed all cards in this level
-        </Text>
-        <Text fontSize="$5" textAlign="center" color="$gray10">
-          You've mastered {masteredCount} words
-        </Text>
-        <Button size="$5" theme="active" onPress={handleGoHome}>
-          Back to Home
-        </Button>
+    <YStack gap="$4" alignItems="center" justifyContent="center" flex={1}>
+      <H2>Congratulations!</H2>
+      <Text>You've completed {level.name}!</Text>
+      <Text>Total Words Mastered: {totalStats.masteredCount}</Text>
+      <Text>
+        Overall Success Rate: {(totalStats.successRate * 100).toFixed(1)}%
+      </Text>
+      <YStack gap="$2" width="100%">
+        <Button onPress={onRestart}>Restart Level</Button>
+        <Button onPress={onNextLevel}>Next Level</Button>
       </YStack>
-    </MyScreen>
+    </YStack>
   );
 };

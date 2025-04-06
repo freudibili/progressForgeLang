@@ -1,11 +1,12 @@
 import React from 'react';
-import { YStack, Text, XStack, H3, Tabs, Separator, ScrollView } from 'tamagui';
+import { YStack, Separator } from 'tamagui';
 
 import { useUserProfileViewModel } from '../viewModels/useUserProfileViewModel';
 
-import { MyScreen } from '@/common/components/MyScreen';
-import { getTranslation } from '@/features/vocabularyCards/utils/translationUtils';
-import { Language } from '@/shared/types/sharedTypes';
+import { MyScreen } from '@/shared/components/MyScreen';
+import { OverallProgress } from './OverallProgress';
+import { LevelProgress } from './LevelProgress';
+import { MasteredWordsList } from './MasteredWordsList';
 
 export function UserProfileScreen() {
   const {
@@ -17,61 +18,42 @@ export function UserProfileScreen() {
     successRate,
     masteredWords,
     handleTabChange,
-    currentLanguage
+    currentLanguage,
+    totalMasteredCount,
+    totalSeenCount,
+    totalWordsCount,
+    overallSuccessRate
   } = useUserProfileViewModel();
 
   return (
-    <MyScreen title="Profile">
-      <H3>Progress Overview</H3>
-      <Tabs value={activeTab} onValueChange={handleTabChange} width="100%">
-        <Tabs.List width="100%" justifyContent="space-between">
-          {levels.map((level) => (
-            <Tabs.Tab key={level.id} value={level.id} flex={1}>
-              <Text numberOfLines={1}>{level.name}</Text>
-            </Tabs.Tab>
-          ))}
-        </Tabs.List>
-      </Tabs>
+    <MyScreen title="Profile" scrollable>
+      <YStack gap="$4">
+        <OverallProgress
+          totalWordsCount={totalWordsCount}
+          totalSeenCount={totalSeenCount}
+          totalMasteredCount={totalMasteredCount}
+          overallSuccessRate={overallSuccessRate}
+        />
 
-      <YStack gap="$2">
-        <XStack justifyContent="space-between">
-          <Text fontWeight="500">Total Words:</Text>
-          <Text>{totalWords}</Text>
-        </XStack>
-        <XStack justifyContent="space-between">
-          <Text fontWeight="500">Words Seen:</Text>
-          <Text>{seenCount}</Text>
-        </XStack>
-        <XStack justifyContent="space-between">
-          <Text fontWeight="500">Mastered Words:</Text>
-          <Text>{masteredCount}</Text>
-        </XStack>
-        <XStack justifyContent="space-between">
-          <Text fontWeight="500">Success Rate:</Text>
-          <Text>{successRate.toFixed(1)}%</Text>
-        </XStack>
+        <Separator />
+
+        <LevelProgress
+          levels={levels}
+          activeTab={activeTab}
+          handleTabChange={handleTabChange}
+          totalWords={totalWords}
+          seenCount={seenCount}
+          masteredCount={masteredCount}
+          successRate={successRate}
+        />
+
+        <Separator />
+
+        <MasteredWordsList
+          masteredWords={masteredWords}
+          currentLanguage={currentLanguage}
+        />
       </YStack>
-
-      <Separator />
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack gap="$2">
-          <H3>Mastered Words</H3>
-          {masteredWords.map((card) => {
-            const mainTranslation = getTranslation(card, Language.German);
-            const userTranslation = getTranslation(card, currentLanguage);
-            return (
-              <XStack key={card.id} justifyContent="space-between" padding="$2">
-                <Text>{mainTranslation.infinitiv}</Text>
-                <Text color="$gray10">{userTranslation.infinitiv}</Text>
-              </XStack>
-            );
-          })}
-          {masteredWords.length === 0 && (
-            <Text color="$gray10">No mastered words yet</Text>
-          )}
-        </YStack>
-      </ScrollView>
     </MyScreen>
   );
 }

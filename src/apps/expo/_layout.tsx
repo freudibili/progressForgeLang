@@ -1,4 +1,4 @@
-import { WebTabBar } from '@/common/components/WebTabBar';
+import { WebTabBar } from '@/shared/components/WebTabBar';
 import { Home, Book, User, Settings } from '@tamagui/lucide-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';

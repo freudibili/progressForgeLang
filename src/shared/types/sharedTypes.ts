@@ -46,3 +46,10 @@ export interface VocabularyCard {
     ru: string;
   };
 }
+
+export interface CardProgress {
+  cardId: string;
+  correctAttempts: number;
+  incorrectAttempts: number;
+  masteryLevel?: number;
+}

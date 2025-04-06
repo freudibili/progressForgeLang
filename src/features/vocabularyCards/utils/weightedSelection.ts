@@ -1,9 +1,8 @@
-import { UserVocabProgress } from '@/features/user/types/userTypes';
-import { VocabularyCard } from '@/shared/types/sharedTypes';
+import { VocabularyCard, CardProgress } from '@/shared/types/sharedTypes';
 
 export const getCardProgress = (
   card: VocabularyCard,
-  practiceHistory: UserVocabProgress[]
+  practiceHistory: CardProgress[]
 ): number => {
   return (
     practiceHistory.find((progress) => progress.cardId === card.id)
@@ -26,7 +25,7 @@ const calculateCardWeight = (correctAttempts: number): number => {
 
 export const selectWeightedRandomCard = (
   availableCards: VocabularyCard[],
-  practiceHistory: UserVocabProgress[],
+  practiceHistory: CardProgress[],
   lastShownCardId: string | null = null
 ): VocabularyCard | null => {
   if (availableCards.length === 0) return null;
