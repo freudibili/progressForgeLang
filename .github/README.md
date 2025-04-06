@@ -1,18 +1,77 @@
-# CI/CD Workflow for Progress Forge Lang
+# Progress Forge Language Learning
+
+A cross-platform language learning application for French to German vocabulary.
+
+## Features
+
+- Cross-platform mobile and web application
+- Vocabulary card management
+- User progress tracking
+- Multiple language levels
+- Settings customization
+- Dashboard statistics
+
+## Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Start mobile app
+npm start
+
+# Start web app
+npm run web
+```
+
+## Project Structure
+
+```
+src/
+├── apps/              # Platform-specific code
+│   ├── expo/          # Mobile app (React Native)
+│   └── web/           # Web app (Next.js)
+├── common/            # Shared utilities
+├── shared/            # Shared components
+└── features/          # Core features
+    ├── vocabularyCards/
+    ├── dashboard/
+    ├── user/
+    ├── settings/
+    └── levels/
+```
+
+## Tech Stack
+
+- React Native (Expo) & Next.js
+- Tamagui UI framework
+- Zustand state management with persist middleware
+- AsyncStorage for local data storage
+- Expo Router for mobile navigation
+- Jest testing framework
+
+## Testing
+
+```bash
+# Run tests
+npm test
+```
+
+## CI/CD
+
+GitHub Actions handles CI with automated testing and code quality checks.
+
+## CI/CD Workflow Details
 
 This folder contains configuration files for continuous integration and continuous deployment (CI/CD) workflows.
 
-## Workflow Files
+### Workflow Files
 
 - `workflows/ci.yml`: GitHub Actions workflow that runs tests and linting for pull requests and pushes to main and dev branches.
 
-## Branch Protection
+### Branch Protection
 
-The file `branch-protection.yml` provides instructions for setting up branch protection rules in GitHub. These rules must be configured manually in the repository settings.
-
-### Protection Rules
-
-For both `main` and `dev` branches:
+The repository has branch protection rules configured for both `main` and `dev` branches:
 
 1. Require pull requests before merging
 2. Require at least one approving review
@@ -20,17 +79,7 @@ For both `main` and `dev` branches:
 4. Require branches to be up to date before merging
 5. Apply these rules to repository administrators
 
-## Setting Up Branch Protection
-
-1. Go to your repository on GitHub
-2. Click on "Settings"
-3. Click on "Branches" in the left sidebar
-4. Under "Branch protection rules", click "Add rule"
-5. In the "Branch name pattern" field, enter the branch name (`main` or `dev`)
-6. Configure the settings as described above
-7. Click "Create" or "Save changes"
-
-## CI Workflow Details
+### CI Workflow Details
 
 The CI workflow runs on every pull request to `main` or `dev` branches and on every push to these branches. It performs the following steps:
 
@@ -40,4 +89,6 @@ The CI workflow runs on every pull request to `main` or `dev` branches and on ev
 4. Runs ESLint to check code quality
 5. Runs tests to ensure functionality
 
-If any of these steps fail, the workflow will fail, and merging will be prevented if branch protection is properly configured.
+## License
+
+MIT
