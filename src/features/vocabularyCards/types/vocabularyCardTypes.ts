@@ -1,9 +1,9 @@
-import { VocabularyCard as SharedVocabularyCard } from '@/shared/types/sharedTypes';
+import {
+  VocabularyCard as SharedVocabularyCard,
+  CardProgress
+} from '@/shared/types/sharedTypes';
 
-export interface VocabularyCardProgress {
-  cardId: string;
-  correctAttempts: number;
-  incorrectAttempts: number;
+export interface VocabularyCardProgress extends CardProgress {
   lastAttemptedAt?: number;
 }
 
@@ -21,11 +21,6 @@ export interface VocabularyCardState {
   // Methods
   loadCards: (level: { id: string; url: string }) => Promise<void>;
   markAttempt: (cardId: string, levelId: string, isCorrect: boolean) => void;
-  getCardStats: (levelId: string) => VocabularyCardStats;
-  getTotalStats: () => VocabularyCardStats;
-  isLevelCompleted: (levelId: string) => boolean;
-  getCardProgress: (cardId: string, levelId: string) => number;
-  getMasteryMilestone: (levelId: string) => VocabularyCardMilestone;
 }
 
 export interface VocabularyCardAttempt {

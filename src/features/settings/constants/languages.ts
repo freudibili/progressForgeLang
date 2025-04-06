@@ -22,5 +22,5 @@ export const getLanguageLabel = (value: Language): string => {
 
 export const getLanguageNativeName = (value: Language): string => {
   const language = LANGUAGES.find((lang) => lang.value === value);
-  return language?.nativeName || 'Unknown';
+  return language?.nativeName ?? 'Unknown';
 };

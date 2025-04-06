@@ -1,6 +1,6 @@
-import { BookIcon } from '@/common/components/BookIcon';
-import { ListIcon } from '@/common/components/ListIcon';
-import { TrophyIcon } from '@/common/components/TrophyIcon';
+import { BookIcon } from '@/shared/components/BookIcon';
+import { ListIcon } from '@/shared/components/ListIcon';
+import { TrophyIcon } from '@/shared/components/TrophyIcon';
 
 import React from 'react';
 import { Text, XStack, YStack } from 'tamagui';

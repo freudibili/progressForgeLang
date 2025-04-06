@@ -1,8 +1,8 @@
 import { Dialog, H3, H2, XStack, YStack, Text, H5 } from 'tamagui';
 
 import React from 'react';
-import { Button } from '@/common/components/MyButton';
-import { TrophyIcon } from '@/common/components/TrophyIcon';
+import { Button } from '@/shared/components/MyButton';
+import { TrophyIcon } from '@/shared/components/TrophyIcon';
 
 type MasteryModalProps = {
   open: boolean;

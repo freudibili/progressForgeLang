@@ -1,29 +1,35 @@
-import { View, Text } from 'react-native';
-import { useRouter } from 'expo-router';
+import React from 'react';
+import { Button, H2, Text, YStack } from 'tamagui';
 
-import { Button } from 'tamagui';
-import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
-import { AppRoutes } from '@/common/utils/routes';
+import { vocabularyCardSelectors } from '../store/vocabularyCardSelectors';
 
-export const CompletionScreen = () => {
-  const router = useRouter();
-  const { masteredCount } = useVocabularyCardStore((state) =>
-    state.getTotalStats()
-  );
+import { Level } from '@/shared/types/sharedTypes';
+
+interface CompletionScreenProps {
+  level: Level;
+  onRestart: () => void;
+  onNextLevel: () => void;
+}
+
+export const CompletionScreen: React.FC<CompletionScreenProps> = ({
+  level,
+  onRestart,
+  onNextLevel
+}) => {
+  const totalStats = vocabularyCardSelectors.useTotalStats();
 
   return (
-    <View className="flex-1 items-center justify-center p-4">
-      <Text className="text-2xl font-bold mb-4">Congratulations! 🎉</Text>
-      <Text className="text-lg text-center mb-8">
-        You have mastered {masteredCount} words in total!
+    <YStack gap="$4" alignItems="center" justifyContent="center" flex={1}>
+      <H2>Congratulations!</H2>
+      <Text>You've completed {level.name}!</Text>
+      <Text>Total Words Mastered: {totalStats.masteredCount}</Text>
+      <Text>
+        Overall Success Rate: {(totalStats.successRate * 100).toFixed(1)}%
       </Text>
-      <Button
-        size="$5"
-        theme="active"
-        onPress={() => router.replace({ pathname: AppRoutes.index })}
-      >
-        Back to Home
-      </Button>
-    </View>
+      <YStack gap="$2" width="100%">
+        <Button onPress={onRestart}>Restart Level</Button>
+        <Button onPress={onNextLevel}>Next Level</Button>
+      </YStack>
+    </YStack>
   );
 };

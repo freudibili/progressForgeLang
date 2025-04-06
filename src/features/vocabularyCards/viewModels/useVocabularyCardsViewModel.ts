@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
+import { vocabularyCardSelectors } from '../store/vocabularyCardSelectors';
 import { selectWeightedRandomCard } from '../utils/weightedSelection';
 
 import { levelSelectors } from '@/features/levels/store/levelSelectors';
@@ -8,18 +9,16 @@ import { VocabularyCard } from '@/shared/types/sharedTypes';
 
 export const useVocabularyCardsViewModel = () => {
   // Use selective state access to prevent unnecessary re-renders
-  const vocabularyCards = useVocabularyCardStore((state) => state.cards);
   const isCardsLoading = useVocabularyCardStore((state) => state.isLoading);
   const error = useVocabularyCardStore((state) => state.error);
 
   // Get level selector
   const selectedLevel = levelSelectors.useCurrentLevel();
 
-  // Get current level's cards with memoization
-  const availableCards = useMemo(() => {
-    if (!selectedLevel?.id) return [];
-    return vocabularyCards[selectedLevel?.id] || [];
-  }, [vocabularyCards, selectedLevel?.id]);
+  // Get current level's cards using the selector
+  const availableCards = vocabularyCardSelectors.useAvailableCards(
+    selectedLevel?.id
+  );
 
   // Card Display State
   const [isLoading, setIsLoading] = useState(false);
@@ -36,43 +35,27 @@ export const useVocabularyCardsViewModel = () => {
   // User Progress Selectors with memoization
   const currentLevel = selectedLevel?.id ?? '';
 
-  // Get stats from vocabulary card store
-  const cardStats = useVocabularyCardStore((state) =>
-    state.getCardStats(currentLevel)
+  // Get stats from vocabulary card selectors
+  const cardStats = vocabularyCardSelectors.useCardStats(currentLevel);
+  const hasCompletedLevel =
+    vocabularyCardSelectors.useIsLevelCompleted(currentLevel);
+  const masteryMilestone =
+    vocabularyCardSelectors.useMasteryMilestone(currentLevel);
+  const activeCardCorrectAttempts = vocabularyCardSelectors.useCardProgress(
+    activeCard?.id ?? '',
+    currentLevel
   );
-  const hasCompletedLevel = useVocabularyCardStore((state) =>
-    state.isLevelCompleted(currentLevel)
-  );
-  const masteryMilestone = useVocabularyCardStore((state) =>
-    state.getMasteryMilestone(currentLevel)
-  );
-  const activeCardCorrectAttempts = useVocabularyCardStore((state) =>
-    state.getCardProgress(activeCard?.id ?? '', currentLevel)
+
+  // Get all cards progress for the current level
+  const allCardsProgress = vocabularyCardSelectors.useAllCardsProgress(
+    currentLevel,
+    availableCards
   );
 
   // Card Selection Logic with memoization
   const showNextCard = useCallback(
     (excludeCardId?: string | null) => {
       if (!availableCards.length) return;
-
-      // Get progress for all cards in this level
-      const levelProgress = useVocabularyCardStore
-        .getState()
-        .progress.find((p) => p.levelId === currentLevel);
-
-      // Create progress entries for all cards, including unseen ones
-      const allCardsProgress = availableCards.map((card) => {
-        const progress = levelProgress?.vocabProgress.find(
-          (p) => p.cardId === card.id
-        );
-        return (
-          progress || {
-            cardId: card.id,
-            correctAttempts: 0,
-            incorrectAttempts: 0
-          }
-        );
-      });
 
       const nextCard = selectWeightedRandomCard(
         availableCards,
@@ -86,7 +69,7 @@ export const useVocabularyCardsViewModel = () => {
         setIsCardRevealed(false);
       }
     },
-    [availableCards, currentLevel]
+    [availableCards, allCardsProgress]
   );
 
   const resetCardState = useCallback(() => {

@@ -3,7 +3,7 @@ import { Card, Text, YStack } from 'tamagui';
 
 import { getTranslation } from '../utils/translationUtils';
 
-import { capitalizeFirstLetter } from '@/common/utils/stringUtils';
+import { capitalizeFirstLetter } from '@/shared/utils/stringUtils';
 import { Language, VocabularyCard } from '@/shared/types/sharedTypes';
 import { settingsSelectors } from '@/features/settings/store/settingsSelectors';
 

@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 import { userActions } from './userActions';
 import { User, UserPreferences, UserStatistics } from '../types/userTypes';
 
-import { storageUtils } from '@/common/utils/storage';
+import { storageUtils } from '@/shared/utils/storage';
 import { Language } from '@/shared/types/sharedTypes';
 
 export interface UserState {

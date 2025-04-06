@@ -2,7 +2,7 @@ import React from 'react';
 import { YStack, H4 } from 'tamagui';
 
 import { LevelCard } from './LevelCard';
-import { capitalizeFirstLetter } from '@/common/utils/stringUtils';
+import { capitalizeFirstLetter } from '@/shared/utils/stringUtils';
 import { Level } from '@/shared/types/sharedTypes';
 
 interface LevelListProps {

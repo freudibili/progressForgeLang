@@ -1,26 +1,30 @@
 import { useCallback, useState } from 'react';
 
-import {
-  useVocabularyCardStore,
-  vocabularyCardSelectors
-} from '@/features/vocabularyCards/store/vocabularyCardsStore';
+import { vocabularyCardSelectors } from '@/features/vocabularyCards/store/vocabularyCardSelectors';
 import { levelSelectors } from '@/features/levels/store/levelSelectors';
 import { settingsSelectors } from '@/features/settings/store/settingsSelectors';
 
 export const useDashboardViewModel = () => {
-  // Get all levels
-  const allLevels = levelSelectors.useLevels();
+  const [activeTab, setActiveTab] = useState<string>('all');
+  const levels = levelSelectors.useLevels();
 
-  // Get available levels with vocabulary cards
-  const levels = vocabularyCardSelectors.useAvailableLevels(allLevels);
+  // Get stats for the active tab
+  const cardStats = vocabularyCardSelectors.useCardStats(activeTab);
+  const hasCompletedLevel =
+    vocabularyCardSelectors.useIsLevelCompleted(activeTab);
+  const masteryMilestone =
+    vocabularyCardSelectors.useMasteryMilestone(activeTab);
 
-  // Active tab state
-  const [activeTab, setActiveTab] = useState<string>(levels[0]?.id ?? '');
+  // Get total stats across all levels
+  const totalStats = vocabularyCardSelectors.useTotalStats();
 
-  // Stats for the active level
-  const cardStats = useVocabularyCardStore((state) =>
-    state.getCardStats(activeTab)
-  );
+  // Handle tab change
+  const handleTabChange = useCallback((value: string) => {
+    setActiveTab(value);
+  }, []);
+
+  // Get available levels with cards
+  const availableLevels = vocabularyCardSelectors.useAvailableLevels(levels);
 
   // Get mastered words for the active level
   const masteredWords = vocabularyCardSelectors.useMasteredWords(activeTab);
@@ -28,32 +32,24 @@ export const useDashboardViewModel = () => {
   // User language preference
   const currentLanguage = settingsSelectors.useLanguage();
 
-  // Total stats across all levels
-  const totalStats = useVocabularyCardStore((state) => state.getTotalStats());
-
-  // Handlers
-  const handleTabChange = useCallback((value: string) => {
-    setActiveTab(value);
-  }, []);
-
   return {
-    // State
-    levels,
     activeTab,
+    levels: availableLevels,
+    cardStats,
+    hasCompletedLevel,
+    masteryMilestone,
+    totalStats,
+    handleTabChange,
+    masteredWords,
+    currentLanguage,
+    // Add these for backward compatibility
     masteredCount: cardStats.masteredCount,
     seenCount: cardStats.seenCount,
     totalWords: cardStats.totalCount,
     successRate: cardStats.successRate,
-    masteredWords,
-    currentLanguage,
-
-    // Total stats
     totalMasteredCount: totalStats.masteredCount,
     totalSeenCount: totalStats.seenCount,
     totalWordsCount: totalStats.totalCount,
-    overallSuccessRate: totalStats.successRate,
-
-    // Handlers
-    handleTabChange
+    overallSuccessRate: totalStats.successRate
   };
 };
