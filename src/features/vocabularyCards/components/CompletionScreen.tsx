@@ -1,43 +1,29 @@
-import { userSelectors } from '@/features/user/store/userSelectors';
-import { useVocabularyCardStore } from '@/features/vocabularyCards/store/vocabularyCardsStore';
+import { View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
-import { Button, Text, YStack } from 'tamagui';
-import { MyScreen } from '@/common/components/MyScreen';
+
+import { Button } from 'tamagui';
+import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
 import { AppRoutes } from '@/common/utils/routes';
 
 export const CompletionScreen = () => {
-  const { isLoading, error } = useVocabularyCardStore();
-
-  const masteredCount = userSelectors.useMasteredWordsCount();
   const router = useRouter();
-
-  const handleGoHome = useCallback(() => {
-    router.replace({ pathname: AppRoutes.index });
-  }, [router]);
+  const { masteredCount } = useVocabularyCardStore((state) =>
+    state.getTotalStats()
+  );
 
   return (
-    <MyScreen loading={isLoading} error={error}>
-      <YStack
-        flex={1}
-        padding="$4"
-        gap="$4"
-        justifyContent="center"
-        alignItems="center"
+    <View className="flex-1 items-center justify-center p-4">
+      <Text className="text-2xl font-bold mb-4">Congratulations! 🎉</Text>
+      <Text className="text-lg text-center mb-8">
+        You have mastered {masteredCount} words in total!
+      </Text>
+      <Button
+        size="$5"
+        theme="active"
+        onPress={() => router.replace({ pathname: AppRoutes.index })}
       >
-        <Text fontSize="$8" textAlign="center" fontWeight="bold">
-          Congratulations!
-        </Text>
-        <Text fontSize="$6" textAlign="center">
-          You've completed all cards in this level
-        </Text>
-        <Text fontSize="$5" textAlign="center" color="$gray10">
-          You've mastered {masteredCount} words
-        </Text>
-        <Button size="$5" theme="active" onPress={handleGoHome}>
-          Back to Home
-        </Button>
-      </YStack>
-    </MyScreen>
+        Back to Home
+      </Button>
+    </View>
   );
 };

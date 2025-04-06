@@ -1,4 +1,5 @@
-import { Level, LevelState } from '../../types/levelTypes';
+import { Level } from '@/shared/types/sharedTypes';
+import { State } from '../levelStore';
 
 export const mockLevels: Level[] = [
   {
@@ -24,9 +25,9 @@ export const mockLevels: Level[] = [
   }
 ];
 
-export const createMockState = (levels: Level[]): LevelState => ({
+export const createMockState = (levels: Level[]): State => ({
   levels,
-  selectedLevel: null,
+  currentLevel: null,
   isLoading: false,
   error: null
 });

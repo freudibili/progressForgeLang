@@ -1,16 +1,5 @@
 import { Language } from '@/shared/types/sharedTypes';
 
-export interface UserVocabProgress {
-  cardId: string;
-  correctAttempts: number;
-  incorrectAttempts: number;
-}
-
-export interface LevelProgress {
-  levelId: string;
-  vocabProgress: UserVocabProgress[];
-}
-
 export interface UserPreferences {
   language: Language;
 }

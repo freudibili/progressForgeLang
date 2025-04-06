@@ -4,26 +4,21 @@ import { useVocabularyCardStore } from '../store/vocabularyCardsStore';
 import { selectWeightedRandomCard } from '../utils/weightedSelection';
 
 import { levelSelectors } from '@/features/levels/store/levelSelectors';
-import { userActions } from '@/features/user/store/userActions';
-import { userSelectors } from '@/features/user/store/userSelectors';
-import { vocabularyCardActions } from '@/features/vocabularyCards/store/vocabularyCardActions';
 import { VocabularyCard } from '@/shared/types/sharedTypes';
-import { useUserStore } from '@/features/user/store/userStore';
 
 export const useVocabularyCardsViewModel = () => {
-  const {
-    vocabularyCards,
-    isLoading: isCardsLoading,
-    error
-  } = useVocabularyCardStore();
+  // Use selective state access to prevent unnecessary re-renders
+  const vocabularyCards = useVocabularyCardStore((state) => state.cards);
+  const isCardsLoading = useVocabularyCardStore((state) => state.isLoading);
+  const error = useVocabularyCardStore((state) => state.error);
 
-  const { loadCards } = vocabularyCardActions;
+  // Get level selector
   const selectedLevel = levelSelectors.useCurrentLevel();
 
-  // Get current level's cards
+  // Get current level's cards with memoization
   const availableCards = useMemo(() => {
     if (!selectedLevel?.id) return [];
-    return vocabularyCards.filter((card) => card.levelId === selectedLevel.id);
+    return vocabularyCards[selectedLevel?.id] || [];
   }, [vocabularyCards, selectedLevel?.id]);
 
   // Card Display State
@@ -38,36 +33,35 @@ export const useVocabularyCardsViewModel = () => {
     number | null
   >(null);
 
-  // User Progress Selectors
+  // User Progress Selectors with memoization
   const currentLevel = selectedLevel?.id ?? '';
-  const { masteredCount: masteredCardsCount, seenCount: totalCardsAttempted } =
-    userSelectors.useCardStats(currentLevel);
-  const hasCompletedLevel =
-    userSelectors.useAreLevelCardsMastered(currentLevel);
-  const { currentMilestone } = userSelectors.useMasteryMilestone(currentLevel);
-  const activeCardCorrectAttempts = userSelectors.useCardProgress(
-    activeCard?.id ?? '',
-    currentLevel
-  );
-  const totalWords = userSelectors.useTotalWordsCount(currentLevel);
 
-  // Card Selection Logic
+  // Get stats from vocabulary card store
+  const cardStats = useVocabularyCardStore((state) =>
+    state.getCardStats(currentLevel)
+  );
+  const hasCompletedLevel = useVocabularyCardStore((state) =>
+    state.isLevelCompleted(currentLevel)
+  );
+  const masteryMilestone = useVocabularyCardStore((state) =>
+    state.getMasteryMilestone(currentLevel)
+  );
+  const activeCardCorrectAttempts = useVocabularyCardStore((state) =>
+    state.getCardProgress(activeCard?.id ?? '', currentLevel)
+  );
+
+  // Card Selection Logic with memoization
   const showNextCard = useCallback(
     (excludeCardId?: string | null) => {
       if (!availableCards.length) return;
 
-      // Get all cards for the current level
-      const levelCards = availableCards.filter(
-        (card) => card.levelId === currentLevel
-      );
-
-      // Get the progress for all cards in this level
-      const levelProgress = useUserStore
+      // Get progress for all cards in this level
+      const levelProgress = useVocabularyCardStore
         .getState()
-        .progress.find((progress) => progress.levelId === currentLevel);
+        .progress.find((p) => p.levelId === currentLevel);
 
       // Create progress entries for all cards, including unseen ones
-      const allCardsProgress = levelCards.map((card) => {
+      const allCardsProgress = availableCards.map((card) => {
         const progress = levelProgress?.vocabProgress.find(
           (p) => p.cardId === card.id
         );
@@ -81,7 +75,7 @@ export const useVocabularyCardsViewModel = () => {
       });
 
       const nextCard = selectWeightedRandomCard(
-        levelCards,
+        availableCards,
         allCardsProgress,
         excludeCardId
       );
@@ -101,45 +95,67 @@ export const useVocabularyCardsViewModel = () => {
     setIsCardRevealed(false);
   }, []);
 
-  // Load Cards Effect
+  // Load Cards Effect with cleanup
   useEffect(() => {
-    if (selectedLevel?.id) {
-      resetCardState();
-      loadCards(selectedLevel);
-    }
-  }, [selectedLevel, loadCards, resetCardState]);
+    let mounted = true;
 
-  // Initial Card Selection Effect
+    const loadLevelCards = async () => {
+      if (selectedLevel?.id && mounted) {
+        resetCardState();
+        await useVocabularyCardStore.getState().loadCards(selectedLevel);
+      }
+    };
+
+    loadLevelCards();
+
+    return () => {
+      mounted = false;
+    };
+  }, [selectedLevel, resetCardState]);
+
+  // Initial Card Selection Effect with cleanup
   useEffect(() => {
-    if (availableCards.length > 0 && !activeCard) {
+    let mounted = true;
+
+    if (availableCards.length > 0 && !activeCard && mounted) {
       setIsLoading(true);
       showNextCard(lastShownCardId);
       setIsLoading(false);
     }
+
+    return () => {
+      mounted = false;
+    };
   }, [availableCards, activeCard, showNextCard, lastShownCardId]);
 
-  // Milestone Tracking Effect
+  // Milestone Tracking Effect with cleanup
   useEffect(() => {
-    if (lastAchievedMilestone === null) {
-      setLastAchievedMilestone(currentMilestone);
-      return;
+    let mounted = true;
+
+    if (mounted) {
+      if (lastAchievedMilestone === null) {
+        setLastAchievedMilestone(masteryMilestone.currentMilestone);
+        return;
+      }
+
+      if (masteryMilestone.currentMilestone > lastAchievedMilestone) {
+        setIsMasteryModalVisible(true);
+        setLastAchievedMilestone(masteryMilestone.currentMilestone);
+      }
     }
 
-    if (currentMilestone > lastAchievedMilestone) {
-      setIsMasteryModalVisible(true);
-      setLastAchievedMilestone(currentMilestone);
-    }
-  }, [currentMilestone, lastAchievedMilestone]);
+    return () => {
+      mounted = false;
+    };
+  }, [masteryMilestone.currentMilestone, lastAchievedMilestone]);
 
-  // Card Interaction Handlers
+  // Card Interaction Handlers with memoization
   const handleCardResponse = useCallback(
     (wasCorrect: boolean) => {
       if (activeCard && currentLevel) {
-        userActions.markVocabAttempt({
-          id: activeCard.id,
-          levelId: currentLevel,
-          isCorrect: wasCorrect
-        });
+        useVocabularyCardStore
+          .getState()
+          .markAttempt(activeCard.id, currentLevel, wasCorrect);
       }
       showNextCard(activeCard?.id);
     },
@@ -164,12 +180,12 @@ export const useVocabularyCardsViewModel = () => {
     isMasteryModalVisible,
 
     // Stats
-    masteredCardsCount,
-    totalCardsAttempted,
+    masteredCardsCount: cardStats.masteredCount,
+    totalCardsAttempted: cardStats.seenCount,
     hasCompletedLevel,
-    currentMilestone,
+    currentMilestone: masteryMilestone.currentMilestone,
     activeCardCorrectAttempts,
-    totalWords,
+    totalWords: cardStats.totalCount,
 
     // Handlers
     handleCardResponse,

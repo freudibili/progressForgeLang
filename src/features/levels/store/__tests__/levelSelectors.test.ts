@@ -1,7 +1,12 @@
 import { levelSelectors } from '../levelSelectors';
-import { useLevelStore } from '../levelStore';
-import { Level, LevelState } from '../../types/levelTypes';
+import { useLevelStore, State } from '../levelStore';
+import { Level } from '@/shared/types/sharedTypes';
 import { mockLevels, createMockState } from './mocks';
+
+// Mock React
+jest.mock('react', () => ({
+  useMemo: (fn: Function) => fn()
+}));
 
 // Mock the Zustand store
 jest.mock('../levelStore', () => ({
@@ -11,8 +16,7 @@ jest.mock('../levelStore', () => ({
 describe('levelSelectors', () => {
   const setupMockStore = (levels: Level[]) => {
     (useLevelStore as unknown as jest.Mock).mockImplementation(
-      (selector: (state: LevelState) => unknown) =>
-        selector(createMockState(levels))
+      (selector: (state: State) => unknown) => selector(createMockState(levels))
     );
   };
 

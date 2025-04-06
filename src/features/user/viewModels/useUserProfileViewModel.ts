@@ -1,32 +1,13 @@
-import { useCallback, useState } from 'react';
-
 import { userSelectors } from '../store/userSelectors';
-
-import { settingsSelectors } from '@/features/settings/store/settingsSelectors';
+import { useDashboardViewModel } from '@/features/dashboard/viewModels/useDashboardViewModel';
 
 export const useUserProfileViewModel = () => {
-  // Get unique levels from vocabulary cards
-  const levels = userSelectors.useLevels();
+  // Get user data
+  const user = userSelectors.useUser();
+  const statistics = userSelectors.useStatistics();
 
-  // Active tab state
-  const [activeTab, setActiveTab] = useState<string>(levels[0]?.id ?? '');
-
-  // Stats for the active level
-  const { masteredCount, seenCount } = userSelectors.useCardStats(activeTab);
-  const successRate = userSelectors.useSuccessRate(activeTab);
-  const masteredWords = userSelectors.useMasteredWords(activeTab);
-  const totalWords = userSelectors.useTotalWordsCount(activeTab);
-
-  // User language preference
-  const currentLanguage = settingsSelectors.useLanguage();
-
-  // Handlers
-  const handleTabChange = useCallback((value: string) => {
-    setActiveTab(value);
-  }, []);
-
-  return {
-    // State
+  // Get dashboard data
+  const {
     levels,
     activeTab,
     masteredCount,
@@ -35,6 +16,31 @@ export const useUserProfileViewModel = () => {
     successRate,
     masteredWords,
     currentLanguage,
+    totalMasteredCount,
+    totalSeenCount,
+    totalWordsCount,
+    overallSuccessRate,
+    handleTabChange
+  } = useDashboardViewModel();
+
+  return {
+    // User data
+    user,
+    statistics,
+
+    // Dashboard data
+    levels,
+    activeTab,
+    masteredCount,
+    seenCount,
+    totalWords,
+    successRate,
+    masteredWords,
+    currentLanguage,
+    totalMasteredCount,
+    totalSeenCount,
+    totalWordsCount,
+    overallSuccessRate,
 
     // Handlers
     handleTabChange
