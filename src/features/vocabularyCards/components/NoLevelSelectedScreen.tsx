@@ -2,8 +2,8 @@ import { router } from 'expo-router';
 import React from 'react';
 import { Text, YStack } from 'tamagui';
 
-import { Button } from '@/common/components/MyButton';
-import { MyScreen } from '@/common/components/MyScreen';
+import { Button } from '@/shared/components/MyButton';
+import { MyScreen } from '@/shared/components/MyScreen';
 
 export const NoLevelSelectedScreen = () => {
   const goToHome = () => {

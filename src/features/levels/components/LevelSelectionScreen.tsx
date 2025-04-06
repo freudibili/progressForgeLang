@@ -4,7 +4,7 @@ import { ScrollView } from 'tamagui';
 import { LevelList } from './LevelList';
 
 import { useLevelSelectionViewModel } from '../viewModels/LevelSelectionViewModel';
-import { MyScreen } from '@/common/components/MyScreen';
+import { MyScreen } from '@/shared/components/MyScreen';
 
 export function LevelSelectionScreen() {
   const { levelsByCategory, isLoading, error, handleLevelSelect } =

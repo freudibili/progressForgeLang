@@ -12,7 +12,7 @@ export const levelSelectors = {
   useError: () => useLevelStore((state) => state.error),
 
   useLevelsByCategory: () => {
-    const levels = useLevelStore((state) => state.levels);
+    const levels = levelSelectors.useLevels();
     return useMemo(
       () =>
         levels.reduce((acc, level) => {

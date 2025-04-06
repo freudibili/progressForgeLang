@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 import { levelActions } from './levelActions';
 
-import { storageUtils } from '@/common/utils/storage';
+import { storageUtils } from '@/shared/utils/storage';
 import { Level } from '@/shared/types/sharedTypes';
 
 export interface State {

@@ -33,6 +33,7 @@ export function MyScreen({
         style={{ flex: 1 }}
         paddingTop={insets.top}
         backgroundColor="white"
+        showsHorizontalScrollIndicator={false}
       >
         {title && (
           <YStack padding="$4" gap="$4">

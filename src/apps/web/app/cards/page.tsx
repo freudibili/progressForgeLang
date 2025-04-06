@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/common/components/MyButton';
+import { Button } from '@/shared/components/MyButton';
 import { useRouter } from 'next/navigation';
 
 import { getNativeUrl } from '@/utils/navigation';

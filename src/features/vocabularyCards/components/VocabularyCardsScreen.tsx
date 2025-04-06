@@ -8,7 +8,7 @@ import { NoLevelSelectedScreen } from './NoLevelSelectedScreen';
 import { VocabularyStats } from './VocabularyStats';
 import { useVocabularyCardsViewModel } from '../viewModels/useVocabularyCardsViewModel';
 
-import { MyScreen } from '@/common/components/MyScreen';
+import { MyScreen } from '@/shared/components/MyScreen';
 
 export const VocabularyCardsScreen = () => {
   const {
