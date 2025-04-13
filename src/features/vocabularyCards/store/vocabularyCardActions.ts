@@ -5,31 +5,23 @@ import { vocabularyCardUtils } from '../utils/vocabularyCardUtils';
 
 export const vocabularyCardActions = {
   loadCards: async (level: Level) => {
-    try {
-      const { data, error } =
-        await vocabularyCardService.fetchCardsByLevel(level);
+    const { data, error } =
+      await vocabularyCardService.fetchCardsByLevel(level);
 
-      if (data && !error) {
-        const store = useVocabularyCardStore.getState();
+    if (data && !error) {
+      const store = useVocabularyCardStore.getState();
 
-        useVocabularyCardStore.setState({
-          cards: {
-            ...store.cards,
-            [level.id]: data
-          },
-          isLoading: false,
-          error: null
-        });
-      } else {
-        useVocabularyCardStore.setState({
-          error,
-          isLoading: false
-        });
-      }
-    } catch (error) {
       useVocabularyCardStore.setState({
-        error:
-          error instanceof Error ? error.message : 'An unknown error occurred',
+        cards: {
+          ...store.cards,
+          [level.id]: data
+        },
+        isLoading: false,
+        error: null
+      });
+    } else {
+      useVocabularyCardStore.setState({
+        error,
         isLoading: false
       });
     }

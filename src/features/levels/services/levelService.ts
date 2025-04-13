@@ -1,16 +1,18 @@
-import { Level } from '@/shared/types/sharedTypes';
 import { getErrorMessage } from '../../vocabularyCards/utils/errorUtils';
 
-const LEVELS_API_URL =
-  'https://gist.github.com/freudibili/d79e0e30abe713b8f02668ea8f9363df/raw';
+import { API_URL } from '@/shared/config/apiConfig';
+import { Level } from '@/shared/types/sharedTypes';
+
+const LEVELS_ENDPOINTS = '/levels';
 
 export const levelService = {
   getLevels: async (): Promise<{
     data: Level[] | null;
     error: string | null;
   }> => {
+    const url = API_URL + LEVELS_ENDPOINTS;
     try {
-      const response = await fetch(LEVELS_API_URL);
+      const response = await fetch(url);
       if (!response.ok) {
         return {
           data: null,
