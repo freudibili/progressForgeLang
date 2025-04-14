@@ -96,7 +96,8 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: false,
       skip_upload_screenshots: false,
-      json_key: "fastlane/google-play-credentials.json"
+      json_key: "fastlane/google-play-credentials.json",
+      package_name: "com.progressforgelang.app"
     )
   end
 
@@ -125,7 +126,8 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: false,
       skip_upload_screenshots: false,
-      json_key: "fastlane/google-play-credentials.json"
+      json_key: "fastlane/google-play-credentials.json",
+      package_name: "com.progressforgelang.app"
     )
   end
 end
