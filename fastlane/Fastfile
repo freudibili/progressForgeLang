@@ -122,10 +122,10 @@ platform :android do
     upload_to_play_store(
       track: 'internal',
       release_status: 'completed',
-      metadata_path: "fastlane/metadata/android",
-      skip_upload_metadata: false,
-      skip_upload_images: false,
-      skip_upload_screenshots: false,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
       json_key: "fastlane/google-play-credentials.json",
       package_name: "com.progressforgelang.app"
     )
