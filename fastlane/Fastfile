@@ -121,7 +121,7 @@ platform :android do
     # Upload to internal testing
     upload_to_play_store(
       track: 'internal',
-      release_status: 'completed',
+      release_status: 'draft',
       skip_upload_apk: true,
       skip_upload_metadata: true,
       skip_upload_images: true,
