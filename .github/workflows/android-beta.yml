@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: development # Specify the environment name
     steps:
       - uses: actions/checkout@v3
         with:
@@ -40,6 +41,11 @@ jobs:
         run: |
           gem install bundler
           bundle install
+
+      - name: Create Google Play credentials file
+        run: |
+          mkdir -p fastlane
+          echo '${{ secrets.GOOGLE_PLAY_CREDENTIALS }}' > fastlane/google-play-credentials.json
 
       - name: Run fastlane android beta
         env:
