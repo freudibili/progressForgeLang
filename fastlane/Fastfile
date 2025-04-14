@@ -1,0 +1,137 @@
+default_platform(:ios)
+
+# Shared configuration
+before_all do
+  ENV["SLACK_URL"] = "https://hooks.slack.com/services/..." # Add your Slack webhook if you want notifications
+  setup_ci if is_ci
+end
+
+# Shared helper methods
+def ensure_git_status_clean
+  unless `git status`.include?("nothing to commit")
+    UI.user_error!("Git status is not clean. Please commit or stash your changes.")
+  end
+end
+
+def get_version_number
+  # For Expo projects, we can read from app.json
+  require 'json'
+  json = JSON.parse(File.read('../app.json'))
+  json['expo']['version']
+end
+
+def get_build_number
+  # For iOS, we'll use the current timestamp
+  Time.now.strftime("%Y%m%d%H%M")
+end
+
+platform :ios do
+  desc "Deploy iOS to App Store"
+  lane :deploy do
+    ensure_git_status_clean
+    
+    # Build the app
+    build_ios_app(
+      scheme: "ProgressForgeLang",
+      export_method: "app-store",
+      configuration: "Release",
+      clean: true,
+      output_directory: "build",
+      output_name: "ProgressForgeLang.ipa"
+    )
+    
+    # Upload to App Store
+    upload_to_app_store(
+      skip_screenshots: true,
+      skip_metadata: true,
+      force: true
+    )
+  end
+
+  desc "Deploy iOS to TestFlight"
+  lane :beta do
+    ensure_git_status_clean
+    
+    # Build the app
+    build_ios_app(
+      scheme: "ProgressForgeLang",
+      export_method: "app-store",
+      configuration: "Release",
+      clean: true,
+      output_directory: "build",
+      output_name: "ProgressForgeLang.ipa"
+    )
+    
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      changelog: "New beta version"
+    )
+  end
+end
+
+platform :android do
+  desc "Deploy Android to Play Store"
+  lane :deploy do
+    ensure_git_status_clean
+    
+    # Build the app
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android",
+      properties: {
+        "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
+        "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"]
+      }
+    )
+    
+    # Upload to Play Store
+    upload_to_play_store(
+      track: 'production',
+      release_status: 'completed',
+      metadata_path: "fastlane/metadata/android",
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  desc "Deploy Android to internal testing"
+  lane :beta do
+    ensure_git_status_clean
+    
+    # Build the app
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android",
+      properties: {
+        "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
+        "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"]
+      }
+    )
+    
+    # Upload to internal testing
+    upload_to_play_store(
+      track: 'internal',
+      release_status: 'completed',
+      metadata_path: "fastlane/metadata/android",
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+end
+
+# Error handling
+error do |lane, exception|
+  slack(
+    message: "Error in lane #{lane}: #{exception.message}",
+    success: false
+  )
+end 
