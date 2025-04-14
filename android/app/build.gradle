@@ -102,7 +102,7 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('keystore.jks')
+            storeFile file('/Users/fredericwatare/Documents/Development/progressForgeLang/android/app/keystore.jks')
             storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
             keyAlias System.getenv("ANDROID_KEY_ALIAS")
             keyPassword System.getenv("ANDROID_KEY_PASSWORD")
