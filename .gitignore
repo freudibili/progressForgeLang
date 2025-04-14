@@ -59,3 +59,9 @@ android/app/*.properties
 # iOS build stuff
 ios/build/
 android/.gradle/
+
+# Google Play credentials
+fastlane/google-play-credentials.json
+
+# Fastlane
+fastlane/report.xml

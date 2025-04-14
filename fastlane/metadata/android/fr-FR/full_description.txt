@@ -1,0 +1,10 @@
+ProgressForgeLang est une application d'apprentissage des langues qui vous aide à suivre vos progrès et à atteindre vos objectifs d'apprentissage.
+
+Fonctionnalités :
+- Suivez vos activités quotidiennes d'apprentissage des langues
+- Fixez et surveillez vos objectifs d'apprentissage
+- Obtenez des insights sur vos habitudes d'apprentissage
+- Restez motivé avec le suivi des progrès
+- Support pour plusieurs langues
+
+Commencez votre voyage d'apprentissage des langues aujourd'hui avec ProgressForgeLang ! 

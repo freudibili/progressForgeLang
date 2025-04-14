@@ -1,0 +1,10 @@
+ProgressForgeLang is a language learning app that helps you track your progress and achieve your language learning goals.
+
+Features:
+- Track your daily language learning activities
+- Set and monitor your learning goals
+- Get insights into your learning patterns
+- Stay motivated with progress tracking
+- Support for multiple languages
+
+Start your language learning journey today with ProgressForgeLang! 
