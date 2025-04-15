@@ -137,6 +137,7 @@ platform :android do
       project_dir: "android",
       print_command: true,
       print_command_output: true,
+      flags: "--stacktrace --info",
       properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
@@ -145,7 +146,8 @@ platform :android do
         "android.injected.version.code" => new_build.to_s,
         "org.gradle.parallel" => "true",
         "org.gradle.daemon" => "false",
-        "org.gradle.configureondemand" => "false"
+        "org.gradle.configureondemand" => "false",
+        "org.gradle.logging.level" => "info"
       }
     )
     
@@ -181,6 +183,7 @@ platform :android do
       project_dir: "android",
       print_command: true,
       print_command_output: true,
+      flags: "--stacktrace --info",
       properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
@@ -189,7 +192,8 @@ platform :android do
         "android.injected.version.code" => new_build.to_s,
         "org.gradle.parallel" => "true",
         "org.gradle.daemon" => "false",
-        "org.gradle.configureondemand" => "false"
+        "org.gradle.configureondemand" => "false",
+        "org.gradle.logging.level" => "info"
       }
     )
     
