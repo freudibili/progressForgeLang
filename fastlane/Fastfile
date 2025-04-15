@@ -136,10 +136,11 @@ platform :android do
       build_type: "Release",
       project_dir: "android",
       properties: {
-        "android.injected.signing.store.file" => "/Users/fredericwatare/Documents/Development/progressForgeLang/android/app/keystore.jks",
+        "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
-        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"]
+        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
+        "android.injected.version.code" => new_build.to_s
       }
     )
     
@@ -174,10 +175,11 @@ platform :android do
       build_type: "Release",
       project_dir: "android",
       properties: {
-        "android.injected.signing.store.file" => "/Users/fredericwatare/Documents/Development/progressForgeLang/android/app/keystore.jks",
+        "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
-        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"]
+        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
+        "android.injected.version.code" => new_build.to_s
       }
     )
     
