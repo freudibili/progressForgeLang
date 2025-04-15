@@ -55,10 +55,19 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file(System.getenv("ANDROID_KEYSTORE_FILE") ?: "keystore.jks")
-            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            keyAlias System.getenv("ANDROID_KEY_ALIAS")
-            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+            def keystorePath = System.getenv("ANDROID_KEYSTORE_FILE") ?: "keystore.jks"
+            println "Keystore path: $keystorePath"
+            if (new File(keystorePath).exists()) {
+                println "Keystore file exists at: $keystorePath"
+                storeFile file(keystorePath)
+                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+            } else {
+                println "WARNING: Keystore file not found at: $keystorePath"
+                println "Current directory: ${new File('.').absolutePath}"
+                println "Files in current directory: ${new File('.').list()}"
+            }
         }
     }
     buildTypes {

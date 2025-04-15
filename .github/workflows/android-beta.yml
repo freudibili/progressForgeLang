@@ -53,9 +53,11 @@ jobs:
       - name: Decode and save keystore
         shell: bash
         run: |
-          KEYSTORE_PATH="android/app/keystore.jks"
+          mkdir -p android/app
+          KEYSTORE_PATH=$(pwd)/android/app/keystore.jks
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > "$KEYSTORE_PATH"
           chmod 600 "$KEYSTORE_PATH"
+          echo "Keystore saved to $KEYSTORE_PATH"
 
       - name: Ensure clean git status
         run: |
@@ -69,8 +71,11 @@ jobs:
 
       - name: Run fastlane android beta
         env:
-          ANDROID_KEYSTORE_FILE: android/app/keystore.jks
+          ANDROID_KEYSTORE_FILE: $(pwd)/android/app/keystore.jks
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: bundle exec fastlane android beta
+        run: |
+          KEYSTORE_PATH=$(pwd)/android/app/keystore.jks
+          echo "Using keystore at: $KEYSTORE_PATH"
+          ANDROID_KEYSTORE_FILE=$KEYSTORE_PATH bundle exec fastlane android beta

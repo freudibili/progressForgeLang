@@ -140,15 +140,27 @@ platform :android do
     
     # Print diagnostics about the environment
     sh "echo 'Android SDK location: $ANDROID_SDK_ROOT'"
-    sh "echo 'Android NDK version: $(ls -la $ANDROID_SDK_ROOT/ndk 2>/dev/null || echo NDK not found)'"
     sh "echo 'Java version: $(java -version 2>&1 | head -n 1)'"
+    sh "echo 'Keystore path: #{ENV['ANDROID_KEYSTORE_FILE']}'"
+    sh "ls -l #{ENV['ANDROID_KEYSTORE_FILE']} || echo 'Keystore file not found'"
+
+    # Handle keystore path properly
+    keystore_path = ENV["ANDROID_KEYSTORE_FILE"]
+    UI.message("Using keystore at: #{keystore_path}")
+    
+    unless File.exist?(keystore_path)
+      UI.error("Keystore file not found at: #{keystore_path}")
+      UI.error("Current directory: #{Dir.pwd}")
+      UI.error("Files in android/app:")
+      sh "ls -la android/app || echo 'Directory not found'"
+    end
 
     # Build the app using direct shell command for better diagnostics
     sh("cd ../android && ./gradlew bundleRelease " \
-       "-Pandroid.injected.signing.store.file=#{ENV['ANDROID_KEYSTORE_FILE']} " \
-       "-Pandroid.injected.signing.store.password=#{ENV['ANDROID_KEYSTORE_PASSWORD']} " \
-       "-Pandroid.injected.signing.key.alias=#{ENV['ANDROID_KEY_ALIAS']} " \
-       "-Pandroid.injected.signing.key.password=#{ENV['ANDROID_KEY_PASSWORD']} " \
+       "-Pandroid.injected.signing.store.file='#{keystore_path}' " \
+       "-Pandroid.injected.signing.store.password='#{ENV['ANDROID_KEYSTORE_PASSWORD']}' " \
+       "-Pandroid.injected.signing.key.alias='#{ENV['ANDROID_KEY_ALIAS']}' " \
+       "-Pandroid.injected.signing.key.password='#{ENV['ANDROID_KEY_PASSWORD']}' " \
        "-Pandroid.injected.version.code=#{new_build} " \
        "-Dorg.gradle.logging.level=info " \
        "--full-stacktrace --info --debug")
