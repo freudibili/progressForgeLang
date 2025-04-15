@@ -1,8 +1,7 @@
 default_platform(:ios)
 
-# Shared configuration
 before_all do
-  ENV["SLACK_URL"] = "https://hooks.slack.com/services/..." # Add your Slack webhook if you want notifications
+  ENV["SLACK_URL"] = "https://hooks.slack.com/services/..." # Optional Slack webhook
   setup_ci if is_ci
 end
 
@@ -14,49 +13,33 @@ def ensure_git_status_clean
 end
 
 def get_version_number
-  # For Expo projects, we can read from app.json
   require 'json'
   json = JSON.parse(File.read('../app.json'))
   json['expo']['version']
 end
 
 def increment_version_number
-  # Read current version from app.json
   require 'json'
   app_json = JSON.parse(File.read('../app.json'))
   current_version = app_json['expo']['version']
-  
-  # Split version into parts
   major, minor, patch = current_version.split('.').map(&:to_i)
-  
-  # Increment patch version
   new_version = "#{major}.#{minor}.#{patch + 1}"
-  
-  # Update app.json
   app_json['expo']['version'] = new_version
   File.write('../app.json', JSON.pretty_generate(app_json))
-  
   new_version
 end
 
 def get_build_number
-  # For iOS, we'll use the current timestamp
   Time.now.strftime("%Y%m%d%H%M")
 end
 
 def increment_build_number
-  # Read current build number from app.json
   require 'json'
   app_json = JSON.parse(File.read('../app.json'))
-  current_build = app_json['expo']['android']['versionCode'] || 1
-  
-  # Increment build number
+  current_build = app_json.dig('expo', 'android', 'versionCode') || 1
   new_build = current_build + 1
-  
-  # Update app.json
   app_json['expo']['android']['versionCode'] = new_build
   File.write('../app.json', JSON.pretty_generate(app_json))
-  
   new_build
 end
 
@@ -64,12 +47,10 @@ platform :ios do
   desc "Deploy iOS to App Store"
   lane :deploy do
     ensure_git_status_clean
-    
-    # Increment version and build numbers
+
     new_version = increment_version_number
     new_build = get_build_number
-    
-    # Build the app
+
     build_ios_app(
       scheme: "ProgressForgeLang",
       export_method: "app-store",
@@ -78,15 +59,13 @@ platform :ios do
       output_directory: "build",
       output_name: "ProgressForgeLang.ipa"
     )
-    
-    # Upload to App Store
+
     upload_to_app_store(
       skip_screenshots: true,
       skip_metadata: true,
       force: true
     )
-    
-    # Commit version changes
+
     sh "git add ../app.json"
     sh "git commit -m 'Bump version to #{new_version} (build #{new_build})'"
   end
@@ -94,12 +73,10 @@ platform :ios do
   desc "Deploy iOS to TestFlight"
   lane :beta do
     ensure_git_status_clean
-    
-    # Increment version and build numbers
+
     new_version = increment_version_number
     new_build = get_build_number
-    
-    # Build the app
+
     build_ios_app(
       scheme: "ProgressForgeLang",
       export_method: "app-store",
@@ -108,14 +85,12 @@ platform :ios do
       output_directory: "build",
       output_name: "ProgressForgeLang.ipa"
     )
-    
-    # Upload to TestFlight
+
     upload_to_testflight(
       skip_waiting_for_build_processing: true,
       changelog: "New beta version #{new_version} (build #{new_build})"
     )
-    
-    # Commit version changes
+
     sh "git add ../app.json"
     sh "git commit -m 'Bump version to #{new_version} (build #{new_build})'"
   end
@@ -125,18 +100,14 @@ platform :android do
   desc "Deploy Android to Play Store"
   lane :deploy do
     ensure_git_status_clean
-    
-    # Increment version and build numbers
+
     new_version = increment_version_number
     new_build = increment_build_number
-    
-    # Build the app
+
     gradle(
       task: "bundle",
       build_type: "Release",
       project_dir: "android",
-      print_command: true,
-      print_command_output: true,
       flags: "--stacktrace --info",
       properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
@@ -144,26 +115,18 @@ platform :android do
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
         "android.injected.version.code" => new_build.to_s,
-        "org.gradle.parallel" => "true",
-        "org.gradle.daemon" => "false",
-        "org.gradle.configureondemand" => "false",
         "org.gradle.logging.level" => "info"
       }
     )
-    
-    # Upload to Play Store
+
     upload_to_play_store(
       track: 'production',
       release_status: 'completed',
       metadata_path: "fastlane/metadata/android",
-      skip_upload_metadata: false,
-      skip_upload_images: false,
-      skip_upload_screenshots: false,
       json_key: "fastlane/google-play-credentials.json",
       package_name: "com.progressforgelang.app"
     )
-    
-    # Commit version changes
+
     sh "git add ../app.json"
     sh "git commit -m 'Bump version to #{new_version} (build #{new_build})'"
   end
@@ -171,18 +134,14 @@ platform :android do
   desc "Deploy Android to internal testing"
   lane :beta do
     ensure_git_status_clean
-    
-    # Increment version and build numbers
+
     new_version = increment_version_number
     new_build = increment_build_number
-    
-    # Build the app
+
     gradle(
       task: "bundle",
       build_type: "Release",
       project_dir: "android",
-      print_command: true,
-      print_command_output: true,
       flags: "--stacktrace --info",
       properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
@@ -190,14 +149,10 @@ platform :android do
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
         "android.injected.version.code" => new_build.to_s,
-        "org.gradle.parallel" => "true",
-        "org.gradle.daemon" => "false",
-        "org.gradle.configureondemand" => "false",
         "org.gradle.logging.level" => "info"
       }
     )
-    
-    # Upload to internal testing
+
     upload_to_play_store(
       track: 'internal',
       release_status: 'draft',
@@ -209,17 +164,15 @@ platform :android do
       json_key: "fastlane/google-play-credentials.json",
       package_name: "com.progressforgelang.app"
     )
-    
-    # Commit version changes
+
     sh "git add ../app.json"
     sh "git commit -m 'Bump version to #{new_version} (build #{new_build})'"
   end
 end
 
-# Error handling
 error do |lane, exception|
   slack(
-    message: "Error in lane #{lane}: #{exception.message}",
+    message: "🚨 Error in lane #{lane}: #{exception.message}",
     success: false
   )
-end 
+end
