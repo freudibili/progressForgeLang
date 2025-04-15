@@ -140,22 +140,33 @@ platform :android do
     
     # Print diagnostics about the environment
     sh "echo 'Android SDK location: $ANDROID_SDK_ROOT'"
-    sh "echo 'Java version: $(java -version 2>&1 | head -n 1)'"
-    sh "echo 'Keystore path: #{ENV['ANDROID_KEYSTORE_FILE']}'"
-    sh "ls -l #{ENV['ANDROID_KEYSTORE_FILE']} || echo 'Keystore file not found'"
-
+    sh "echo 'Java version: openjdk version'"
+    
     # Handle keystore path properly
     keystore_path = ENV["ANDROID_KEYSTORE_FILE"]
+    if keystore_path && !keystore_path.start_with?('/')
+      # Convert relative path to absolute
+      keystore_path = File.expand_path("../#{keystore_path}", __dir__)
+    end
+    
     UI.message("Using keystore at: #{keystore_path}")
     
-    unless File.exist?(keystore_path)
-      UI.error("Keystore file not found at: #{keystore_path}")
+    # Verify the keystore exists
+    if keystore_path && File.exist?(keystore_path)
+      UI.success("✅ Keystore file found at: #{keystore_path}")
+      sh "ls -la #{keystore_path}"
+    else
+      UI.error("❌ Keystore file not found at: #{keystore_path}")
       UI.error("Current directory: #{Dir.pwd}")
-      UI.error("Files in android/app:")
-      sh "ls -la android/app || echo 'Directory not found'"
+      UI.error("Files in parent directory:")
+      sh "ls -la .."
+      UI.error("Files in android/app directory:")
+      sh "ls -la ../android/app || echo 'Directory not found'"
     end
 
-    # Build the app using direct shell command for better diagnostics
+    # Build the app using direct shell command
+    UI.message("Building Android app with keystore: #{keystore_path}")
+    
     sh("cd ../android && ./gradlew bundleRelease " \
        "-Pandroid.injected.signing.store.file='#{keystore_path}' " \
        "-Pandroid.injected.signing.store.password='#{ENV['ANDROID_KEYSTORE_PASSWORD']}' " \
@@ -163,7 +174,7 @@ platform :android do
        "-Pandroid.injected.signing.key.password='#{ENV['ANDROID_KEY_PASSWORD']}' " \
        "-Pandroid.injected.version.code=#{new_build} " \
        "-Dorg.gradle.logging.level=info " \
-       "--full-stacktrace --info --debug")
+       "--stacktrace --info")
 
     upload_to_play_store(
       track: 'internal',

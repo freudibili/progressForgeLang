@@ -55,18 +55,28 @@ android {
             keyPassword 'android'
         }
         release {
-            def keystorePath = System.getenv("ANDROID_KEYSTORE_FILE") ?: "keystore.jks"
-            println "Keystore path: $keystorePath"
-            if (new File(keystorePath).exists()) {
-                println "Keystore file exists at: $keystorePath"
-                storeFile file(keystorePath)
-                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-                keyAlias System.getenv("ANDROID_KEY_ALIAS")
-                keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+            def keystorePath = System.getenv("ANDROID_KEYSTORE_FILE")
+            println "Keystore path from environment: $keystorePath"
+            
+            if (keystorePath) {
+                def keystoreFile = file(keystorePath)
+                if (keystoreFile.exists()) {
+                    println "✅ Keystore file exists at: ${keystoreFile.absolutePath}"
+                    storeFile keystoreFile
+                    storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                    keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                    keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+                } else {
+                    println "❌ Keystore file not found at: ${keystoreFile.absolutePath}"
+                    println "Absolute path: ${keystoreFile.absolutePath}"
+                    println "Relative to project: ${project.file(keystorePath).absolutePath}"
+                    println "Current directory: ${file('.').absolutePath}"
+                    println "Project directory: ${project.rootDir.absolutePath}"
+                    println "Files in current directory: ${file('.').list()}"
+                    println "Files in parent directory: ${file('..').list()}"
+                }
             } else {
-                println "WARNING: Keystore file not found at: $keystorePath"
-                println "Current directory: ${new File('.').absolutePath}"
-                println "Files in current directory: ${new File('.').list()}"
+                println "❌ No keystore path provided in environment"
             }
         }
     }
