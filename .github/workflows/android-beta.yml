@@ -47,6 +47,16 @@ jobs:
           mkdir -p fastlane
           echo '${{ secrets.GOOGLE_PLAY_CREDENTIALS }}' > fastlane/google-play-credentials.json
 
+      - name: Ensure clean git status
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git status
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "chore: automated commit by GitHub Actions"
+          fi
+
       - name: Run fastlane android beta
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
