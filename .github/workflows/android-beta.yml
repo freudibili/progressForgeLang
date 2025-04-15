@@ -52,9 +52,7 @@ jobs:
 
       - name: Decode and save keystore
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" > keystore.base64
-          cat keystore.base64 | base64 --decode > ${{ secrets.ANDROID_KEYSTORE_FILE }}
-          rm keystore.base64
+          printf '%s' "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > ${{ secrets.ANDROID_KEYSTORE_FILE }}
           chmod 600 ${{ secrets.ANDROID_KEYSTORE_FILE }}
 
       - name: Ensure clean git status
