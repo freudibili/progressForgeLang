@@ -137,21 +137,21 @@ platform :android do
 
     new_version = increment_version_number
     new_build = increment_build_number
+    
+    # Print diagnostics about the environment
+    sh "echo 'Android SDK location: $ANDROID_SDK_ROOT'"
+    sh "echo 'Android NDK version: $(ls -la $ANDROID_SDK_ROOT/ndk 2>/dev/null || echo NDK not found)'"
+    sh "echo 'Java version: $(java -version 2>&1 | head -n 1)'"
 
-    gradle(
-      task: "bundle",
-      build_type: "Release",
-      project_dir: "android",
-      flags: "--stacktrace --info",
-      properties: {
-        "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
-        "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
-        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
-        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
-        "android.injected.version.code" => new_build.to_s,
-        "org.gradle.logging.level" => "info"
-      }
-    )
+    # Build the app using direct shell command for better diagnostics
+    sh("cd ../android && ./gradlew bundleRelease " \
+       "-Pandroid.injected.signing.store.file=#{ENV['ANDROID_KEYSTORE_FILE']} " \
+       "-Pandroid.injected.signing.store.password=#{ENV['ANDROID_KEYSTORE_PASSWORD']} " \
+       "-Pandroid.injected.signing.key.alias=#{ENV['ANDROID_KEY_ALIAS']} " \
+       "-Pandroid.injected.signing.key.password=#{ENV['ANDROID_KEY_PASSWORD']} " \
+       "-Pandroid.injected.version.code=#{new_build} " \
+       "-Dorg.gradle.logging.level=info " \
+       "--full-stacktrace --info --debug")
 
     upload_to_play_store(
       track: 'internal',
