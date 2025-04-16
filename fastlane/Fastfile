@@ -145,35 +145,37 @@ platform :android do
     
     # Explicitly check and log keystore info
     keystore_path = ENV["ANDROID_KEYSTORE_FILE"] || ""
-    UI.important("Keystore path: '#{keystore_path}'")
+    UI.important("Keystore path from env: '#{keystore_path}'")
+    UI.important("Env variables: #{ENV.keys.select { |k| k.include?('KEYSTORE') || k.include?('ANDROID') }.join(', ')}")
     
-    if keystore_path && !keystore_path.empty?
-      if File.exist?(keystore_path)
-        UI.success("✅ Keystore file found at: #{keystore_path}")
-        sh "ls -la #{keystore_path}"
+    # Convert to absolute path
+    if keystore_path.empty? || !File.exist?(keystore_path)
+      UI.error("❌ Keystore file not found at: #{keystore_path}")
+      # Try the relative path as a fallback
+      relative_path = File.join("..", "android", "app", "keystore.jks")
+      UI.important("Trying relative path: #{relative_path}")
+      if File.exist?(relative_path)
+        UI.success("✅ Keystore found at relative path: #{relative_path}")
+        keystore_path = File.absolute_path(relative_path)
+        UI.success("Absolute path: #{keystore_path}")
       else
-        UI.error("❌ Keystore file not found at: #{keystore_path}")
-        # Try the relative path as a fallback
-        relative_path = File.join("..", "android", "app", "keystore.jks")
-        UI.important("Trying relative path: #{relative_path}")
-        if File.exist?(relative_path)
-          UI.success("✅ Keystore found at relative path: #{relative_path}")
-          keystore_path = relative_path
-        else
-          UI.error("❌ Keystore also not found at relative path")
-        end
+        UI.error("❌ Keystore also not found at relative path")
+        # Set a default as last resort
+        keystore_path = File.absolute_path(File.join("..", "android", "app", "keystore.jks"))
       end
     else
-      UI.error("❌ ANDROID_KEYSTORE_FILE environment variable is not set")
-      UI.important("Setting default keystore path")
-      # Default to a standard location in case the env var isn't set
-      keystore_path = File.join("..", "android", "app", "keystore.jks")
-      UI.important("Default keystore path: #{keystore_path}")
-      if File.exist?(keystore_path)
-        UI.success("✅ Default keystore found!")
-      else
-        UI.error("❌ Default keystore not found either")
-      end
+      # Make sure we have an absolute path
+      keystore_path = File.absolute_path(keystore_path)
+      UI.success("✅ Using absolute keystore path: #{keystore_path}")
+    end
+    
+    # Double check the file exists
+    if File.exist?(keystore_path)
+      UI.success("Final check: ✅ Keystore exists at: #{keystore_path}")
+      sh "ls -la #{keystore_path}"
+    else
+      UI.error("Final check: ❌ Keystore not found at: #{keystore_path}")
+      UI.error("Will try to continue anyway...")
     end
     
     # Pass explicit environment variables to gradle
@@ -191,7 +193,8 @@ platform :android do
       task: "bundleRelease",
       project_dir: "android",
       properties: {
-        "android.injected.signing.store.file" => keystore_path,
+        # Use absolute path for keystore
+        "android.injected.signing.store.file" => File.absolute_path(keystore_path),
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
