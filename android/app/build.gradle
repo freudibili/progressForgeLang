@@ -47,37 +47,19 @@ android {
         
         // Get version code from injected property or fallback to app.json
         def injectedVersionCode = project.findProperty("android.injected.version.code")
-        
-        // Debug output to see what's happening with version code
-        println "================================================"
-        println "Version Code Debug:"
-        println "Injected version code: ${injectedVersionCode}"
-        println "Injected version code type: ${injectedVersionCode?.class}"
-        
         if (injectedVersionCode) {
-            // Use the injected version code
             try {
-                def versionCodeInt = Integer.parseInt(injectedVersionCode)
-                println "Parsed injected version code: ${versionCodeInt} (Integer)"
-                versionCode versionCodeInt
+                versionCode Integer.parseInt(injectedVersionCode)
             } catch (Exception e) {
-                println "Error parsing injected version code: ${e.message}"
-                // Fallback to environment variable or default
                 versionCode System.getenv("ANDROID_VERSION_CODE")?.toInteger() ?: 10
             }
         } else {
-            // Fallback to environment variable or default
-            println "No injected version code, using fallback"
             versionCode System.getenv("ANDROID_VERSION_CODE")?.toInteger() ?: 10
         }
         
         // Get version name from injected property or fallback
         def injectedVersionName = project.findProperty("android.injected.version.name")
-        println "Injected version name: ${injectedVersionName}"
         versionName injectedVersionName ?: System.getenv("ANDROID_VERSION_NAME") ?: "1.0.0"
-        println "Final version code: ${versionCode}"
-        println "Final version name: ${versionName}"
-        println "================================================"
     }
     signingConfigs {
         debug {
@@ -88,91 +70,36 @@ android {
         }
         release {
             try {
-                // Print out all signing properties for debugging
-                println "================================================"
-                println "Signing Configuration Debug:"
-                println "ANDROID_KEYSTORE_FILE: ${System.getenv("ANDROID_KEYSTORE_FILE")}"
-                println "android.injected.signing.store.file: ${project.findProperty("android.injected.signing.store.file")}"
-                println "Current directory: ${new File(".").absolutePath}"
-                println "Project directory: ${project.projectDir.absolutePath}"
-                println "Root project directory: ${project.rootDir.absolutePath}"
-                println "================================================"
+                // Check for injected keystore properties first
+                def keystorePath = project.findProperty("android.injected.signing.store.file") ?:
+                                   System.getenv("ANDROID_KEYSTORE_FILE")
                 
-                // First check if we have injected properties (from command line)
-                // This fixes the 'externalOverride' signing config issues with fastlane
-                def injectedKeystorePath = project.findProperty("android.injected.signing.store.file")
-                if (injectedKeystorePath) {
-                    println "Using injected keystore path: $injectedKeystorePath"
-                    def injectedFile = new File(injectedKeystorePath.toString())
-                    
-                    // Ensure the path is absolute to fix daemon path issues
-                    if (!injectedFile.isAbsolute()) {
-                        println "Converting relative injected path to absolute path"
-                        injectedFile = new File(rootProject.projectDir, injectedKeystorePath.toString())
-                        println "New absolute path: ${injectedFile.absolutePath}"
-                    }
-                    
-                    if (injectedFile.exists()) {
-                        println "✅ Injected keystore file exists at: ${injectedFile.absolutePath}"
-                        storeFile injectedFile
-                        storePassword project.findProperty("android.injected.signing.store.password")
-                        keyAlias project.findProperty("android.injected.signing.key.alias")
-                        keyPassword project.findProperty("android.injected.signing.key.password")
-                        return
-                    } else {
-                        println "❌ Injected keystore file not found: ${injectedFile.absolutePath}"
-                    }
-                }
-                
-                // Fall back to environment variable
-                def keystorePath = System.getenv("ANDROID_KEYSTORE_FILE")
-                println "Keystore path from env: $keystorePath"
-                
-                if (keystorePath != null && !keystorePath.isEmpty()) {
-                    // Try to use the path directly
-                    def keystoreFile = new File(keystorePath)
-                    
-                    // If it's a relative path, try to resolve it
-                    if (!keystoreFile.isAbsolute()) {
-                        keystoreFile = new File(rootProject.projectDir, keystorePath)
-                    }
-                    
+                if (keystorePath) {
+                    def keystoreFile = file(keystorePath)
                     if (keystoreFile.exists()) {
-                        println "✅ Using keystore at: ${keystoreFile.absolutePath}"
                         storeFile keystoreFile
-                        storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-                        keyAlias System.getenv("ANDROID_KEY_ALIAS")
-                        keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+                        storePassword project.findProperty("android.injected.signing.store.password") ?:
+                                      System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                        keyAlias project.findProperty("android.injected.signing.key.alias") ?:
+                                 System.getenv("ANDROID_KEY_ALIAS")
+                        keyPassword project.findProperty("android.injected.signing.key.password") ?:
+                                    System.getenv("ANDROID_KEY_PASSWORD")
                     } else {
-                        // Try absolute path in app directory
-                        def appKeystoreFile = new File(project.projectDir, "keystore.jks")
-                        if (appKeystoreFile.exists()) {
-                            println "✅ Found keystore in app directory: ${appKeystoreFile.absolutePath}"
-                            storeFile appKeystoreFile
-                            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-                            keyAlias System.getenv("ANDROID_KEY_ALIAS")
-                            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
-                        } else {
-                            println "❌ No keystore found. Will attempt to use debug keystore for the build."
-                            // Use debug configuration as a last resort
-                            storeFile file('debug.keystore')
-                            storePassword 'android'
-                            keyAlias 'androiddebugkey'
-                            keyPassword 'android'
-                        }
+                        // Fallback to debug for development
+                        storeFile file('debug.keystore')
+                        storePassword 'android'
+                        keyAlias 'androiddebugkey'
+                        keyPassword 'android'
                     }
                 } else {
-                    println "❌ No ANDROID_KEYSTORE_FILE environment variable set"
-                    // Use debug configuration as a last resort
+                    // No keystore path provided
                     storeFile file('debug.keystore')
                     storePassword 'android'
                     keyAlias 'androiddebugkey'
                     keyPassword 'android'
                 }
             } catch (Exception e) {
-                println "❌ Error setting up signing config: ${e.message}"
-                e.printStackTrace()
-                // Use debug configuration as a last resort
+                // Fallback to debug for development
                 storeFile file('debug.keystore')
                 storePassword 'android'
                 keyAlias 'androiddebugkey'

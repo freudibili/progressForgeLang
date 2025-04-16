@@ -37,16 +37,30 @@ def increment_build_number
   require 'json'
   app_json = JSON.parse(File.read('../app.json'))
   current_build = app_json.dig('expo', 'android', 'versionCode') || 1
-  
-  # Make sure we're getting at least 1 higher than the current version
   new_build = current_build + 1
-  
-  # Update the app.json file
   app_json['expo']['android']['versionCode'] = new_build
   File.write('../app.json', JSON.pretty_generate(app_json))
-  
-  puts "Incremented version code to #{new_build}"
   new_build
+end
+
+# Resolves keystore path, ensuring it's an absolute path
+def resolve_keystore_path
+  keystore_path = ENV["ANDROID_KEYSTORE_FILE"] || ""
+  
+  if keystore_path.empty? || !File.exist?(keystore_path)
+    # Try the relative path as a fallback
+    relative_path = File.join("..", "android", "app", "keystore.jks")
+    if File.exist?(relative_path)
+      keystore_path = File.absolute_path(relative_path)
+    else
+      keystore_path = File.absolute_path(File.join("..", "android", "app", "keystore.jks"))
+    end
+  else
+    # Make sure we have an absolute path
+    keystore_path = File.absolute_path(keystore_path)
+  end
+  
+  keystore_path
 end
 
 platform :ios do
@@ -109,28 +123,21 @@ platform :android do
 
     new_version = increment_version_number
     new_build = increment_build_number
-    
-    # Print version information for debugging
-    UI.important("Version number from app.json: #{new_version}")
-    UI.important("Build number after increment: #{new_build}")
-    UI.important("Version code type: #{new_build.class}")
-    
-    # Ensure version code is an integer, not a string
     version_code = new_build.to_i
-    UI.important("Final version code (integer): #{version_code}")
+    keystore_path = resolve_keystore_path
 
     gradle(
       task: "bundle",
       build_type: "Release",
       project_dir: "android",
-      flags: "--stacktrace --info",
+      flags: "--stacktrace",
       properties: {
-        "android.injected.signing.store.file" => ENV["ANDROID_KEYSTORE_FILE"],
+        "android.injected.signing.store.file" => keystore_path,
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
-        "android.injected.version.code" => new_build.to_s,
-        "org.gradle.logging.level" => "info"
+        "android.injected.version.code" => version_code.to_s,
+        "android.injected.version.name" => get_version_number
       }
     )
 
@@ -152,83 +159,22 @@ platform :android do
 
     new_version = increment_version_number
     new_build = increment_build_number
-    
-    # Print version information for debugging
-    UI.important("Version number from app.json: #{new_version}")
-    UI.important("Build number after increment: #{new_build}")
-    UI.important("Version code type: #{new_build.class}")
-    
-    # Ensure version code is an integer, not a string
     version_code = new_build.to_i
-    UI.important("Final version code (integer): #{version_code}")
-    
-    # Print diagnostics about the environment
-    sh "echo 'Android SDK location: $ANDROID_SDK_ROOT'"
-    sh "echo 'Java version: openjdk version'"
-    sh "echo 'Keystore path from env: $ANDROID_KEYSTORE_FILE'"
-    
-    # Explicitly check and log keystore info
-    keystore_path = ENV["ANDROID_KEYSTORE_FILE"] || ""
-    UI.important("Keystore path from env: '#{keystore_path}'")
-    UI.important("Env variables: #{ENV.keys.select { |k| k.include?('KEYSTORE') || k.include?('ANDROID') }.join(', ')}")
-    
-    # Convert to absolute path
-    if keystore_path.empty? || !File.exist?(keystore_path)
-      UI.error("❌ Keystore file not found at: #{keystore_path}")
-      # Try the relative path as a fallback
-      relative_path = File.join("..", "android", "app", "keystore.jks")
-      UI.important("Trying relative path: #{relative_path}")
-      if File.exist?(relative_path)
-        UI.success("✅ Keystore found at relative path: #{relative_path}")
-        keystore_path = File.absolute_path(relative_path)
-        UI.success("Absolute path: #{keystore_path}")
-      else
-        UI.error("❌ Keystore also not found at relative path")
-        # Set a default as last resort
-        keystore_path = File.absolute_path(File.join("..", "android", "app", "keystore.jks"))
-      end
-    else
-      # Make sure we have an absolute path
-      keystore_path = File.absolute_path(keystore_path)
-      UI.success("✅ Using absolute keystore path: #{keystore_path}")
-    end
-    
-    # Double check the file exists
-    if File.exist?(keystore_path)
-      UI.success("Final check: ✅ Keystore exists at: #{keystore_path}")
-      sh "ls -la #{keystore_path}"
-    else
-      UI.error("Final check: ❌ Keystore not found at: #{keystore_path}")
-      UI.error("Will try to continue anyway...")
-    end
-    
-    # Pass explicit environment variables to gradle
-    gradle_env = {
-      "ANDROID_KEYSTORE_FILE" => keystore_path,
-      "ANDROID_KEYSTORE_PASSWORD" => ENV["ANDROID_KEYSTORE_PASSWORD"],
-      "ANDROID_KEY_ALIAS" => ENV["ANDROID_KEY_ALIAS"],
-      "ANDROID_KEY_PASSWORD" => ENV["ANDROID_KEY_PASSWORD"]
-    }
-    
-    UI.important("Building with keystore at: #{keystore_path}")
-    
-    # Use gradle action for more reliable environment variable passing
+    keystore_path = resolve_keystore_path
+
     gradle(
       task: "bundleRelease",
       project_dir: "android",
       properties: {
-        # Use absolute path for keystore
-        "android.injected.signing.store.file" => File.absolute_path(keystore_path),
+        "android.injected.signing.store.file" => keystore_path,
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
-        # Ensure version code is an integer and convert to string for Gradle
         "android.injected.version.code" => version_code.to_s,
         "android.injected.version.name" => get_version_number
       },
-      flags: "--stacktrace --info",
-      print_command: true,
-      print_command_output: true
+      flags: "--stacktrace",
+      print_command: true
     )
 
     upload_to_play_store(
@@ -243,10 +189,8 @@ platform :android do
       package_name: "com.progressforgelang.app"
     )
 
-    # Commit the version bump to app.json
-    sh("git add ../app.json")
-    sh("git commit -m 'Bump version to #{new_version} (build #{new_build})'")
-    UI.success("Successfully bumped version to #{new_version} (build #{new_build}) and committed changes")
+    sh "git add ../app.json"
+    sh "git commit -m 'Bump version to #{new_version} (build #{new_build})'"
   end
 end
 
