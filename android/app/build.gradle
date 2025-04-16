@@ -44,8 +44,40 @@ android {
         applicationId 'com.progressforgelang.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode System.getenv("ANDROID_VERSION_CODE")?.toInteger() ?: 1
-        versionName System.getenv("ANDROID_VERSION_NAME") ?: "1.0.0"
+        
+        // Get version code from injected property or fallback to app.json
+        def injectedVersionCode = project.findProperty("android.injected.version.code")
+        
+        // Debug output to see what's happening with version code
+        println "================================================"
+        println "Version Code Debug:"
+        println "Injected version code: ${injectedVersionCode}"
+        println "Injected version code type: ${injectedVersionCode?.class}"
+        
+        if (injectedVersionCode) {
+            // Use the injected version code
+            try {
+                def versionCodeInt = Integer.parseInt(injectedVersionCode)
+                println "Parsed injected version code: ${versionCodeInt} (Integer)"
+                versionCode versionCodeInt
+            } catch (Exception e) {
+                println "Error parsing injected version code: ${e.message}"
+                // Fallback to environment variable or default
+                versionCode System.getenv("ANDROID_VERSION_CODE")?.toInteger() ?: 10
+            }
+        } else {
+            // Fallback to environment variable or default
+            println "No injected version code, using fallback"
+            versionCode System.getenv("ANDROID_VERSION_CODE")?.toInteger() ?: 10
+        }
+        
+        // Get version name from injected property or fallback
+        def injectedVersionName = project.findProperty("android.injected.version.name")
+        println "Injected version name: ${injectedVersionName}"
+        versionName injectedVersionName ?: System.getenv("ANDROID_VERSION_NAME") ?: "1.0.0"
+        println "Final version code: ${versionCode}"
+        println "Final version name: ${versionName}"
+        println "================================================"
     }
     signingConfigs {
         debug {

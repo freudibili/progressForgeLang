@@ -109,6 +109,15 @@ platform :android do
 
     new_version = increment_version_number
     new_build = increment_build_number
+    
+    # Print version information for debugging
+    UI.important("Version number from app.json: #{new_version}")
+    UI.important("Build number after increment: #{new_build}")
+    UI.important("Version code type: #{new_build.class}")
+    
+    # Ensure version code is an integer, not a string
+    version_code = new_build.to_i
+    UI.important("Final version code (integer): #{version_code}")
 
     gradle(
       task: "bundle",
@@ -204,7 +213,8 @@ platform :android do
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
-        "android.injected.version.code" => new_build.to_s,
+        # Ensure version code is an integer and convert to string for Gradle
+        "android.injected.version.code" => version_code.to_s,
         "android.injected.version.name" => get_version_number
       },
       flags: "--stacktrace --info",
@@ -224,8 +234,10 @@ platform :android do
       package_name: "com.progressforgelang.app"
     )
 
-    sh "git add ../app.json"
-    sh "git commit -m 'Bump version to #{new_version} (build #{new_build})'"
+    # Commit the version bump to app.json
+    sh("git add ../app.json")
+    sh("git commit -m 'Bump version to #{new_version} (build #{new_build})'")
+    UI.success("Successfully bumped version to #{new_version} (build #{new_build}) and committed changes")
   end
 end
 
