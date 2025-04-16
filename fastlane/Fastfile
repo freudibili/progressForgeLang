@@ -153,6 +153,15 @@ platform :android do
     new_version = increment_version_number
     new_build = increment_build_number
     
+    # Print version information for debugging
+    UI.important("Version number from app.json: #{new_version}")
+    UI.important("Build number after increment: #{new_build}")
+    UI.important("Version code type: #{new_build.class}")
+    
+    # Ensure version code is an integer, not a string
+    version_code = new_build.to_i
+    UI.important("Final version code (integer): #{version_code}")
+    
     # Print diagnostics about the environment
     sh "echo 'Android SDK location: $ANDROID_SDK_ROOT'"
     sh "echo 'Java version: openjdk version'"
