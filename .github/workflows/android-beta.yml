@@ -88,3 +88,15 @@ jobs:
           ANDROID_KEY_ALIAS="$ANDROID_KEY_ALIAS" \
           ANDROID_KEY_PASSWORD="$ANDROID_KEY_PASSWORD" \
           bundle exec fastlane android beta
+
+      - name: Push version code changes back to repository
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          if [[ -n $(git status --porcelain) ]]; then
+            git status
+            git push origin ${{ github.ref }}
+            echo "Pushed version code changes back to repository"
+          else
+            echo "No changes to push"
+          fi
