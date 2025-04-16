@@ -67,10 +67,19 @@ android {
                 println "================================================"
                 
                 // First check if we have injected properties (from command line)
+                // This fixes the 'externalOverride' signing config issues with fastlane
                 def injectedKeystorePath = project.findProperty("android.injected.signing.store.file")
                 if (injectedKeystorePath) {
                     println "Using injected keystore path: $injectedKeystorePath"
                     def injectedFile = new File(injectedKeystorePath.toString())
+                    
+                    // Ensure the path is absolute to fix daemon path issues
+                    if (!injectedFile.isAbsolute()) {
+                        println "Converting relative injected path to absolute path"
+                        injectedFile = new File(rootProject.projectDir, injectedKeystorePath.toString())
+                        println "New absolute path: ${injectedFile.absolutePath}"
+                    }
+                    
                     if (injectedFile.exists()) {
                         println "✅ Injected keystore file exists at: ${injectedFile.absolutePath}"
                         storeFile injectedFile
