@@ -141,67 +141,66 @@ platform :android do
     # Print diagnostics about the environment
     sh "echo 'Android SDK location: $ANDROID_SDK_ROOT'"
     sh "echo 'Java version: openjdk version'"
+    sh "echo 'Keystore path from env: $ANDROID_KEYSTORE_FILE'"
     
-    # Handle keystore path properly
-    keystore_path = ENV["ANDROID_KEYSTORE_FILE"]
+    # Explicitly check and log keystore info
+    keystore_path = ENV["ANDROID_KEYSTORE_FILE"] || ""
+    UI.important("Keystore path: '#{keystore_path}'")
     
-    if keystore_path
-      # Convert relative path to absolute if it's not already absolute
-      if !keystore_path.start_with?('/')
-        # First normalize the path to handle any path issues
-        keystore_path = File.join(Dir.pwd, '..', keystore_path)
-      end
-      
-      # Clean up any double slashes or unnecessary parts
-      keystore_path = File.absolute_path(keystore_path)
-    end
-    
-    UI.message("Using keystore at: #{keystore_path}")
-    
-    # Verify the keystore exists
-    if keystore_path && File.exist?(keystore_path)
-      UI.success("✅ Keystore file found at: #{keystore_path}")
-      sh "ls -la #{keystore_path}"
-    else
-      UI.error("❌ Keystore file not found at: #{keystore_path}")
-      UI.error("Current directory: #{Dir.pwd}")
-      UI.error("Project root: #{File.expand_path('..', Dir.pwd)}")
-      
-      # Try to locate the file with different path combinations
-      possible_paths = [
-        keystore_path,
-        File.join(Dir.pwd, '..', 'android/app/keystore.jks'),
-        File.join(Dir.pwd, '../android/app/keystore.jks'),
-        '/home/runner/work/progressForgeLang/progressForgeLang/android/app/keystore.jks'
-      ]
-      
-      possible_paths.each do |path|
-        if File.exist?(path)
-          UI.success("Found keystore at alternative path: #{path}")
-          keystore_path = path
-          break
+    if keystore_path && !keystore_path.empty?
+      if File.exist?(keystore_path)
+        UI.success("✅ Keystore file found at: #{keystore_path}")
+        sh "ls -la #{keystore_path}"
+      else
+        UI.error("❌ Keystore file not found at: #{keystore_path}")
+        # Try the relative path as a fallback
+        relative_path = File.join("..", "android", "app", "keystore.jks")
+        UI.important("Trying relative path: #{relative_path}")
+        if File.exist?(relative_path)
+          UI.success("✅ Keystore found at relative path: #{relative_path}")
+          keystore_path = relative_path
         else
-          UI.error("Keystore not found at: #{path}")
+          UI.error("❌ Keystore also not found at relative path")
         end
       end
-      
-      UI.error("Files in project root:")
-      sh "ls -la .."
-      UI.error("Files in android/app directory:")
-      sh "ls -la ../android/app || echo 'Directory not found'"
+    else
+      UI.error("❌ ANDROID_KEYSTORE_FILE environment variable is not set")
+      UI.important("Setting default keystore path")
+      # Default to a standard location in case the env var isn't set
+      keystore_path = File.join("..", "android", "app", "keystore.jks")
+      UI.important("Default keystore path: #{keystore_path}")
+      if File.exist?(keystore_path)
+        UI.success("✅ Default keystore found!")
+      else
+        UI.error("❌ Default keystore not found either")
+      end
     end
-
-    # Build the app using direct shell command
-    UI.message("Building Android app with keystore: #{keystore_path}")
     
-    sh("cd ../android && ./gradlew bundleRelease " \
-       "-Pandroid.injected.signing.store.file='#{keystore_path}' " \
-       "-Pandroid.injected.signing.store.password='#{ENV['ANDROID_KEYSTORE_PASSWORD']}' " \
-       "-Pandroid.injected.signing.key.alias='#{ENV['ANDROID_KEY_ALIAS']}' " \
-       "-Pandroid.injected.signing.key.password='#{ENV['ANDROID_KEY_PASSWORD']}' " \
-       "-Pandroid.injected.version.code=#{new_build} " \
-       "-Dorg.gradle.logging.level=info " \
-       "--stacktrace --info")
+    # Pass explicit environment variables to gradle
+    gradle_env = {
+      "ANDROID_KEYSTORE_FILE" => keystore_path,
+      "ANDROID_KEYSTORE_PASSWORD" => ENV["ANDROID_KEYSTORE_PASSWORD"],
+      "ANDROID_KEY_ALIAS" => ENV["ANDROID_KEY_ALIAS"],
+      "ANDROID_KEY_PASSWORD" => ENV["ANDROID_KEY_PASSWORD"]
+    }
+    
+    UI.important("Building with keystore at: #{keystore_path}")
+    
+    # Use gradle action for more reliable environment variable passing
+    gradle(
+      task: "bundleRelease",
+      project_dir: "android",
+      properties: {
+        "android.injected.signing.store.file" => keystore_path,
+        "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
+        "android.injected.version.code" => new_build.to_s
+      },
+      flags: "--stacktrace --info",
+      print_command: true,
+      print_command_output: true
+    )
 
     upload_to_play_store(
       track: 'internal',
