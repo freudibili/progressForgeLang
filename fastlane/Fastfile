@@ -37,7 +37,20 @@ def increment_build_number
   require 'json'
   app_json = JSON.parse(File.read('../app.json'))
   current_build = app_json.dig('expo', 'android', 'versionCode') || 1
-  new_build = current_build + 1
+  
+  # Add a time component to ensure uniqueness even if app.json changes aren't pushed
+  timestamp = Time.now.strftime("%H%M").to_i
+  
+  # Ensure the version code is higher than the current one
+  # Use the last two digits of current year + month + day as the base
+  base = Time.now.strftime("%y%m%d").to_i
+  
+  # Calculate a new version code that is guaranteed to be higher than the current one
+  # and includes a time component for uniqueness
+  new_build = [current_build + 1, base + timestamp].max
+  
+  UI.important("Generating new version code: #{new_build} (was: #{current_build})")
+  
   app_json['expo']['android']['versionCode'] = new_build
   File.write('../app.json', JSON.pretty_generate(app_json))
   new_build
@@ -160,41 +173,92 @@ platform :android do
     # Don't increment version for testing builds, just use current version
     new_version = get_version_number
     
-    # Still increment build number for uniqueness in Play Store
-    new_build = increment_build_number
-    version_code = new_build.to_i
-    keystore_path = resolve_keystore_path
+    # Get a unique build number
+    begin
+      new_build = increment_build_number
+      version_code = new_build.to_i
+      keystore_path = resolve_keystore_path
 
-    gradle(
-      task: "bundleRelease",
-      project_dir: "android",
-      properties: {
-        "android.injected.signing.store.file" => keystore_path,
-        "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
-        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
-        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
-        "android.injected.version.code" => version_code.to_s,
-        "android.injected.version.name" => new_version
-      },
-      flags: "--stacktrace",
-      print_command: true
-    )
+      gradle(
+        task: "bundleRelease",
+        project_dir: "android",
+        properties: {
+          "android.injected.signing.store.file" => keystore_path,
+          "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
+          "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
+          "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
+          "android.injected.version.code" => version_code.to_s,
+          "android.injected.version.name" => new_version
+        },
+        flags: "--stacktrace",
+        print_command: true
+      )
 
-    upload_to_play_store(
-      track: 'internal',
-      release_status: 'draft',
-      skip_upload_apk: true,
-      skip_upload_metadata: true,
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
-      skip_upload_changelogs: true,
-      json_key: "fastlane/google-play-credentials.json",
-      package_name: "com.progressforgelang.app"
-    )
+      begin
+        upload_to_play_store(
+          track: 'internal',
+          release_status: 'draft',
+          skip_upload_apk: true,
+          skip_upload_metadata: true,
+          skip_upload_images: true,
+          skip_upload_screenshots: true,
+          skip_upload_changelogs: true,
+          json_key: "fastlane/google-play-credentials.json",
+          package_name: "com.progressforgelang.app"
+        )
+      rescue => e
+        # If the upload fails due to version code already used, increment again and retry
+        if e.message.include?("Version code") && e.message.include?("has already been used")
+          UI.error("Version code #{version_code} has already been used. Incrementing and retrying...")
+          # Force increment by 10 to avoid collisions
+          app_json = JSON.parse(File.read('../app.json'))
+          current_build = app_json.dig('expo', 'android', 'versionCode')
+          new_build = current_build + 10
+          app_json['expo']['android']['versionCode'] = new_build
+          File.write('../app.json', JSON.pretty_generate(app_json))
+          version_code = new_build
+          
+          # Rebuild with new version code
+          gradle(
+            task: "bundleRelease",
+            project_dir: "android",
+            properties: {
+              "android.injected.signing.store.file" => keystore_path,
+              "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
+              "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
+              "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
+              "android.injected.version.code" => version_code.to_s,
+              "android.injected.version.name" => new_version
+            },
+            flags: "--stacktrace",
+            print_command: true
+          )
+          
+          # Try uploading again
+          upload_to_play_store(
+            track: 'internal',
+            release_status: 'draft',
+            skip_upload_apk: true,
+            skip_upload_metadata: true,
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_changelogs: true,
+            json_key: "fastlane/google-play-credentials.json",
+            package_name: "com.progressforgelang.app"
+          )
+        else
+          # If it's a different error, re-raise it
+          raise e
+        end
+      end
 
-    # Only commit the version code change, not a version bump
-    sh "git add ../app.json"
-    sh "git commit -m 'Update build number to #{new_build} (for internal testing)'"
+      # Only commit the version code change, not a version bump
+      sh "git add ../app.json"
+      sh "git commit -m 'Update build number to #{new_build} (for internal testing)'"
+    rescue => e
+      UI.error("Error in beta lane: #{e.message}")
+      raise e
+    end
   end
 end
 
