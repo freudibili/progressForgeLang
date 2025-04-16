@@ -54,12 +54,13 @@ jobs:
         shell: bash
         run: |
           mkdir -p android/app
-          WORKSPACE_DIR=$(pwd)
-          KEYSTORE_PATH="$WORKSPACE_DIR/android/app/keystore.jks"
+          KEYSTORE_PATH="$GITHUB_WORKSPACE/android/app/keystore.jks"
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > "$KEYSTORE_PATH"
           chmod 600 "$KEYSTORE_PATH"
           echo "Keystore saved to $KEYSTORE_PATH"
           ls -la "$KEYSTORE_PATH"
+          # Export the path to be used in subsequent steps
+          echo "KEYSTORE_PATH=$KEYSTORE_PATH" >> $GITHUB_ENV
 
       - name: Ensure clean git status
         run: |
@@ -73,8 +74,10 @@ jobs:
 
       - name: Run fastlane android beta
         env:
-          ANDROID_KEYSTORE_FILE: ${{ github.workspace }}/android/app/keystore.jks
+          ANDROID_KEYSTORE_FILE: ${{ env.KEYSTORE_PATH }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: bundle exec fastlane android beta
+        run: |
+          echo "Using keystore at: $ANDROID_KEYSTORE_FILE"
+          bundle exec fastlane android beta
