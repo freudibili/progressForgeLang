@@ -56,10 +56,27 @@ android {
         }
         release {
             def keystorePath = System.getenv("ANDROID_KEYSTORE_FILE")
-            println "Keystore path from environment: $keystorePath"
+            println "Original keystore path from environment: $keystorePath"
             
             if (keystorePath) {
-                def keystoreFile = file(keystorePath)
+                def keystoreFile
+                
+                if (new File(keystorePath).isAbsolute()) {
+                    // Use absolute path as is
+                    keystoreFile = new File(keystorePath)
+                    println "Using absolute keystore path: ${keystoreFile.absolutePath}"
+                } else {
+                    // Handle relative path
+                    keystoreFile = new File(project.rootDir, keystorePath)
+                    println "Using relative keystore path: ${keystoreFile.absolutePath}"
+                    
+                    // If that doesn't exist, try relative to the app module
+                    if (!keystoreFile.exists()) {
+                        keystoreFile = new File(projectDir, keystorePath)
+                        println "Trying app module relative path: ${keystoreFile.absolutePath}"
+                    }
+                }
+                
                 if (keystoreFile.exists()) {
                     println "✅ Keystore file exists at: ${keystoreFile.absolutePath}"
                     storeFile keystoreFile
@@ -68,12 +85,38 @@ android {
                     keyPassword System.getenv("ANDROID_KEY_PASSWORD")
                 } else {
                     println "❌ Keystore file not found at: ${keystoreFile.absolutePath}"
-                    println "Absolute path: ${keystoreFile.absolutePath}"
-                    println "Relative to project: ${project.file(keystorePath).absolutePath}"
-                    println "Current directory: ${file('.').absolutePath}"
-                    println "Project directory: ${project.rootDir.absolutePath}"
-                    println "Files in current directory: ${file('.').list()}"
-                    println "Files in parent directory: ${file('..').list()}"
+                    println "Searching for keystore file..."
+                    
+                    // Look for the keystore in common locations
+                    def possibleLocations = [
+                        new File(System.getenv("GITHUB_WORKSPACE") ?: "", "android/app/keystore.jks"),
+                        new File(rootProject.rootDir, "android/app/keystore.jks"),
+                        new File(rootProject.rootDir, "app/keystore.jks"),
+                        new File(projectDir, "keystore.jks")
+                    ]
+                    
+                    def foundKeystore = false
+                    possibleLocations.each { location ->
+                        if (location.exists()) {
+                            println "✅ Found keystore at: ${location.absolutePath}"
+                            storeFile location
+                            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                            keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+                            foundKeystore = true
+                            return
+                        } else {
+                            println "Not found at: ${location.absolutePath}"
+                        }
+                    }
+                    
+                    if (!foundKeystore) {
+                        println "❌ Could not find keystore file in any location"
+                        println "Root project directory: ${rootProject.rootDir.absolutePath}"
+                        println "Project directory: ${projectDir.absolutePath}"
+                        println "Files in app directory:"
+                        projectDir.list().each { println "  $it" }
+                    }
                 }
             } else {
                 println "❌ No keystore path provided in environment"
