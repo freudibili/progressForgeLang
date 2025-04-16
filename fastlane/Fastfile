@@ -37,9 +37,15 @@ def increment_build_number
   require 'json'
   app_json = JSON.parse(File.read('../app.json'))
   current_build = app_json.dig('expo', 'android', 'versionCode') || 1
+  
+  # Make sure we're getting at least 1 higher than the current version
   new_build = current_build + 1
+  
+  # Update the app.json file
   app_json['expo']['android']['versionCode'] = new_build
   File.write('../app.json', JSON.pretty_generate(app_json))
+  
+  puts "Incremented version code to #{new_build}"
   new_build
 end
 
@@ -198,7 +204,8 @@ platform :android do
         "android.injected.signing.store.password" => ENV["ANDROID_KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
-        "android.injected.version.code" => new_build.to_s
+        "android.injected.version.code" => new_build.to_s,
+        "android.injected.version.name" => get_version_number
       },
       flags: "--stacktrace --info",
       print_command: true,
